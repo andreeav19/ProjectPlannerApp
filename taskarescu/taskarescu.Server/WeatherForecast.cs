@@ -1,4 +1,4 @@
-namespace taskarescu.Server
+﻿namespace taskarescu.Server
 {
     public class WeatherForecast
     {
