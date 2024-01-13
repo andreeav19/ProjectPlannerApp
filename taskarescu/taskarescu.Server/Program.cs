@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using taskarescu.Server.Models;
+using taskarescu.Server.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,12 @@ builder.Services.AddDbContext<TaskarescuDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Taskarescu"));
 });
+
+using (var scope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var services = scope.ServiceProvider;
+    DatabaseSeeder.SeedData(services);
+}
 
 var app = builder.Build();
 
