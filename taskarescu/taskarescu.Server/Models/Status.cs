@@ -8,8 +8,9 @@ namespace taskarescu.Server.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<TaskItem> TaskItems{ get; set; }
+        public virtual ICollection<TaskItem> TaskItems { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Stage> Stages { get; set; }
 
     }
 }
