@@ -6,6 +6,43 @@ namespace taskarescu.Server.Models
     {
         public TaskarescuDbContext(DbContextOptions<TaskarescuDbContext> options) : base(options) { }
 
+        public override int SaveChanges()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                if (entry.Entity is TaskItem taskItem && (entry.State == EntityState.Added || entry.State == EntityState.Modified)) {
+                    Stage? associatedStage = Stages.FirstOrDefault(s => s.Id == taskItem.Id);
+
+                    if (associatedStage != null)
+                    {
+                        var totalTaskItemPoints = TaskItems
+                            .Where(t => t.StageId == taskItem.Id && t.Id != taskItem.Id)
+                            .Sum(t => t.Points);
+
+                        totalTaskItemPoints += taskItem.Points;
+
+                        if (totalTaskItemPoints > associatedStage.Points) {
+                            throw new InvalidOperationException("Punctajul task-urilor asociate etapei " + associatedStage.Name + " nu poate depasi numarul total de puncte alocate!");
+                        }
+
+                    }
+                }
+
+                if (entry.Entity is ProfessorSubject professorSubject && (entry.State == EntityState.Added || entry.State == EntityState.Modified))
+                {
+                    User associatedUser = Users.FirstOrDefault(u => u.Id == professorSubject.UserId);
+                    Role userRole = Roles.FirstOrDefault(r => r.Id == associatedUser.RoleId);
+
+                    if (userRole != null && userRole.Name != "Professor")
+                    {
+                        throw new InvalidOperationException("Nu se poate asocia o materie unui utilizator care nu are rolul de profesor!");
+                    }
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Set composite primary keys
@@ -62,6 +99,7 @@ namespace taskarescu.Server.Models
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ProfessorSubject> ProfessorSubjects { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Stage> Stages { get; set; }
         public DbSet<TaskItem> TaskItems { get; set; }
         public DbSet<Difficulty> Difficulties { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }

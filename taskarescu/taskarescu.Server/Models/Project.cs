@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace taskarescu.Server.Models
 {
@@ -16,7 +15,5 @@ namespace taskarescu.Server.Models
         public virtual Subject Subject {  get; set; }
         public virtual User User { get; set; }
         public virtual Status Status { get; set; }
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<TaskItem> TaskItems { get; set; }
     }
 }
