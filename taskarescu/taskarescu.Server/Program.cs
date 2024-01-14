@@ -8,7 +8,7 @@ using System;
 using System.Text;
 using taskarescu.Server.Db;
 using taskarescu.Server.Entities;
-using taskarescu.Server.Services;
+using taskarescu.Server.Services.AuthServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

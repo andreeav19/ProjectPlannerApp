@@ -6,7 +6,7 @@ using taskarescu.Server.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using FluentResults;
-namespace taskarescu.Server.Services;
+namespace taskarescu.Server.Services.AuthServices;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -70,7 +70,8 @@ public class AuthenticationService : IAuthenticationService
 
         var userRoles = await _userManager.GetRolesAsync(user);
 
-        if (userRoles is not null && userRoles.Any()) {
+        if (userRoles is not null && userRoles.Any())
+        {
             authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
         }
 

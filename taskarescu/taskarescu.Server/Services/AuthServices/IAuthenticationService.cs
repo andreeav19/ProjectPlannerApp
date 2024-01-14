@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using taskarescu.Server.DTOs;
 
-namespace taskarescu.Server.Services;
+namespace taskarescu.Server.Services.AuthServices;
 using FluentResults;
 public interface IAuthenticationService
 {

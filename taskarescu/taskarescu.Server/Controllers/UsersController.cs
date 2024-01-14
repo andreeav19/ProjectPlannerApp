@@ -3,53 +3,52 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FluentResults;
 using taskarescu.Server.Extensions;
-using taskarescu.Server.Services.AuthServices;
+using taskarescu.Server.Services.UserServices;
+
 namespace taskarescu.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IUserService _usersService;
 
-    public AuthController(IAuthenticationService authenticationService)
+    public UsersController(IUserService usersService)
     {
-        _authenticationService = authenticationService;
+        _usersService = usersService;
     }
 
-    [AllowAnonymous]
-    [HttpPost("login")]
+    [Authorize(Policy = "UsersOnly")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+
+    public IActionResult GetUsers()
     {
-        var response = await _authenticationService.Login(request);
+        var response = _usersService.GetUsers();
         var resultDto = response.ToResultDto();
 
         if (!resultDto.IsSuccess)
         {
             return BadRequest(resultDto);
         }
-
-
-        return Ok(response);
+        return Ok(resultDto);
     }
 
-    [AllowAnonymous]
-    [HttpPost("register")]
+    [Authorize(Policy = "UsersOnly")]
+    [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-    {
-        var response = await _authenticationService.Register(request);
+    public IActionResult GetUserById(int id) {
+        var response = _usersService.GetUserById(id);
         var resultDto = response.ToResultDto();
+
         if (!resultDto.IsSuccess)
         {
             return BadRequest(resultDto);
         }
-        return Ok(response);
+        return Ok(resultDto);
     }
-
 }
