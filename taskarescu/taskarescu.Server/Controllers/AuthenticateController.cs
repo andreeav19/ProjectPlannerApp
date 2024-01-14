@@ -2,16 +2,17 @@
 using taskarescu.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using FluentResults;
+using taskarescu.Server.Extensions;
 namespace AuthenticationApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public UserController(IAuthenticationService authenticationService)
+    public UsersController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
@@ -24,6 +25,13 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _authenticationService.Login(request);
+        var resultDto = response.ToResultDto();
+
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+
 
         return Ok(response);
     }
@@ -36,7 +44,13 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var response = await _authenticationService.Register(request);
-
+        var resultDto = response.ToResultDto();
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
         return Ok(response);
     }
+
+
 }

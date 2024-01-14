@@ -30,7 +30,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 
-// 4. Adding Jwt Bearer
     .AddJwtBearer(options =>
     {
         options.SaveToken = true;
@@ -45,6 +44,13 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminsOnly", policy => policy.RequireRole(Role.Admin));
+    options.AddPolicy("ProfsOnly", policy => policy.RequireRole(Role.Admin, Role.Prof));
+    options.AddPolicy("UsersOnly", policy => policy.RequireRole(Role.Admin, Role.Prof, Role.Student));
+});
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
@@ -124,5 +130,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedManager.Seed(services);
+}
 
 app.Run();

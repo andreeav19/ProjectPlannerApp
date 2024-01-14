@@ -2,9 +2,9 @@
 using taskarescu.Server.DTOs;
 
 namespace taskarescu.Server.Services;
-
+using FluentResults;
 public interface IAuthenticationService
 {
-    Task<string> Register(RegisterRequest request);
-    Task<string> Login(LoginRequest request);
+    Task<Result<string>> Register(RegisterRequest request);
+    Task<Result<string>> Login(LoginRequest request);
 }

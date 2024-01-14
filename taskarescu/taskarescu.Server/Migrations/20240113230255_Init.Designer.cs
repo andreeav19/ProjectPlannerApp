@@ -12,8 +12,8 @@ using taskarescu.Server.Db;
 namespace taskarescu.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240112203833_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240113230255_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
