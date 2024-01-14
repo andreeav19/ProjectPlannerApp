@@ -78,6 +78,8 @@ namespace taskarescu.Server.Db
             };
 
             builder.Entity<Difficulty>().HasData(difficulties);
+
+            
         }
     }
 }

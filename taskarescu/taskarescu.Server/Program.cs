@@ -54,17 +54,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UsersOnly", policy => policy.RequireRole("Admin", "Prof", "Student"));
 });
 
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
-
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Wedding Planner API", Version = "v1" });
@@ -98,6 +92,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowClient",
@@ -110,12 +110,13 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+app.UseCors("AllowClient");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -125,7 +126,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("AllowClient");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

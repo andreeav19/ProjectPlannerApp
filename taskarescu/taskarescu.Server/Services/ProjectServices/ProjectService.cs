@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using taskarescu.Server.Db;
 using taskarescu.Server.DTOs;
 using taskarescu.Server.Models;
@@ -18,9 +19,23 @@ namespace taskarescu.Server.Services.ProjectServices
             _mapper = mapper;
         }
 
-        public async Task<Guid> AddProject(ProjectDto projectDto)
+        async Task<ResultDto<Guid>> IProjectService.AddProject(ProjectDto projectDto)
         {
             var projectId = Guid.NewGuid();
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == projectDto.UserId);
+
+            if (user == null)
+            {
+                return new ResultDto<Guid>(false, Guid.Empty, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+
+            if (userRole.Name == "Student")
+            {
+                return new ResultDto<Guid>(false, Guid.Empty, new[] { "Utilizatorul nu are rolul de Admin sau Profesor!" });
+            }
 
             var project = new Project
             {
@@ -29,21 +44,40 @@ namespace taskarescu.Server.Services.ProjectServices
                 Description = projectDto.Description,
                 UserId = projectDto.UserId
             };
-            
-            await _context.AddAsync(project);
-            await _context.SaveChangesAsync();
 
-            return projectId;
+            await _context.AddAsync(project);
+            var no_changes = await _context.SaveChangesAsync();
+
+            if (no_changes == 0)
+            {
+                return new ResultDto<Guid>(false, Guid.Empty, new[] { "Eroare la crearea unui proiect!" });
+            }
+
+            return new ResultDto<Guid>(true, projectId, null);
+            
         }
 
-        public async Task<bool> AddStudentToProject(string username, Guid projectId)
+        async Task<ResultDto<bool>> IProjectService.AddStudentToProject(string userId, Guid projectId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            var userRole = user != null ? await _context.Roles.FindAsync(user.Id) : null;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (userRole == null || userRole.Name != "Student")
+            if (user == null)
             {
-                return false;
+                return new ResultDto<bool>(false, false, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+
+            if (userRole.Name != "Student")
+            {
+                return new ResultDto<bool>(false, false, new[] { "Utilizatorul nu poate fi adaugat deoarece nu are rolul de student!" });
+            }
+
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Proiectul la care incercati sa adaugati studenti nu a fost gasit!" } );
             }
 
             var studentProject = new StudentProject
@@ -57,34 +91,39 @@ namespace taskarescu.Server.Services.ProjectServices
 
             if (no_changes == 0)
             {
-                return false;
+                return new ResultDto<bool>(false, false, new[] { "Eroare la crearea asocierii de tip proiect-student!" } );
             }
 
-            return true;
+            return new ResultDto<bool>(true, true, null);
         }
 
-        public async Task<bool> DeleteProjectById(Guid projectId)
+        async Task<ResultDto<bool>> IProjectService.DeleteProjectById(Guid projectId)
         {
-            var project = await _context.Projects.FindAsync(projectId);
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
             {
-                return false;
+                return new ResultDto<bool>(false, false, new[] { "Proiectul nu a fost gasit!" });
             }
 
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+            var no_changes = await _context.SaveChangesAsync();
 
-            return true;
+            if (no_changes == 0)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Eroare la stergerea proiectului!" });
+            }
+
+            return new ResultDto<bool>(true, true, null);
         }
 
-        public async Task<bool> EditProjectById(Guid projectId, ProjectPostDto projectPostDto)
+        async Task<ResultDto<bool>> IProjectService.EditProjectById(Guid projectId, ProjectPostDto projectPostDto)
         {
-            var project = await _context.Projects.FindAsync(projectId);
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
             {
-                return false;
+                return new ResultDto<bool>(false, false, new[] { "Proiectul nu a fost gasit!" });
             }
 
             project.Name = projectPostDto.Name;
@@ -92,63 +131,86 @@ namespace taskarescu.Server.Services.ProjectServices
 
             await _context.SaveChangesAsync();
 
-            return true;
+            return new ResultDto<bool>(true, true, null);
         }
 
-        public async Task<ProjectDto> GetProjectById(Guid projectId)
+        async Task<ResultDto<ProjectDto>> IProjectService.GetProjectById(Guid projectId)
         {
             var project = await _context.Projects.FindAsync(projectId);
 
-            return _mapper.Map<ProjectDto>(project);
-        }
-
-        public async Task<ICollection<ProjectDto>> GetProjectsByUserId(string userId)
-        {
-            var user = await _context.Users.FindAsync(userId);
-
-            if (user != null)
+            if (project == null)
             {
-                var userRole = await _context.Roles.FindAsync(user.RoleId);
-
-                if (userRole != null)
-                {
-                    ICollection<Project> projects;
-
-                    if (userRole.Name != "Student")
-                    {
-                        projects = await _context.Projects
-                            .Where(p => p.UserId == userId)
-                            .ToListAsync();
-                    }
-
-                    projects = await _context.StudentProjects
-                        .Where(sp => sp.UserId == userId)
-                        .Select(sp => sp.Project)
-                        .ToListAsync();
-
-                    return _mapper.Map<ICollection<ProjectDto>>(projects);
-
-                }
+                return new ResultDto<ProjectDto>(false, null, new[] { "Proiectul nu a fost gasit!" });
             }
 
-            return null;
+            var projectDto = _mapper.Map<ProjectDto>(project);
+
+            return new ResultDto<ProjectDto>(true, projectDto, null);
         }
 
-        public async Task<bool> RemoveStudentFromProject(string username, Guid projectId)
+        async Task<ResultDto<ICollection<ProjectDto>>> IProjectService.GetProjectsByUserId(string userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            var project = await _context.Projects.FindAsync(projectId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user == null || project == null) {
-                return false;
+            if (user == null)
+            {
+                return new ResultDto<ICollection<ProjectDto>>(false, null, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+
+            ICollection<Project> projects;
+
+            if (userRole.Name != "Student")
+            {
+                projects = await _context.Projects
+                    .Where(p => p.UserId == userId)
+                    .ToListAsync();
+            } else
+            {
+                projects = await _context.StudentProjects
+                .Where(sp => sp.UserId == userId)
+                .Select(sp => sp.Project)
+                .ToListAsync();
+            }
+
+            var projectDtos = _mapper.Map<ICollection<ProjectDto>>(projects);
+
+            return new ResultDto<ICollection<ProjectDto>>(true, projectDtos, null);
+        }
+
+        async Task<ResultDto<bool>> IProjectService.RemoveStudentFromProject(string userId, Guid projectId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Proiectul nu a fost gasit!" });
             }
 
             var studentProject = await _context.StudentProjects.FirstOrDefaultAsync(sp => sp.UserId == user.Id && sp.ProjectId == projectId);
 
-            _context.StudentProjects.Remove(studentProject);
-            await _context.SaveChangesAsync();
+            if (studentProject == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Asocierea dintre student si proiect nu a fost gasita!" });
+            }
 
-            return true;
+            _context.StudentProjects.Remove(studentProject);
+            var no_changes = await _context.SaveChangesAsync();
+
+            if (no_changes == 0)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Eroare la inlaturarea studentului din echipa!" });
+            }
+
+            return new ResultDto<bool>(true, true, null);
         }
     }
 }

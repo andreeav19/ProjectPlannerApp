@@ -18,120 +18,121 @@ namespace taskarescu.Server.Controllers
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ICollection<ProjectDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<ProjectDto>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetProjectsByUserId(string userId)
         {
-            var projectDtos = await _projectService.GetProjectsByUserId(userId);
+            var resultDto = await _projectService.GetProjectsByUserId(userId);
 
-            if (projectDtos == null)
+            if (!resultDto.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(resultDto);
             }
 
-            return Ok(projectDtos);
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet("{projectId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ProjectDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetProjectById(Guid projectId)
         {
-            var projectDto = await _projectService.GetProjectById(projectId);
+            var resultDto = await _projectService.GetProjectById(projectId);
 
-            if (projectDto == null)
+            if (!resultDto.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(resultDto);
             }
 
-            return Ok(projectDto);
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "ProfsOnly")]
         [HttpDelete("{projectId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteProjectById(Guid projectId)
         {
-            var isDeleted = await _projectService.DeleteProjectById(projectId);
+            var resultDto = await _projectService.DeleteProjectById(projectId);
 
-            if (!isDeleted)
+            if (!resultDto.IsSuccess)
             {
-                return NotFound();
+                return BadRequest(resultDto);
             }
 
-            return NoContent();
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "ProfsOnly")]
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<Guid>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddProject(ProjectDto projectDto)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddProject([FromBody] ProjectDto projectDto)
         {
-            var projectId = await _projectService.AddProject(projectDto);
+            var resultDto = await _projectService.AddProject(projectDto);
 
-            return projectId != null ? Ok(projectId) : BadRequest();
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "ProfsOnly")]
         [HttpPut("{projectId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> EditProject(Guid projectId, ProjectPostDto projectPostDto)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditProject(Guid projectId, [FromBody] ProjectPostDto projectPostDto)
         {
-            var isEdited = await _projectService.EditProjectById(projectId, projectPostDto);
+            var resultDto = await _projectService.EditProjectById(projectId, projectPostDto);
 
-            if (!isEdited)
+            if (!resultDto.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(resultDto);
             }
 
-            return NoContent();
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpPost("add-student/{projectId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost("{projectId}/students/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddStudentToProject(string username, Guid projectId)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddStudentToProject(string userId, Guid projectId)
         {
-            var isAdded = await _projectService.AddStudentToProject(username, projectId);
+            var resultDto = await _projectService.AddStudentToProject(userId, projectId);
 
-            if (!isAdded)
+            if (!resultDto.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(resultDto);
             }
 
-            return NoContent();
+            return Ok(resultDto);
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpDelete("remove-student/{projectId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpDelete("{projectId}/students/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RemoveStudentFromProject(string username, Guid projectId)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RemoveStudentFromProject(string userId, Guid projectId)
         {
-            var isDeleted = await _projectService.RemoveStudentFromProject(username, projectId);
+            var resultDto = await _projectService.RemoveStudentFromProject(userId, projectId);
 
-            if (!isDeleted)
+            if (!resultDto.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(resultDto);
             }
 
-            return NoContent();
+            return Ok(resultDto);
         }
     }
 }
