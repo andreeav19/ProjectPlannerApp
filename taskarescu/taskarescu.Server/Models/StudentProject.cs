@@ -2,10 +2,10 @@
 {
     public class StudentProject
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public Guid ProjectId { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual AppUser User { get; set; }
         public virtual Project Project { get; set; }
     }
 }

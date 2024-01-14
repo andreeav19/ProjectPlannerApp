@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 using taskarescu.Server.Db;
-using taskarescu.Server.Entities;
 using taskarescu.Server.Services.AuthServices;
 
-using Microsoft.EntityFrameworkCore;
 using taskarescu.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,9 +16,9 @@ var configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TaskarescuDB")));
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddRoles<IdentityRole>()
-    .AddRoleManager<RoleManager<IdentityRole>>()
+builder.Services.AddIdentity<AppUser, AppRole>()
+    .AddRoles<AppRole>()
+    .AddRoleManager<RoleManager<AppRole>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -48,11 +44,13 @@ builder.Services.AddAuthentication(options =>
     });
 
 
+
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminsOnly", policy => policy.RequireRole(Role.Admin));
-    options.AddPolicy("ProfsOnly", policy => policy.RequireRole(Role.Admin, Role.Prof));
-    options.AddPolicy("UsersOnly", policy => policy.RequireRole(Role.Admin, Role.Prof, Role.Student));
+    options.AddPolicy("AdminsOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ProfsOnly", policy => policy.RequireRole("Admin", "Prof"));
+    options.AddPolicy("UsersOnly", policy => policy.RequireRole("Admin", "Prof", "Student"));
 });
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -133,11 +131,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await SeedManager.Seed(services);
-}
 
 app.Run();

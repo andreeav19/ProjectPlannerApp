@@ -20,13 +20,13 @@ public class UsersController : ControllerBase
 
     [Authorize(Policy = "UsersOnly")]
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        var response = _usersService.GetUsers();
+        var response = await _usersService.GetUsers();
         var resultDto = response.ToResultDto();
 
         if (!resultDto.IsSuccess)
@@ -41,8 +41,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult GetUserById(int id) {
-        var response = _usersService.GetUserById(id);
+    public async Task<IActionResult> GetUserById(int id) {
+        var response = await _usersService.GetUserById(id);
         var resultDto = response.ToResultDto();
 
         if (!resultDto.IsSuccess)
