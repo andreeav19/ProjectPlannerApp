@@ -8,6 +8,7 @@ using taskarescu.Server.Db;
 using taskarescu.Server.Services.AuthServices;
 
 using taskarescu.Server.Models;
+using taskarescu.Server.Services.ProjectServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -54,7 +55,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -109,6 +110,7 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
