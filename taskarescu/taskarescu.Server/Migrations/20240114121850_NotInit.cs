@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace taskarescu.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class NotInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,9 +32,9 @@ namespace taskarescu.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -341,15 +341,15 @@ namespace taskarescu.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6260d3b8-fcdd-4211-b973-57cd6a6a6850", null, "Admin", "ADMIN" },
-                    { "772a0fb6-b830-4c1f-a4ff-baa165be4e26", null, "Prof", "PROF" },
-                    { "9d091ad9-8b35-46c7-a0fc-0c04f37bc395", null, "Student", "STUDENT" }
+                    { "6e5e2470-e106-40c6-9a7a-526c45f88956", null, "Prof", "PROF" },
+                    { "84c3cf6a-4793-45c3-aaf0-c328e5daa52a", null, "Admin", "ADMIN" },
+                    { "98cfacad-ac9d-4b63-bf84-aa2f648fa66c", null, "Student", "STUDENT" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7dcd24cf-1fd3-4c3a-af51-32e168368253", 0, "defad499-3527-4c32-98f1-8d06f61d5bbe", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEFZphl7qOeNoHRL7k24p6/mMYcnZ5C2DcBMTotYOsSFy0aDwK5vdEGZaxeCL6561Zw==", null, false, "6260d3b8-fcdd-4211-b973-57cd6a6a6850", "08d15a73-a6f6-4924-b32e-b299a627cd35", false, "admin" });
+                values: new object[] { "3d859d5f-9ee2-4e44-b6dd-5457d0c65d1c", 0, "585ce446-3b61-4565-85d0-7759256afccc", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEIfdO8VlBgyEn16W7fAMKmFYXLsvp44ROZYv0ZsCS4+5Vit/bRF6K9eIMNkRs0TObw==", null, false, "84c3cf6a-4793-45c3-aaf0-c328e5daa52a", "75a8ad45-49ef-4bf0-89f8-32a03dcc2d97", false, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

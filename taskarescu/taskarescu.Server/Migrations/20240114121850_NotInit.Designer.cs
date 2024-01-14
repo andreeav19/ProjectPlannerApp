@@ -12,8 +12,8 @@ using taskarescu.Server.Db;
 namespace taskarescu.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240114045410_Init")]
-    partial class Init
+    [Migration("20240114121850_NotInit")]
+    partial class NotInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,19 +160,19 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6260d3b8-fcdd-4211-b973-57cd6a6a6850",
+                            Id = "84c3cf6a-4793-45c3-aaf0-c328e5daa52a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "772a0fb6-b830-4c1f-a4ff-baa165be4e26",
+                            Id = "6e5e2470-e106-40c6-9a7a-526c45f88956",
                             Name = "Prof",
                             NormalizedName = "PROF"
                         },
                         new
                         {
-                            Id = "9d091ad9-8b35-46c7-a0fc-0c04f37bc395",
+                            Id = "98cfacad-ac9d-4b63-bf84-aa2f648fa66c",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -198,11 +198,9 @@ namespace taskarescu.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -229,7 +227,6 @@ namespace taskarescu.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("RoleId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -257,9 +254,9 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7dcd24cf-1fd3-4c3a-af51-32e168368253",
+                            Id = "3d859d5f-9ee2-4e44-b6dd-5457d0c65d1c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "defad499-3527-4c32-98f1-8d06f61d5bbe",
+                            ConcurrencyStamp = "585ce446-3b61-4565-85d0-7759256afccc",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -267,10 +264,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFZphl7qOeNoHRL7k24p6/mMYcnZ5C2DcBMTotYOsSFy0aDwK5vdEGZaxeCL6561Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIfdO8VlBgyEn16W7fAMKmFYXLsvp44ROZYv0ZsCS4+5Vit/bRF6K9eIMNkRs0TObw==",
                             PhoneNumberConfirmed = false,
-                            RoleId = "6260d3b8-fcdd-4211-b973-57cd6a6a6850",
-                            SecurityStamp = "08d15a73-a6f6-4924-b32e-b299a627cd35",
+                            RoleId = "84c3cf6a-4793-45c3-aaf0-c328e5daa52a",
+                            SecurityStamp = "75a8ad45-49ef-4bf0-89f8-32a03dcc2d97",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
