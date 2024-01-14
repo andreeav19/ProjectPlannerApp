@@ -97,5 +97,41 @@ namespace taskarescu.Server.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Policy = "ProfsOnly")]
+        [HttpPost("add-student/{projectId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddStudentToProject(string username, Guid projectId)
+        {
+            var isAdded = await _projectService.AddStudentToProject(username, projectId);
+
+            if (!isAdded)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [Authorize(Policy = "ProfsOnly")]
+        [HttpDelete("remove-student/{projectId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveStudentFromProject(string username, Guid projectId)
+        {
+            var isDeleted = await _projectService.RemoveStudentFromProject(username, projectId);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
     }
 }

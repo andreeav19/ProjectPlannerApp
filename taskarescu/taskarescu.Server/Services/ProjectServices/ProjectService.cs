@@ -36,6 +36,33 @@ namespace taskarescu.Server.Services.ProjectServices
             return projectId;
         }
 
+        public async Task<bool> AddStudentToProject(string username, Guid projectId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var userRole = user != null ? await _context.Roles.FindAsync(user.Id) : null;
+
+            if (userRole == null || userRole.Name != "Student")
+            {
+                return false;
+            }
+
+            var studentProject = new StudentProject
+            {
+                UserId = user.Id,
+                ProjectId = projectId
+            };
+
+            await _context.StudentProjects.AddAsync(studentProject);
+            var no_changes = await _context.SaveChangesAsync();
+
+            if (no_changes == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<bool> DeleteProjectById(Guid projectId)
         {
             var project = await _context.Projects.FindAsync(projectId);
@@ -105,6 +132,23 @@ namespace taskarescu.Server.Services.ProjectServices
             }
 
             return null;
+        }
+
+        public async Task<bool> RemoveStudentFromProject(string username, Guid projectId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            var project = await _context.Projects.FindAsync(projectId);
+
+            if (user == null || project == null) {
+                return false;
+            }
+
+            var studentProject = await _context.StudentProjects.FirstOrDefaultAsync(sp => sp.UserId == user.Id && sp.ProjectId == projectId);
+
+            _context.StudentProjects.Remove(studentProject);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }
