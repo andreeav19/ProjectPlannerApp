@@ -17,6 +17,25 @@ namespace taskarescu.Server.Services.ProjectServices
             _context = context;
             _mapper = mapper;
         }
+
+        public async Task<Guid> AddProject(ProjectDto projectDto)
+        {
+            var projectId = Guid.NewGuid();
+
+            var project = new Project
+            {
+                Id = projectId,
+                Name = projectDto.Name,
+                Description = projectDto.Description,
+                UserId = projectDto.UserId
+            };
+            
+            await _context.AddAsync(project);
+            await _context.SaveChangesAsync();
+
+            return projectId;
+        }
+
         public async Task<bool> DeleteProjectById(Guid projectId)
         {
             var project = await _context.Projects.FindAsync(projectId);
@@ -27,6 +46,23 @@ namespace taskarescu.Server.Services.ProjectServices
             }
 
             _context.Projects.Remove(project);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditProjectById(Guid projectId, ProjectPostDto projectPostDto)
+        {
+            var project = await _context.Projects.FindAsync(projectId);
+
+            if (project == null)
+            {
+                return false;
+            }
+
+            project.Name = projectPostDto.Name;
+            project.Description = projectPostDto.Description;
+
             await _context.SaveChangesAsync();
 
             return true;

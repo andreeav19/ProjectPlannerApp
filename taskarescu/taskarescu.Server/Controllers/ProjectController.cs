@@ -66,5 +66,36 @@ namespace taskarescu.Server.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Policy = "ProfsOnly")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddProject(ProjectDto projectDto)
+        {
+            var projectId = await _projectService.AddProject(projectDto);
+
+            return projectId != null ? Ok(projectId) : BadRequest();
+        }
+
+        [Authorize(Policy = "ProfsOnly")]
+        [HttpPut("{projectId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> EditProject(Guid projectId, ProjectPostDto projectPostDto)
+        {
+            var isEdited = await _projectService.EditProjectById(projectId, projectPostDto);
+
+            if (!isEdited)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
     }
 }
