@@ -10,6 +10,9 @@ using taskarescu.Server.Db;
 using taskarescu.Server.Entities;
 using taskarescu.Server.Services.AuthServices;
 
+using Microsoft.EntityFrameworkCore;
+using taskarescu.Server.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
