@@ -1,0 +1,18 @@
+.LeaderRow {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    background: #646cff;
+    border-radius: 10px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.puncte{
+    flex: 1;
+    display: flex;
+    justify-content: end;
+    margin-right: 10px;
+    /*background: white;*/
+}
