@@ -77,7 +77,13 @@ namespace taskarescu.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StageId")
+                    b.Property<int>("DifficultyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TaskItemId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
@@ -85,26 +91,14 @@ namespace taskarescu.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StageId");
+                    b.HasIndex("DifficultyId");
+
+                    b.HasIndex("TaskItemId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("taskarescu.Server.Models.ProfessorSubject", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "SubjectId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("ProfessorSubjects");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
@@ -119,20 +113,10 @@ namespace taskarescu.Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SubjectId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("SubjectId");
 
                     b.HasIndex("UserId");
 
@@ -159,38 +143,6 @@ namespace taskarescu.Server.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("taskarescu.Server.Models.Stage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("Stages");
-                });
-
             modelBuilder.Entity("taskarescu.Server.Models.Status", b =>
                 {
                     b.Property<int>("Id")
@@ -211,24 +163,19 @@ namespace taskarescu.Server.Migrations
                     b.ToTable("Statuses");
                 });
 
-            modelBuilder.Entity("taskarescu.Server.Models.Subject", b =>
+            modelBuilder.Entity("taskarescu.Server.Models.StudentProject", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("UserId", "ProjectId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("ProjectId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Subjects");
+                    b.ToTable("StudentProjects");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
@@ -245,17 +192,11 @@ namespace taskarescu.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DifficultyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("StatusId")
                         .HasColumnType("int");
@@ -265,9 +206,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DifficultyId");
-
-                    b.HasIndex("StageId");
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("StatusId");
 
@@ -326,9 +265,6 @@ namespace taskarescu.Server.Migrations
                     b.Property<int>("BadgeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NoBadges")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "BadgeId");
 
                     b.HasIndex("BadgeId");
@@ -338,91 +274,66 @@ namespace taskarescu.Server.Migrations
 
             modelBuilder.Entity("taskarescu.Server.Models.Feedback", b =>
                 {
-                    b.HasOne("taskarescu.Server.Models.Stage", "Stage")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("StageId")
+                    b.HasOne("taskarescu.Server.Models.Difficulty", "Difficulty")
+                        .WithMany("Feedback")
+                        .HasForeignKey("DifficultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("taskarescu.Server.Models.TaskItem", "TaskItem")
+                        .WithOne("Feedback")
+                        .HasForeignKey("taskarescu.Server.Models.Feedback", "TaskItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("taskarescu.Server.Models.User", "User")
-                        .WithMany("Feedbacks")
+                        .WithMany("Feedback")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Stage");
+                    b.Navigation("Difficulty");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("taskarescu.Server.Models.ProfessorSubject", b =>
-                {
-                    b.HasOne("taskarescu.Server.Models.Subject", "Subject")
-                        .WithMany("ProfessorSubjects")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("taskarescu.Server.Models.User", "User")
-                        .WithMany("ProfessorSubjects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subject");
+                    b.Navigation("TaskItem");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
                 {
-                    b.HasOne("taskarescu.Server.Models.Status", "Status")
-                        .WithMany("Projects")
-                        .HasForeignKey("StatusId");
-
-                    b.HasOne("taskarescu.Server.Models.Subject", "Subject")
-                        .WithMany("Projects")
-                        .HasForeignKey("SubjectId");
-
                     b.HasOne("taskarescu.Server.Models.User", "User")
                         .WithMany("Projects")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Status");
-
-                    b.Navigation("Subject");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("taskarescu.Server.Models.Stage", b =>
+            modelBuilder.Entity("taskarescu.Server.Models.StudentProject", b =>
                 {
                     b.HasOne("taskarescu.Server.Models.Project", "Project")
-                        .WithMany()
+                        .WithMany("StudentProjects")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("taskarescu.Server.Models.Status", "Status")
-                        .WithMany("Stages")
-                        .HasForeignKey("StatusId");
+                    b.HasOne("taskarescu.Server.Models.User", "User")
+                        .WithMany("StudentProjects")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Project");
 
-                    b.Navigation("Status");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
                 {
-                    b.HasOne("taskarescu.Server.Models.Difficulty", "Difficulty")
+                    b.HasOne("taskarescu.Server.Models.Project", "Project")
                         .WithMany("TaskItems")
-                        .HasForeignKey("DifficultyId");
-
-                    b.HasOne("taskarescu.Server.Models.Stage", "Stage")
-                        .WithMany("TaskItems")
-                        .HasForeignKey("StageId")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -434,9 +345,7 @@ namespace taskarescu.Server.Migrations
                         .WithMany("TaskItems")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Difficulty");
-
-                    b.Navigation("Stage");
+                    b.Navigation("Project");
 
                     b.Navigation("Status");
 
@@ -480,6 +389,13 @@ namespace taskarescu.Server.Migrations
 
             modelBuilder.Entity("taskarescu.Server.Models.Difficulty", b =>
                 {
+                    b.Navigation("Feedback");
+                });
+
+            modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
+                {
+                    b.Navigation("StudentProjects");
+
                     b.Navigation("TaskItems");
                 });
 
@@ -488,36 +404,24 @@ namespace taskarescu.Server.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("taskarescu.Server.Models.Stage", b =>
-                {
-                    b.Navigation("Feedbacks");
-
-                    b.Navigation("TaskItems");
-                });
-
             modelBuilder.Entity("taskarescu.Server.Models.Status", b =>
                 {
-                    b.Navigation("Projects");
-
-                    b.Navigation("Stages");
-
                     b.Navigation("TaskItems");
                 });
 
-            modelBuilder.Entity("taskarescu.Server.Models.Subject", b =>
+            modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
                 {
-                    b.Navigation("ProfessorSubjects");
-
-                    b.Navigation("Projects");
+                    b.Navigation("Feedback")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.User", b =>
                 {
-                    b.Navigation("Feedbacks");
-
-                    b.Navigation("ProfessorSubjects");
+                    b.Navigation("Feedback");
 
                     b.Navigation("Projects");
+
+                    b.Navigation("StudentProjects");
 
                     b.Navigation("TaskItems");
 

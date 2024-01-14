@@ -4,7 +4,6 @@
     {
         public Guid UserId { get; set; }
         public int BadgeId { get; set; }
-        public int NoBadges { get; set; }
 
         public virtual User User { get; set; }
         public virtual Badge Badge { get; set; }

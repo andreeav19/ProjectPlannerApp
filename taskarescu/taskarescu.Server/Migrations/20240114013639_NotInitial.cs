@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace taskarescu.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddStage : Migration
+    public partial class NotInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,19 +65,6 @@ namespace taskarescu.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subjects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subjects", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -101,59 +88,22 @@ namespace taskarescu.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfessorSubjects",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubjectId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProfessorSubjects", x => new { x.UserId, x.SubjectId });
-                    table.ForeignKey(
-                        name: "FK_ProfessorSubjects_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProfessorSubjects_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SubjectId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Projects_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Projects_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Projects_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -161,8 +111,7 @@ namespace taskarescu.Server.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BadgeId = table.Column<int>(type: "int", nullable: false),
-                    NoBadges = table.Column<int>(type: "int", nullable: false)
+                    BadgeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,57 +131,27 @@ namespace taskarescu.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stages",
+                name: "StudentProjects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Points = table.Column<int>(type: "int", nullable: true),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stages", x => x.Id);
+                    table.PrimaryKey("PK_StudentProjects", x => new { x.UserId, x.ProjectId });
                     table.ForeignKey(
-                        name: "FK_Stages_Projects_ProjectId",
+                        name: "FK_StudentProjects_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Stages_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Feedbacks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StageId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Stages_StageId",
-                        column: x => x.StageId,
-                        principalTable: "Stages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Users_UserId",
+                        name: "FK_StudentProjects_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,25 +162,18 @@ namespace taskarescu.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StageId = table.Column<int>(type: "int", nullable: false),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Deadline = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DifficultyId = table.Column<int>(type: "int", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: true),
-                    Points = table.Column<int>(type: "int", nullable: true)
+                    StatusId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TaskItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TaskItems_Difficulties_DifficultyId",
-                        column: x => x.DifficultyId,
-                        principalTable: "Difficulties",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TaskItems_Stages_StageId",
-                        column: x => x.StageId,
-                        principalTable: "Stages",
+                        name: "FK_TaskItems_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -271,6 +183,40 @@ namespace taskarescu.Server.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_TaskItems_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Points = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TaskItemId = table.Column<int>(type: "int", nullable: false),
+                    DifficultyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Difficulties_DifficultyId",
+                        column: x => x.DifficultyId,
+                        principalTable: "Difficulties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_TaskItems_TaskItemId",
+                        column: x => x.TaskItemId,
+                        principalTable: "TaskItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -289,29 +235,20 @@ namespace taskarescu.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_StageId",
+                name: "IX_Feedbacks_DifficultyId",
                 table: "Feedbacks",
-                column: "StageId");
+                column: "DifficultyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_TaskItemId",
+                table: "Feedbacks",
+                column: "TaskItemId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Feedbacks_UserId",
                 table: "Feedbacks",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProfessorSubjects_SubjectId",
-                table: "ProfessorSubjects",
-                column: "SubjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Projects_StatusId",
-                table: "Projects",
-                column: "StatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Projects_SubjectId",
-                table: "Projects",
-                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserId",
@@ -325,36 +262,20 @@ namespace taskarescu.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stages_ProjectId",
-                table: "Stages",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stages_StatusId",
-                table: "Stages",
-                column: "StatusId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Statuses_Name",
                 table: "Statuses",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subjects_Name",
-                table: "Subjects",
-                column: "Name",
-                unique: true);
+                name: "IX_StudentProjects_ProjectId",
+                table: "StudentProjects",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskItems_DifficultyId",
+                name: "IX_TaskItems_ProjectId",
                 table: "TaskItems",
-                column: "DifficultyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskItems_StageId",
-                table: "TaskItems",
-                column: "StageId");
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskItems_StatusId",
@@ -396,10 +317,7 @@ namespace taskarescu.Server.Migrations
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
-                name: "ProfessorSubjects");
-
-            migrationBuilder.DropTable(
-                name: "TaskItems");
+                name: "StudentProjects");
 
             migrationBuilder.DropTable(
                 name: "UserBadges");
@@ -408,7 +326,7 @@ namespace taskarescu.Server.Migrations
                 name: "Difficulties");
 
             migrationBuilder.DropTable(
-                name: "Stages");
+                name: "TaskItems");
 
             migrationBuilder.DropTable(
                 name: "Badges");
@@ -418,9 +336,6 @@ namespace taskarescu.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Statuses");
-
-            migrationBuilder.DropTable(
-                name: "Subjects");
 
             migrationBuilder.DropTable(
                 name: "Users");

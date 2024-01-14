@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace taskarescu.Server.Models
@@ -17,12 +16,12 @@ namespace taskarescu.Server.Models
 
         public virtual Role Role { get; set; }
         public virtual ICollection<UserBadge> UserBadges { get; set; }
-        public virtual ICollection<ProfessorSubject> ProfessorSubjects { get; set; }
+        public virtual ICollection<StudentProject> StudentProjects { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<TaskItem> TaskItems { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<TaskItem> TaskItems { get; set; }
+        public virtual ICollection<Feedback> Feedback { get; set; }
 
     }
 }

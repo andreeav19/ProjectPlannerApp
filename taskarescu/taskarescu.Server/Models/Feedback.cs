@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace taskarescu.Server.Models
 {
@@ -8,10 +7,13 @@ namespace taskarescu.Server.Models
         [Key]
         public int Id { get; set; }
         public string Description { get; set; }
-        public int StageId { get; set; }
+        public int Points { get; set; }
         public Guid UserId { get; set; }
+        public int TaskItemId { get; set; }
+        public int DifficultyId { get; set; }
 
-        public virtual Stage Stage { get; set; }
         public virtual User User { get; set; }
+        public virtual TaskItem TaskItem { get; set; }
+        public virtual Difficulty Difficulty { get; set; }
     }
 }
