@@ -56,7 +56,28 @@ namespace taskarescu.Server.Db
 
             builder.Entity<AppUser>().HasData(users);
 
+            // statuses
+            List<Status> statuses = new List<Status>() {
+                new Status() {Id = 1, Name = "To Do" },
+                new Status() {Id = 2, Name = "In Progress" },
+                new Status() {Id = 3, Name = "Done" }
+            };
 
+            builder.Entity<Status>().HasData(statuses);
+
+
+            // difficulty levels
+
+            List<Difficulty> difficulties = new List<Difficulty>()
+            {
+                new Difficulty() { Id = 1, Name = "Easy" },
+                new Difficulty() { Id = 2, Name = "Moderate" },
+                new Difficulty() { Id = 3, Name = "Intermediate" },
+                new Difficulty() { Id = 4, Name = "Challenging" },
+                new Difficulty() { Id = 5, Name = "Advanced" }
+            };
+
+            builder.Entity<Difficulty>().HasData(difficulties);
         }
     }
 }
