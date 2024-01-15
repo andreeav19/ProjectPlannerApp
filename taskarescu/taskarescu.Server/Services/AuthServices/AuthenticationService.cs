@@ -19,7 +19,7 @@ public class AuthenticationService : IAuthenticationService
         _configuration = configuration;
     }
 
-    public async Task<Result<string>> Register(RegisterRequest request)
+    public async Task<Result<string>> Register(RegisterRequestDto request)
     {
         var userByEmail = await _userManager.FindByEmailAsync(request.Email);
         var userByUsername = await _userManager.FindByNameAsync(request.Username);
@@ -30,6 +30,8 @@ public class AuthenticationService : IAuthenticationService
 
         AppUser user = new()
         {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
             Email = request.Email,
             UserName = request.Username,
             SecurityStamp = Guid.NewGuid().ToString()
