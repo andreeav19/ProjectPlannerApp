@@ -52,6 +52,8 @@ public class UsersController : ControllerBase
     [Authorize(Policy = "AdminsOnly")]
     [HttpPost("{userId}/role")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> EditUserRole(string userId, [FromBody] string roleName)
     {
         var response = await _usersService.EditUserRole(userId, roleName);
@@ -65,8 +67,11 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(Policy = "UsersOnly")]
     [HttpGet("{userId}/badges")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<BadgeDto>>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserBadges(string userId)
     {
         var resultDto = await _usersService.GetBadgesByUserId(userId);
