@@ -1,10 +1,10 @@
-﻿using FluentResults;
+﻿using taskarescu.Server.DTOs;
 
 namespace taskarescu.Server.Services.UserServices
 {
     public interface IUserService
     {
-        Task<Result<string>> GetUsers();
-        Task<Result<string>> GetUserById(int id);
+        Task<ResultDto<ICollection<UserDto>>> GetUsers();
+        Task<ResultDto<UserDto>> GetUserById(string userId);
     }
 }

@@ -290,7 +290,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Badges");
+                    b.ToTable("Badges", (string)null);
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Difficulty", b =>
@@ -310,7 +310,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Difficulties");
+                    b.ToTable("Difficulties", (string)null);
 
                     b.HasData(
                         new
@@ -374,7 +374,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("Feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
@@ -397,7 +397,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Status", b =>
@@ -417,7 +417,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Statuses");
+                    b.ToTable("Statuses", (string)null);
 
                     b.HasData(
                         new
@@ -449,7 +449,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("StudentProjects");
+                    b.ToTable("StudentProjects", (string)null);
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
@@ -486,7 +486,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskItems");
+                    b.ToTable("TaskItems", (string)null);
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.UserBadge", b =>
@@ -501,7 +501,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("BadgeId");
 
-                    b.ToTable("UserBadges");
+                    b.ToTable("UserBadges", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

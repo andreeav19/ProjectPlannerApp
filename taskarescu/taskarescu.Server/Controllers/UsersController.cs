@@ -1,8 +1,6 @@
 ﻿using taskarescu.Server.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FluentResults;
-using taskarescu.Server.Extensions;
 using taskarescu.Server.Services.UserServices;
 
 namespace taskarescu.Server.Controllers;
@@ -20,14 +18,12 @@ public class UsersController : ControllerBase
 
     [Authorize(Policy = "UsersOnly")]
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<UserDto>>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
     public async Task<IActionResult> GetUsers()
     {
-        var response = await _usersService.GetUsers();
-        var resultDto = response.ToResultDto();
+        var resultDto = await _usersService.GetUsers();
 
         if (!resultDto.IsSuccess)
         {
@@ -37,13 +33,12 @@ public class UsersController : ControllerBase
     }
 
     [Authorize(Policy = "UsersOnly")]
-    [HttpGet("{id}")]
+    [HttpGet("{userId}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserById(int id) {
-        var response = await _usersService.GetUserById(id);
-        var resultDto = response.ToResultDto();
+    public async Task<IActionResult> GetUserById(string userId) {
+        var resultDto = await _usersService.GetUserById(userId);
 
         if (!resultDto.IsSuccess)
         {
