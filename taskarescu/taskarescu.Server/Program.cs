@@ -9,6 +9,7 @@ using taskarescu.Server.Services.AuthServices;
 
 using taskarescu.Server.Models;
 using taskarescu.Server.Services.ProjectServices;
+using taskarescu.Server.Services.TaskItemServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -51,6 +52,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminsOnly", policy => policy.RequireRole("Admin"));
     options.AddPolicy("ProfsOnly", policy => policy.RequireRole("Admin", "Prof"));
+    options.AddPolicy("StudentsOnly", policy => policy.RequireRole("Admin", "Student"));
     options.AddPolicy("UsersOnly", policy => policy.RequireRole("Admin", "Prof", "Student"));
 });
 
@@ -94,9 +96,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
-
-
-
+builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 
 builder.Services.AddCors(options =>
 {

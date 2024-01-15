@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using taskarescu.Server.DTOs;
 using taskarescu.Server.Services.ProjectServices;
+using taskarescu.Server.Services.TaskItemServices;
 
 namespace taskarescu.Server.Controllers
 {
@@ -10,10 +11,12 @@ namespace taskarescu.Server.Controllers
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
+        private readonly ITaskItemService _taskItemService;
 
-        public ProjectController(IProjectService projectService)
+        public ProjectController(IProjectService projectService, ITaskItemService taskItemService)
         {
             _projectService = projectService;
+            _taskItemService = taskItemService;
         }
 
         [Authorize(Policy = "UsersOnly")]
@@ -126,6 +129,91 @@ namespace taskarescu.Server.Controllers
         public async Task<IActionResult> RemoveStudentFromProject(string userId, Guid projectId)
         {
             var resultDto = await _projectService.RemoveStudentFromProject(userId, projectId);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "UsersOnly")]
+        [HttpGet("{projectId}/tasks")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetTaskItemsByProjectId(Guid projectId)
+        {
+            var resultDto = await _taskItemService.GetTaskItemsByProjectId(projectId);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "UsersOnly")]
+        [HttpGet("/tasks/{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetTaskItemById(int taskId)
+        {
+            var resultDto = await _taskItemService.GetTaskItemById(taskId);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "StudentsOnly")]
+        [HttpPost("{projectId}/tasks")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<int>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddTaskItem(Guid projectId, [FromBody] TaskItemDto taskItemDto)
+        {
+            var resultDto = await _taskItemService.AddTaskItem(projectId, taskItemDto);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "StudentsOnly")]
+        [HttpPut("{projectId}/tasks/{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditTaskItemById(Guid projectId, int taskId, [FromBody] TaskItemDto taskItemDto)
+        {
+            var resultDto = await _taskItemService.EditTaskItemById(projectId, taskId, taskItemDto);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "StudentsOnly")]
+        [HttpDelete("/tasks/{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteTaskItemById(int taskId)
+        {
+            var resultDto = await _taskItemService.DeleteTaskItemById(taskId);
 
             if (!resultDto.IsSuccess)
             {
