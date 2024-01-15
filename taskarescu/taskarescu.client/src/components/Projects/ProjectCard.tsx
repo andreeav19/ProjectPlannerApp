@@ -10,10 +10,12 @@ import {
   Avatar,
   useMantineTheme,
   rem,
+  Tooltip,
 } from "@mantine/core";
 import classes from "./ProjectCard.module.css";
+import { Avatars } from "./Avatars";
 
-export function ProjectCard() {
+export function ProjectCard({ title, description }) {
   const linkProps = {
     href: "https://mantine.dev",
     target: "_blank",
@@ -38,29 +40,15 @@ export function ProjectCard() {
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
-        Resident Evil Village review
+        {title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
-        Resident Evil Village is a direct sequel to 2017’s Resident Evil 7, but
-        takes a very different direction to its predecessor, namely the fact
-        that this time round instead of fighting against various mutated
-        zombies, you’re now dealing with more occult enemies like werewolves and
-        vampires.
+        {description}
       </Text>
 
       <Group justify="space-between" className={classes.footer}>
-        <Center>
-          <Avatar
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-            size={24}
-            radius="xl"
-            mr="xs"
-          />
-          <Text fz="sm" inline>
-            Bill Wormeater
-          </Text>
-        </Center>
+        <Avatars teacher="John Doe" />
 
         <Group gap={8} mr={0}>
           <ActionIcon className={classes.action}>

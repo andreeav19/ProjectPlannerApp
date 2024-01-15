@@ -6,7 +6,10 @@ export function Projects() {
   return (
     <SimpleGrid cols={3} spacing="lg" verticalSpacing="sm" mx="xl">
       {data.map((item) => (
-        <ProjectCard />
+        <ProjectCard
+          title="Project title"
+          description="This is a short description of your project's information."
+        />
       ))}
     </SimpleGrid>
   );
