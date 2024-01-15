@@ -6,17 +6,21 @@ using taskarescu.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using FluentResults;
+using taskarescu.Server.Db;
+using Microsoft.EntityFrameworkCore;
 namespace taskarescu.Server.Services.AuthServices;
 
 public class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly AppDbContext _context;
 
-    public AuthenticationService(UserManager<AppUser> userManager, IConfiguration configuration)
+    public AuthenticationService(UserManager<AppUser> userManager, IConfiguration configuration, AppDbContext context)
     {
         _userManager = userManager;
         _configuration = configuration;
+        _context = context;
     }
 
     public async Task<Result<string>> Register(RegisterRequestDto request)
@@ -28,12 +32,20 @@ public class AuthenticationService : IAuthenticationService
             return Result.Fail(new Error($"User with email {request.Email} or username {request.Username} already exists."));
         }
 
+        var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Student");
+
+        if (role is not null)
+        {
+            return Result.Fail(new Error("Role 'Student' doesn't exist!"));
+        }
+
         AppUser user = new()
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
             UserName = request.Username,
+            RoleId = role.Id,
             SecurityStamp = Guid.NewGuid().ToString()
         };
 
