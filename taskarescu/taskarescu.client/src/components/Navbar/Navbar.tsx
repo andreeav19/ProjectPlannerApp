@@ -5,6 +5,7 @@ import { MdLeaderboard } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import classes from "./Navbar.module.css";
+import { useNavigate } from "react-router-dom";
 const data = [
   { link: "/profile", label: "Profile", icon: CgProfile },
   { link: "/projects", label: "Projects", icon: FaProjectDiagram },
@@ -12,11 +13,11 @@ const data = [
 ];
 
 export function Navbar() {
-  const [active, setActive] = useState("Billing");
+  const [active, setActive] = useState("Projects");
 
+  const navigate = useNavigate();
   const links = data.map((item) => (
     <NavLink
-      href={item.link}
       key={item.label}
       active={item.label === active}
       label={item.label}
@@ -24,7 +25,10 @@ export function Navbar() {
       // rightSection={item.rightSection}
       leftSection={item.icon && <item.icon size="1rem" />}
       // icon={<item.icon size="1rem" />}
-      onClick={() => setActive(item.label)}
+      onClick={() => {
+        setActive(item.label);
+        navigate(item.link);
+      }}
       color="theme"
     />
   ));
