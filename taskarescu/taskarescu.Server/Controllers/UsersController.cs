@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using taskarescu.Server.Services.UserServices;
 using Azure;
 using taskarescu.Server.Extensions;
+using taskarescu.Server.Services.BadgeServices;
 
 namespace taskarescu.Server.Controllers;
 
@@ -12,6 +13,7 @@ namespace taskarescu.Server.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _usersService;
+    private readonly IBadgeService _badgeService;
 
     public UsersController(IUserService usersService)
     {
@@ -80,6 +82,23 @@ public class UsersController : ControllerBase
         {
             return BadRequest(resultDto);
         }
+        return Ok(resultDto);
+    }
+
+    [Authorize(Policy = "ProfsOnly")]
+    [HttpPost("{userId}/badges/{badgeId}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddBadgeToUser(int badgeId, string userId)
+    {
+        var resultDto = await _badgeService.AddBadgeToUser(badgeId, userId);
+
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+
         return Ok(resultDto);
     }
 

@@ -111,14 +111,10 @@ namespace taskarescu.Server.Services.BadgeServices
                 return new ResultDto<bool>(false, false, new[] { "Insigna nu a fost gasita!" });
             }
 
-            var editedBadge = new Badge
-            {
-                Id = badgeId,
-                Name = badgeDto.Name,
-                Description = badgeDto.Description
-            };
+            badge.Name = badgeDto.Name;
+            badge.Description = badgeDto.Description;
 
-            _context.Badges.Update(editedBadge);
+            _context.Badges.Update(badge);
             await _context.SaveChangesAsync();
 
             return new ResultDto<bool>(true, true, null);

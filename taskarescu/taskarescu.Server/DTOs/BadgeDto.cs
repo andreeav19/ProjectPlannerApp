@@ -2,7 +2,8 @@
 {
     public class BadgeDto
     {
-        public string Name;
-        public string? Description;
+        public string Name { get; set; }
+
+        public string? Description { get; set; }
     }
 }
