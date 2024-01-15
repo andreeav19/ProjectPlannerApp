@@ -10,6 +10,8 @@ using taskarescu.Server.Services.AuthServices;
 using taskarescu.Server.Models;
 using taskarescu.Server.Services.ProjectServices;
 using taskarescu.Server.Services.TaskItemServices;
+using taskarescu.Server.Services.UserServices;
+using taskarescu.Server.Services.BadgeServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -95,8 +97,10 @@ builder.Services.AddSwaggerGen(c =>
 
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
+builder.Services.AddScoped<IBadgeService, BadgeService>();
 
 builder.Services.AddCors(options =>
 {

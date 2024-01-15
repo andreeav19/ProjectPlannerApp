@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace taskarescu.Server.DTOs
 {
-    public class RegisterRequest
+    public class RegisterRequestDto
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+
         [MinLength(Consts.UsernameMinLength, ErrorMessage = Consts.UsernameLengthValidationError)]
         public string? Username { get; set; }
 
