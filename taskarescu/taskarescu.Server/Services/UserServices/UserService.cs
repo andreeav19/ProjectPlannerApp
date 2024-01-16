@@ -98,7 +98,47 @@ namespace taskarescu.Server.Services.UserServices
         public async Task<ResultDto<ICollection<UserScoreDto>>> GetLeaderBoardUsers()
         {
             var students = await _userManager.GetUsersInRoleAsync("Student");
-            var studentDtos = _mapper.Map<ICollection<UserScoreDto>>(students);
+
+            List<UserScoreDto> studentDtos = students
+                .GroupJoin(
+                    _context.TaskItems,
+                    user => user.Id,
+                    task => task.UserId,
+                    (user, tasks) => new { user, tasks }
+                )
+                .SelectMany(
+                    combined => combined.tasks.DefaultIfEmpty(),
+                    (combined, task) => new { combined.user, task }
+                )
+                .GroupJoin(
+                    _context.Feedbacks,
+                    combined => combined.task?.Id,
+                    feedback => feedback.TaskItemId,
+                    (combined, feedbacks) => new { combined.user, feedbacks }
+                )
+                .SelectMany(
+                    combined => combined.feedbacks.DefaultIfEmpty(),
+                    (combined, feedback) => new { combined.user, feedback }
+                )
+                .GroupBy(
+                    combined => new
+                    {
+                        combined.user.Id,
+                        combined.user.FirstName,
+                        combined.user.LastName,
+                        combined.user.UserName
+                    },
+                    combined => combined.feedback?.Points ?? 0
+                )
+                .Select(group => new UserScoreDto
+                {
+                    FirstName = group.Key.FirstName,
+                    LastName = group.Key.LastName,
+                    UserName = group.Key.UserName,
+                    Points = group.Sum()
+                })
+                .ToList();
+
 
             return new ResultDto<ICollection<UserScoreDto>>(true, studentDtos, null);
         }
