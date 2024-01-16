@@ -16,6 +16,7 @@ import {
   Group,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
+import { getDecodedJWT } from "./AuthContext";
 
 interface User {
   name: string;
@@ -118,6 +119,8 @@ export function Leaderboard() {
   const [debouncedQuery] = useDebouncedValue(query, 200);
 
   useEffect(() => {
+    console.log(getDecodedJWT());
+
     let data = initialRecords.filter((user) => {
       if (
         debouncedQuery !== "" &&

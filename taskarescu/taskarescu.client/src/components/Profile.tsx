@@ -10,8 +10,16 @@ import {
   Badge,
 } from "@mantine/core";
 import { RewardBadge } from "./RewardBadge";
-import { FaMoon, FaSun } from "react-icons/fa";
+import { FaBook, FaMoon, FaStar, FaSun } from "react-icons/fa";
 import classes from "./Profile.module.css";
+import { getDecodedJWT } from "./AuthContext";
+import { v4 as uuidv4 } from "uuid";
+import { MdOutlineRamenDining } from "react-icons/md";
+import { GiDeadWood } from "react-icons/gi";
+import { SiKatana } from "react-icons/si";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const RewardCol = ({ icon, backgroundcolor, size }) => {
   return (
     // <Grid.Col span={2}>
@@ -20,40 +28,94 @@ const RewardCol = ({ icon, backgroundcolor, size }) => {
   );
 };
 
+const mapToRewardCols = (apiElement) => {
+  const stringToIndex = (str, maxIndex) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+    }
+    return (hash >>> 0) % maxIndex;
+  };
+
+  const getRandomIcon = (str) => {
+    const fontAwesomeIcons = [
+      FaMoon,
+      FaStar,
+      GiDeadWood,
+      FaBook,
+      SiKatana,
+      MdOutlineRamenDining,
+    ];
+    const maxIndex = fontAwesomeIcons.length;
+
+    const index = stringToIndex(str, maxIndex);
+    return fontAwesomeIcons[index];
+  };
+
+  // Function to determine the rank based on the length of the description
+  const getRank = (descriptionLength) => {
+    if (descriptionLength < 10) {
+      return "beginner";
+    } else if (descriptionLength < 15) {
+      return "intermediate";
+    } else {
+      return "master";
+    }
+  };
+
+  const { name, description } = apiElement;
+
+  return (
+    <RewardCol
+      icon={getRandomIcon(name)}
+      backgroundcolor={getRank(description.length)}
+      size={100}
+      key={uuidv4()}
+    />
+  );
+};
+
 export function Profile() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    let jwt = getDecodedJWT();
+    axios
+      .get("/api/Users/" + jwt.nameIdentifier + "/badges", {
+        headers: {
+          Authorization: `Bearer ${jwt.jwt}`,
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
+  });
+
   return (
     <Container size="lg" py="xl">
       <Group justify="center">
         <Badge variant="gradient" size="xl">
-          username's profile
+          {getDecodedJWT().name}'s profile
         </Badge>
       </Group>
 
       <Title order={2} className={classes.title} ta="center" mt="sm">
-        Integrate effortlessly with any technology stack
+        View your progress
       </Title>
-
-      <Text c="dimmed" className={classes.description} ta="center" mt="md">
-        Every once in a while, you’ll see a Golbat that’s missing some fangs.
-        This happens when hunger drives it to try biting a Steel-type Pokémon.
-      </Text>
-
+      <Group justify="center">
+        <Text c="dimmed" className={classes.description} ta="center" mt="md">
+          Mastering the art of progress, one step at a time. Embrace the
+          journey, honor the process, and witness the evolution of your true
+          self in the dojo of self-improvement.
+        </Text>
+      </Group>
       <Space h="xl" />
 
       <SimpleGrid cols={{ base: 2, sm: 4, lg: 6 }} spacing="lg">
-        <RewardCol icon={FaMoon} backgroundcolor="begginer" size={100} />
-
-        <RewardCol icon={FaMoon} backgroundcolor="intermediate" size={100} />
-
-        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
-
-        <RewardCol icon={FaMoon} backgroundcolor="master" size={100} />
-
-        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
-
-        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
-
-        <RewardCol icon={FaMoon} backgroundcolor="master" size={100} />
+        {data.map(mapToRewardCols)}
       </SimpleGrid>
     </Container>
   );

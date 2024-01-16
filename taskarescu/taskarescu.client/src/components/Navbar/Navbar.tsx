@@ -6,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "../AuthContext";
+import { AuthProvider, AuthContext, getDecodedJWT } from "../AuthContext";
 import { useContext } from "react";
 import { FaTools } from "react-icons/fa";
 
@@ -36,7 +36,6 @@ export function Navbar() {
       color="theme"
     />
   ));
-
   const { authenticated, setAuthicated } = useContext(AuthContext);
 
   const handleLogout = (event) => {
@@ -59,15 +58,17 @@ export function Navbar() {
           <span>Logout</span>
         </a>
         <Space h="xl" />
-        <NavLink
-          label="Admin Tools"
-          description="Danger Zone"
-          leftSection={<FaTools size="1rem" />}
-          onClick={() => {
-            navigate("/admin");
-          }}
-          color="theme"
-        />
+        {getDecodedJWT().role === "Admin" && (
+          <NavLink
+            label="Admin Tools"
+            description="Danger Zone"
+            leftSection={<FaTools size="1rem" />}
+            onClick={() => {
+              navigate("/admin");
+            }}
+            color="theme"
+          />
+        )}
       </div>
     </div>
   );

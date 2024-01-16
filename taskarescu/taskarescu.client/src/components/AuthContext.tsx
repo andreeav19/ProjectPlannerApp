@@ -31,6 +31,7 @@ const AuthProvider = ({ children }: AuthContextProps) => {
 export function getDecodedJWT() {
   const jwt = Cookies.get("jwtToken");
   const data = JSON.parse(atob(jwt?.split(".")[1] ?? ""));
+  console.log(data);
   const decodedToken = {
     jwt: jwt,
     audience: data.aud,
@@ -44,6 +45,7 @@ export function getDecodedJWT() {
       data[
         "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
       ],
+    role: data["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
     issuer: data.iss,
     jwtId: data.jti,
   };
