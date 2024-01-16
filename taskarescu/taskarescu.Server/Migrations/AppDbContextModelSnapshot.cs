@@ -157,19 +157,19 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4357d4d8-71f2-4fa4-960e-a2d5fd41b09d",
+                            Id = "1181a8dd-e25e-4670-91f8-2aabcad89500",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0a152702-7658-43a1-b046-d2e9200a60ef",
+                            Id = "ad058a4a-e130-4b14-b920-f18664a19ac9",
                             Name = "Prof",
                             NormalizedName = "PROF"
                         },
                         new
                         {
-                            Id = "e2ba352a-0865-4a00-bd41-eed99f73d425",
+                            Id = "b0d93fdf-7e26-4440-8ada-f29850faae3e",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -251,9 +251,9 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bbfcea33-5568-4558-b6c0-9353518b9261",
+                            Id = "f1a80a25-7672-46f4-b54f-e2a1afe9ead1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "65efd9bc-8bf5-43ec-8cdb-ab9bf48bd964",
+                            ConcurrencyStamp = "d1cc6a8e-ef1d-4349-ae99-adbe15724abc",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -261,10 +261,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJHWEaTzrjgYlM5wo7VfZIDprkwkgmj/d6lvXbSNdKXkfXLGtR0M/cjaBK49tosmjg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGRnHOkCFJ2nPfiEF2aHPbHDqFgPTk94bwj/h3eOKr9hJbLZpTsaaE3jbHuRHAj00w==",
                             PhoneNumberConfirmed = false,
-                            RoleId = "4357d4d8-71f2-4fa4-960e-a2d5fd41b09d",
-                            SecurityStamp = "a63f1f15-d95c-4437-a72e-73aa9478616d",
+                            RoleId = "1181a8dd-e25e-4670-91f8-2aabcad89500",
+                            SecurityStamp = "888df048-c599-4177-946a-a879b0ce62d3",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -290,7 +290,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Badges", (string)null);
+                    b.ToTable("Badges");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Difficulty", b =>
@@ -310,7 +310,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Difficulties", (string)null);
+                    b.ToTable("Difficulties");
 
                     b.HasData(
                         new
@@ -374,7 +374,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
@@ -397,7 +397,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Status", b =>
@@ -417,7 +417,7 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Statuses", (string)null);
+                    b.ToTable("Statuses");
 
                     b.HasData(
                         new
@@ -449,7 +449,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("StudentProjects", (string)null);
+                    b.ToTable("StudentProjects");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
@@ -486,7 +486,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TaskItems", (string)null);
+                    b.ToTable("TaskItems");
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.UserBadge", b =>
@@ -501,7 +501,7 @@ namespace taskarescu.Server.Migrations
 
                     b.HasIndex("BadgeId");
 
-                    b.ToTable("UserBadges", (string)null);
+                    b.ToTable("UserBadges");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace taskarescu.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class NotInit : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -341,15 +341,37 @@ namespace taskarescu.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6e5e2470-e106-40c6-9a7a-526c45f88956", null, "Prof", "PROF" },
-                    { "84c3cf6a-4793-45c3-aaf0-c328e5daa52a", null, "Admin", "ADMIN" },
-                    { "98cfacad-ac9d-4b63-bf84-aa2f648fa66c", null, "Student", "STUDENT" }
+                    { "1181a8dd-e25e-4670-91f8-2aabcad89500", null, "Admin", "ADMIN" },
+                    { "ad058a4a-e130-4b14-b920-f18664a19ac9", null, "Prof", "PROF" },
+                    { "b0d93fdf-7e26-4440-8ada-f29850faae3e", null, "Student", "STUDENT" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3d859d5f-9ee2-4e44-b6dd-5457d0c65d1c", 0, "585ce446-3b61-4565-85d0-7759256afccc", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEIfdO8VlBgyEn16W7fAMKmFYXLsvp44ROZYv0ZsCS4+5Vit/bRF6K9eIMNkRs0TObw==", null, false, "84c3cf6a-4793-45c3-aaf0-c328e5daa52a", "75a8ad45-49ef-4bf0-89f8-32a03dcc2d97", false, "admin" });
+                values: new object[] { "f1a80a25-7672-46f4-b54f-e2a1afe9ead1", 0, "d1cc6a8e-ef1d-4349-ae99-adbe15724abc", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEGRnHOkCFJ2nPfiEF2aHPbHDqFgPTk94bwj/h3eOKr9hJbLZpTsaaE3jbHuRHAj00w==", null, false, "1181a8dd-e25e-4670-91f8-2aabcad89500", "888df048-c599-4177-946a-a879b0ce62d3", false, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "Difficulties",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Easy" },
+                    { 2, "Moderate" },
+                    { 3, "Intermediate" },
+                    { 4, "Challenging" },
+                    { 5, "Advanced" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Statuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "To Do" },
+                    { 2, "In Progress" },
+                    { 3, "Done" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

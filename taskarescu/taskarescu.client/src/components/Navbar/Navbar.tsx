@@ -6,6 +6,9 @@ import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
+import { AuthProvider, AuthContext } from "../AuthContext";
+import { useContext } from "react";
+
 const data = [
   { link: "/profile", label: "Profile", icon: CgProfile },
   { link: "/projects", label: "Projects", icon: FaProjectDiagram },
@@ -33,6 +36,16 @@ export function Navbar() {
     />
   ));
 
+  const { authenticated, setAuthicated } = useContext(AuthContext);
+
+  const handleLogout = (event) => {
+    console.log("Before", authenticated);
+    event.preventDefault();
+    setAuthicated(false);
+    navigate("/login");
+    console.log("After", authenticated);
+  };
+
   return (
     <div className={classes.navbarMain}>
       <Group className={classes.header} justify="space-between"></Group>
@@ -40,11 +53,7 @@ export function Navbar() {
       {links}
 
       <div className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+        <a href="#" className={classes.link} onClick={handleLogout}>
           <FiLogOut className={classes.linkIcon} />
           <span>Logout</span>
         </a>

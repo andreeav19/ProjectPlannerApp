@@ -1,42 +1,33 @@
 // AuthContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
-
+import axios from "axios";
+import Cookies from "js-cookie";
 interface AuthContextProps {
   children: ReactNode;
 }
 
-interface AuthContextValue {
-  isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
-}
+type IAuthContext = {
+  authenticated: boolean;
+  setAuthicated: (newState: boolean) => void;
+};
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const initialValues = {
+  authenticated: false,
+  setAuthicated: () => {},
+};
 
-export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+const AuthContext = createContext<IAuthContext>(initialValues);
 
-  const login = () => {
-    // Perform your authentication logic and set isAuthenticated to true
-    setIsAuthenticated(true);
-  };
+const AuthProvider = ({ children }: AuthContextProps) => {
+  const [authenticated, setAuthicated] = useState(false);
 
-  const logout = () => {
-    // Perform your logout logic and set isAuthenticated to false
-    setIsAuthenticated(false);
-  };
+  
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ authenticated, setAuthicated }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+export { AuthProvider, AuthContext };

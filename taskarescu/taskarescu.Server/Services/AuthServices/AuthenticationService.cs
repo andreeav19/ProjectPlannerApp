@@ -34,7 +34,7 @@ public class AuthenticationService : IAuthenticationService
 
         var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Student");
 
-        if (role is not null)
+        if (role is null)
         {
             return Result.Fail(new Error("Role 'Student' doesn't exist!"));
         }
