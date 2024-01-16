@@ -58,12 +58,14 @@ export function AdminTools() {
         },
       })
       .then((response) => {
-        setRecords(response.data);
+        setRecords(response.data.response);
       })
       .catch((error) => {
         console.error("Error fetching projects:", error);
       });
   }, [modalOpen]);
+
+  
 
   return (
     <div>

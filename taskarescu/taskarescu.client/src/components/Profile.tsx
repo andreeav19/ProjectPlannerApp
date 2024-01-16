@@ -20,10 +20,16 @@ import { SiKatana } from "react-icons/si";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const RewardCol = ({ icon, backgroundcolor, size }) => {
+const RewardCol = ({ icon, backgroundcolor, size, name, description }) => {
   return (
     // <Grid.Col span={2}>
-    <RewardBadge icon={icon} backgroundcolor={backgroundcolor} size={size} />
+    <RewardBadge
+      icon={icon}
+      backgroundcolor={backgroundcolor}
+      size={size}
+      name={name}
+      description={description}
+    />
     // </Grid.Col>
   );
 };
@@ -54,9 +60,9 @@ const mapToRewardCols = (apiElement) => {
 
   // Function to determine the rank based on the length of the description
   const getRank = (descriptionLength) => {
-    if (descriptionLength < 10) {
+    if (descriptionLength < 20) {
       return "beginner";
-    } else if (descriptionLength < 15) {
+    } else if (descriptionLength < 50) {
       return "intermediate";
     } else {
       return "master";
@@ -70,6 +76,8 @@ const mapToRewardCols = (apiElement) => {
       icon={getRandomIcon(name)}
       backgroundcolor={getRank(description.length)}
       size={100}
+      name={name}
+      description={description}
       key={uuidv4()}
     />
   );
@@ -87,7 +95,7 @@ export function Profile() {
         },
       })
       .then((response) => {
-        setData(response.data);
+        setData(response.data.response);
       })
       .catch((error) => {
         console.error("Error fetching projects:", error);

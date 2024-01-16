@@ -12,8 +12,8 @@ using taskarescu.Server.Db;
 namespace taskarescu.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240116024944_seedPanaNuMaiPot")]
-    partial class seedPanaNuMaiPot
+    [Migration("20240116035817_iNIT")]
+    partial class iNIT
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,38 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "bbfcea33-5568-4558-b6c0-9353518b9261",
+                            RoleId = "acbda893-a8e4-45f2-b3f9-2a0068b29f57"
+                        },
+                        new
+                        {
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f",
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c"
+                        },
+                        new
+                        {
+                            UserId = "f2517e43-07ae-4c0f-8f63-e2481b47a5c7",
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -256,7 +288,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "bbfcea33-5568-4558-b6c0-9353518b9261",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fc9939d9-a392-4eeb-be45-54b22143edce",
+                            ConcurrencyStamp = "19f1391b-f555-482d-b8e9-7ad687a564a6",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -264,10 +296,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEcY5SjyngP3QjfCH6oOe0dIEp658axYsFgMaBoJWNXE+nvA6gSzdykevB9SXZp/ww==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELr7SWIoJHGiq1ELtlj3Hu+e2lgylymoyIvIqvRiDmLDx7F1kMjTfErMznF5TLc6kw==",
                             PhoneNumberConfirmed = false,
                             RoleId = "acbda893-a8e4-45f2-b3f9-2a0068b29f57",
-                            SecurityStamp = "275ec1a0-09b6-41f0-828c-b072c0c52114",
+                            SecurityStamp = "4f7c5eca-46ab-4803-8a85-b79fb08ed336",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -275,7 +307,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "65e2dfa2-f709-40c3-8f90-74c229a845ed",
+                            ConcurrencyStamp = "007e4077-484b-45ee-9069-2f1122080aef",
                             Email = "lisa.miller@student.com",
                             EmailConfirmed = true,
                             FirstName = "Lisa",
@@ -283,10 +315,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "LISA.MILLER@STUDENT.COM",
                             NormalizedUserName = "LISAMILLER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDpp5K9sIcvwVCsSGIl4sTL4qb/E9qies7+Ah+HBxX4wMDmyuOdGOH0cCoteNqWdpA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHWNo1+k9gFjH1Xvz5kmetg1kxboUCDM58hXLLpDTpNwCgCVekdlk1IIiPGsvYVStg==",
                             PhoneNumberConfirmed = false,
                             RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
-                            SecurityStamp = "550af599-29c0-4a42-8946-273ab4d14a59",
+                            SecurityStamp = "84549c6b-84bd-477e-9dd4-91b3ac66b8b8",
                             TwoFactorEnabled = false,
                             UserName = "lisamiller"
                         },
@@ -294,7 +326,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b33c401-2b8c-4f88-8460-679c0978ae95",
+                            ConcurrencyStamp = "2130d617-7a99-45da-ac08-479f73987bcd",
                             Email = "alex.wong@student.com",
                             EmailConfirmed = true,
                             FirstName = "Alex",
@@ -302,10 +334,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ALEX.WONG@STUDENT.COM",
                             NormalizedUserName = "ALEXWONG",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIu2NVpdx+4tMspFXPbmPapRXg84c5e4aJNOW8+hV+MyjOsnuh2I/St+HayIer5CHg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENZq5QJM8VeQSCeCA5ieCO3iWrx11izWfgQGUM0XJT8VClt2cZ/FMRXsW5qPy/LOyQ==",
                             PhoneNumberConfirmed = false,
                             RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
-                            SecurityStamp = "c1f84cf0-0c4d-4a7f-b120-4c0dfe8d9006",
+                            SecurityStamp = "c96335a0-dd3a-4df6-a6e9-0395249668cb",
                             TwoFactorEnabled = false,
                             UserName = "alexwong"
                         },
@@ -313,7 +345,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "051ccf30-7b18-4abb-ad7d-e2a2ce2bf33a",
+                            ConcurrencyStamp = "d666662f-fccd-4485-ac21-113645db5364",
                             Email = "sam.jones@student.com",
                             EmailConfirmed = true,
                             FirstName = "Sam",
@@ -321,10 +353,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SAM.JONES@STUDENT.COM",
                             NormalizedUserName = "SAMJONES",
-                            PasswordHash = "AQAAAAIAAYagAAAAELWfmcYrr5O5zMmIcZEuQc/tZ9O2Oyxy2qd3Q1ghmY5CavbDMNY5Afu3v3ObvB6kAg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAey5RnhuHzNYNv+tJSSPslsl/7d5cAe/+DuKi3NVIYtO6xSY95EYSnl21YCPcxELQ==",
                             PhoneNumberConfirmed = false,
                             RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
-                            SecurityStamp = "6e2ccc22-afdb-41e1-8ef7-07ee61d4e270",
+                            SecurityStamp = "1c3d6f2b-58af-4f0c-aba7-00795a6a3e74",
                             TwoFactorEnabled = false,
                             UserName = "samjones"
                         },
@@ -332,7 +364,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e1b7f8d-8c8d-41b6-9fa3-a3fe168ca3e2",
+                            ConcurrencyStamp = "dcbbd25e-0c3c-4a8f-8bdf-15f5e0a5e626",
                             Email = "emily.jones@professor.com",
                             EmailConfirmed = true,
                             FirstName = "Emily",
@@ -340,10 +372,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMILY.JONES@PROFESSOR.COM",
                             NormalizedUserName = "EMILYJONES",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPG1+eJJopWcIjnVgCjFWpccxqoc7Fy0K8IQ04a2HNZSGAw5O9IretlEjUutWxxZ7Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGM3fHMNVayozbnvRgkOwpxVgfl3va/ekEhpSK9RyL1vIdHtSWXYhnkMJu/Uf56vMw==",
                             PhoneNumberConfirmed = false,
                             RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c",
-                            SecurityStamp = "ab97223b-40ef-410a-84e6-5c21b9ec23a3",
+                            SecurityStamp = "812a2dc8-a54d-4d5a-bf5b-b17046cabb32",
                             TwoFactorEnabled = false,
                             UserName = "emilyjones"
                         },
@@ -351,7 +383,7 @@ namespace taskarescu.Server.Migrations
                         {
                             Id = "f2517e43-07ae-4c0f-8f63-e2481b47a5c7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b0c1a2d6-4fa9-4daa-af74-a83a13c22263",
+                            ConcurrencyStamp = "565a1270-774e-47d8-b20b-2235cbf0f50b",
                             Email = "daniel.white@professor.com",
                             EmailConfirmed = true,
                             FirstName = "Daniel",
@@ -359,10 +391,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DANIEL.WHITE@PROFESSOR.COM",
                             NormalizedUserName = "DANIELWHITE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOkGKViacqxMcB53cL1AwEzhnoXYGzT/G5JOwuDzR/i75j9LM8bOwpaOfGsqiXsM+w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH3PNiyF1bNzsf0FUHWMwJ5nS20enRHXOjkck2rtgTJaLKGpE1N/7yFu1GAXJhKRKw==",
                             PhoneNumberConfirmed = false,
                             RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c",
-                            SecurityStamp = "36e35e19-6c6b-4880-b639-caca460b67aa",
+                            SecurityStamp = "b42a8824-202a-4d6d-92c3-502c17c39469",
                             TwoFactorEnabled = false,
                             UserName = "danielwhite"
                         });
@@ -780,7 +812,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Deadline = new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5283),
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5542),
                             Description = "Implementare funcționalitate X în cadrul proiectului Y.",
                             Name = "Implementare funcționalitate X",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -790,7 +822,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 2,
-                            Deadline = new DateTime(2024, 1, 26, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5372),
+                            Deadline = new DateTime(2024, 1, 26, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5639),
                             Description = "Testare modul Y în cadrul proiectului Z.",
                             Name = "Testare modul Y",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -800,7 +832,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 3,
-                            Deadline = new DateTime(2024, 1, 21, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5376),
+                            Deadline = new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5643),
                             Description = "Documentare proiect pentru prezentare finală.",
                             Name = "Documentare proiect",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -810,7 +842,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 4,
-                            Deadline = new DateTime(2024, 1, 19, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5380),
+                            Deadline = new DateTime(2024, 1, 19, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5650),
                             Description = "Soluționare bug-uri identificate în ultima versiune a proiectului.",
                             Name = "Soluționare bug-uri",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -820,7 +852,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 5,
-                            Deadline = new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5383),
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5654),
                             Description = "Optimizare performanță în cadrul aplicației.",
                             Name = "Optimizare performanță",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -830,7 +862,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 6,
-                            Deadline = new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5391),
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5658),
                             Description = "Implementare interfață utilizator pentru secțiunea X a proiectului.",
                             Name = "Implementare interfață utilizator",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -840,7 +872,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 7,
-                            Deadline = new DateTime(2024, 1, 25, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5405),
+                            Deadline = new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5673),
                             Description = "Testare integrare a modulelor proiectului principal.",
                             Name = "Testare integrare",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -850,7 +882,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 8,
-                            Deadline = new DateTime(2024, 1, 20, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5409),
+                            Deadline = new DateTime(2024, 1, 20, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5677),
                             Description = "Analiză cerințe pentru viitoarele iterații ale proiectului.",
                             Name = "Analiză cerințe",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -860,7 +892,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 9,
-                            Deadline = new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5417),
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5683),
                             Description = "Optimizare performanță și structură în baza de date a proiectului.",
                             Name = "Optimizare bază de date",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -870,7 +902,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 10,
-                            Deadline = new DateTime(2024, 1, 21, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5420),
+                            Deadline = new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5687),
                             Description = "Generare raport de progres pentru săptămâna curentă.",
                             Name = "Raport progres săptămânal",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -880,7 +912,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 11,
-                            Deadline = new DateTime(2024, 1, 28, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5427),
+                            Deadline = new DateTime(2024, 1, 28, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5695),
                             Description = "Integrare servicii terțe în cadrul proiectului.",
                             Name = "Integrare servicii terțe",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -890,7 +922,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 12,
-                            Deadline = new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5431),
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5698),
                             Description = "Documentare API pentru a fi folosit de dezvoltatori terți.",
                             Name = "Documentare API",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -900,7 +932,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 13,
-                            Deadline = new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5435),
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5702),
                             Description = "Optimizare algoritmi utilizați în cadrul proiectului principal.",
                             Name = "Optimizare algoritmi",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -910,7 +942,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 14,
-                            Deadline = new DateTime(2024, 1, 27, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5439),
+                            Deadline = new DateTime(2024, 1, 27, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5706),
                             Description = "Implementare testare automată pentru modulele cheie ale proiectului.",
                             Name = "Implementare testare automată",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -920,7 +952,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 15,
-                            Deadline = new DateTime(2024, 1, 25, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5443),
+                            Deadline = new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5709),
                             Description = "Configurare servere pentru lansarea în producție a proiectului.",
                             Name = "Configurare servere de producție",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -930,7 +962,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 16,
-                            Deadline = new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5466),
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5865),
                             Description = "Soluționare probleme identificate de auditul de securitate.",
                             Name = "Soluționare probleme de securitate",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -940,7 +972,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 17,
-                            Deadline = new DateTime(2024, 1, 30, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5470),
+                            Deadline = new DateTime(2024, 1, 30, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5868),
                             Description = "Creare instrumente de analiză pentru datele generate de proiect.",
                             Name = "Creare instrumente de analiză",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
@@ -950,7 +982,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 18,
-                            Deadline = new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5473),
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5872),
                             Description = "Integrare cu o platformă externă pentru funcționalitate adițională.",
                             Name = "Integrare cu platformă externă",
                             ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
@@ -960,7 +992,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 19,
-                            Deadline = new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5481),
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5879),
                             Description = "Testare de securitate pentru identificarea vulnerabilităților.",
                             Name = "Testare securitate",
                             ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
@@ -970,7 +1002,7 @@ namespace taskarescu.Server.Migrations
                         new
                         {
                             Id = 20,
-                            Deadline = new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5493),
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5897),
                             Description = "Refactorizare cod pentru îmbunătățirea structurii și performanței.",
                             Name = "Refactorizare cod",
                             ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),

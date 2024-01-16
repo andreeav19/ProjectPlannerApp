@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace taskarescu.Server.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240115214333_Init.cs
-    public partial class Init : Migration
-========
-    public partial class seedPanaNuMaiPot : Migration
->>>>>>>> endpoints-project:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
+    public partial class iNIT : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -345,38 +341,22 @@ namespace taskarescu.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240115214333_Init.cs
-                    { "1181a8dd-e25e-4670-91f8-2aabcad89500", null, "Admin", "ADMIN" },
-                    { "ad058a4a-e130-4b14-b920-f18664a19ac9", null, "Prof", "PROF" },
-                    { "b0d93fdf-7e26-4440-8ada-f29850faae3e", null, "Student", "STUDENT" }
-========
                     { "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", null, "Prof", "PROF" },
                     { "6d0fea85-946f-453a-9897-863f79b652cb", null, "Student", "STUDENT" },
                     { "acbda893-a8e4-45f2-b3f9-2a0068b29f57", null, "Admin", "ADMIN" }
->>>>>>>> endpoints-project:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
-========
-                    { "0b73b4c1-2086-48ee-8f38-288ab2e53889", null, "Prof", "PROF" },
-                    { "938cdacb-c0af-4b3c-a925-e8e8558d499f", null, "Student", "STUDENT" },
-                    { "e9ba6b41-0999-4ab8-8050-545ed5005348", null, "Admin", "ADMIN" }
->>>>>>>> 0c8497df21368cce9dc208a60e87b012444817fd:taskarescu/taskarescu.Server/Migrations/20240116010342_Init.cs
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240115214333_Init.cs
-                values: new object[] { "f1a80a25-7672-46f4-b54f-e2a1afe9ead1", 0, "d1cc6a8e-ef1d-4349-ae99-adbe15724abc", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEGRnHOkCFJ2nPfiEF2aHPbHDqFgPTk94bwj/h3eOKr9hJbLZpTsaaE3jbHuRHAj00w==", null, false, "1181a8dd-e25e-4670-91f8-2aabcad89500", "888df048-c599-4177-946a-a879b0ce62d3", false, "admin" });
-========
                 values: new object[,]
                 {
-                    { "3b11ba9f-2b09-4b1a-b784-87e0040a2f56", 0, "051ccf30-7b18-4abb-ad7d-e2a2ce2bf33a", "sam.jones@student.com", true, "Sam", "Jones", false, null, "SAM.JONES@STUDENT.COM", "SAMJONES", "AQAAAAIAAYagAAAAELWfmcYrr5O5zMmIcZEuQc/tZ9O2Oyxy2qd3Q1ghmY5CavbDMNY5Afu3v3ObvB6kAg==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "6e2ccc22-afdb-41e1-8ef7-07ee61d4e270", false, "samjones" },
-                    { "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3", 0, "65e2dfa2-f709-40c3-8f90-74c229a845ed", "lisa.miller@student.com", true, "Lisa", "Miller", false, null, "LISA.MILLER@STUDENT.COM", "LISAMILLER", "AQAAAAIAAYagAAAAEDpp5K9sIcvwVCsSGIl4sTL4qb/E9qies7+Ah+HBxX4wMDmyuOdGOH0cCoteNqWdpA==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "550af599-29c0-4a42-8946-273ab4d14a59", false, "lisamiller" },
-                    { "590201ab-1c71-4d80-8da8-78be2bd3df9a", 0, "4b33c401-2b8c-4f88-8460-679c0978ae95", "alex.wong@student.com", true, "Alex", "Wong", false, null, "ALEX.WONG@STUDENT.COM", "ALEXWONG", "AQAAAAIAAYagAAAAEIu2NVpdx+4tMspFXPbmPapRXg84c5e4aJNOW8+hV+MyjOsnuh2I/St+HayIer5CHg==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "c1f84cf0-0c4d-4a7f-b120-4c0dfe8d9006", false, "alexwong" },
-                    { "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f", 0, "6e1b7f8d-8c8d-41b6-9fa3-a3fe168ca3e2", "emily.jones@professor.com", true, "Emily", "Jones", false, null, "EMILY.JONES@PROFESSOR.COM", "EMILYJONES", "AQAAAAIAAYagAAAAEPG1+eJJopWcIjnVgCjFWpccxqoc7Fy0K8IQ04a2HNZSGAw5O9IretlEjUutWxxZ7Q==", null, false, "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "ab97223b-40ef-410a-84e6-5c21b9ec23a3", false, "emilyjones" },
-                    { "bbfcea33-5568-4558-b6c0-9353518b9261", 0, "fc9939d9-a392-4eeb-be45-54b22143edce", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEEcY5SjyngP3QjfCH6oOe0dIEp658axYsFgMaBoJWNXE+nvA6gSzdykevB9SXZp/ww==", null, false, "acbda893-a8e4-45f2-b3f9-2a0068b29f57", "275ec1a0-09b6-41f0-828c-b072c0c52114", false, "admin" },
-                    { "f2517e43-07ae-4c0f-8f63-e2481b47a5c7", 0, "b0c1a2d6-4fa9-4daa-af74-a83a13c22263", "daniel.white@professor.com", true, "Daniel", "White", false, null, "DANIEL.WHITE@PROFESSOR.COM", "DANIELWHITE", "AQAAAAIAAYagAAAAEOkGKViacqxMcB53cL1AwEzhnoXYGzT/G5JOwuDzR/i75j9LM8bOwpaOfGsqiXsM+w==", null, false, "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "36e35e19-6c6b-4880-b639-caca460b67aa", false, "danielwhite" }
+                    { "3b11ba9f-2b09-4b1a-b784-87e0040a2f56", 0, "d666662f-fccd-4485-ac21-113645db5364", "sam.jones@student.com", true, "Sam", "Jones", false, null, "SAM.JONES@STUDENT.COM", "SAMJONES", "AQAAAAIAAYagAAAAEAey5RnhuHzNYNv+tJSSPslsl/7d5cAe/+DuKi3NVIYtO6xSY95EYSnl21YCPcxELQ==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "1c3d6f2b-58af-4f0c-aba7-00795a6a3e74", false, "samjones" },
+                    { "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3", 0, "007e4077-484b-45ee-9069-2f1122080aef", "lisa.miller@student.com", true, "Lisa", "Miller", false, null, "LISA.MILLER@STUDENT.COM", "LISAMILLER", "AQAAAAIAAYagAAAAEHWNo1+k9gFjH1Xvz5kmetg1kxboUCDM58hXLLpDTpNwCgCVekdlk1IIiPGsvYVStg==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "84549c6b-84bd-477e-9dd4-91b3ac66b8b8", false, "lisamiller" },
+                    { "590201ab-1c71-4d80-8da8-78be2bd3df9a", 0, "2130d617-7a99-45da-ac08-479f73987bcd", "alex.wong@student.com", true, "Alex", "Wong", false, null, "ALEX.WONG@STUDENT.COM", "ALEXWONG", "AQAAAAIAAYagAAAAENZq5QJM8VeQSCeCA5ieCO3iWrx11izWfgQGUM0XJT8VClt2cZ/FMRXsW5qPy/LOyQ==", null, false, "6d0fea85-946f-453a-9897-863f79b652cb", "c96335a0-dd3a-4df6-a6e9-0395249668cb", false, "alexwong" },
+                    { "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f", 0, "dcbbd25e-0c3c-4a8f-8bdf-15f5e0a5e626", "emily.jones@professor.com", true, "Emily", "Jones", false, null, "EMILY.JONES@PROFESSOR.COM", "EMILYJONES", "AQAAAAIAAYagAAAAEGM3fHMNVayozbnvRgkOwpxVgfl3va/ekEhpSK9RyL1vIdHtSWXYhnkMJu/Uf56vMw==", null, false, "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "812a2dc8-a54d-4d5a-bf5b-b17046cabb32", false, "emilyjones" },
+                    { "bbfcea33-5568-4558-b6c0-9353518b9261", 0, "19f1391b-f555-482d-b8e9-7ad687a564a6", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAELr7SWIoJHGiq1ELtlj3Hu+e2lgylymoyIvIqvRiDmLDx7F1kMjTfErMznF5TLc6kw==", null, false, "acbda893-a8e4-45f2-b3f9-2a0068b29f57", "4f7c5eca-46ab-4803-8a85-b79fb08ed336", false, "admin" },
+                    { "f2517e43-07ae-4c0f-8f63-e2481b47a5c7", 0, "565a1270-774e-47d8-b20b-2235cbf0f50b", "daniel.white@professor.com", true, "Daniel", "White", false, null, "DANIEL.WHITE@PROFESSOR.COM", "DANIELWHITE", "AQAAAAIAAYagAAAAEH3PNiyF1bNzsf0FUHWMwJ5nS20enRHXOjkck2rtgTJaLKGpE1N/7yFu1GAXJhKRKw==", null, false, "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "b42a8824-202a-4d6d-92c3-502c17c39469", false, "danielwhite" }
                 });
 
             migrationBuilder.InsertData(
@@ -391,10 +371,6 @@ namespace taskarescu.Server.Migrations
                     { 5, "Awarded to users who effectively solve complex problems within a project.", "Problem Solver" },
                     { 6, "Awarded to users who excel in project communication and collaboration.", "Communication Pro" }
                 });
->>>>>>>> endpoints-project:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
-========
-                values: new object[] { "5a63c778-0282-4ac7-86f3-2bdafa354ab2", 0, "cb68062e-3419-46c4-a848-87c8cc36d189", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEIGyV226Qkrbu2eJ4fYhltlEinctXbFXyW9C8OC4Svh+493WLAKri83DZy3vSYIlig==", null, false, "e9ba6b41-0999-4ab8-8050-545ed5005348", "bee7dbae-7674-411b-9351-915f36dabf3d", false, "admin" });
->>>>>>>> 0c8497df21368cce9dc208a60e87b012444817fd:taskarescu/taskarescu.Server/Migrations/20240116010342_Init.cs
 
             migrationBuilder.InsertData(
                 table: "Difficulties",
@@ -417,8 +393,19 @@ namespace taskarescu.Server.Migrations
                     { 2, "In Progress" },
                     { 3, "Done" }
                 });
-<<<<<<<< HEAD:taskarescu/taskarescu.Server/Migrations/20240115214333_Init.cs
-========
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "6d0fea85-946f-453a-9897-863f79b652cb", "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { "6d0fea85-946f-453a-9897-863f79b652cb", "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { "6d0fea85-946f-453a-9897-863f79b652cb", "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f" },
+                    { "acbda893-a8e4-45f2-b3f9-2a0068b29f57", "bbfcea33-5568-4558-b6c0-9353518b9261" },
+                    { "311c9a88-fe29-4b7c-a8bb-43aef2f3013c", "f2517e43-07ae-4c0f-8f63-e2481b47a5c7" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Projects",
@@ -463,26 +450,26 @@ namespace taskarescu.Server.Migrations
                 columns: new[] { "Id", "Deadline", "Description", "Name", "ProjectId", "StatusId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5283), "Implementare funcționalitate X în cadrul proiectului Y.", "Implementare funcționalitate X", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 2, new DateTime(2024, 1, 26, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5372), "Testare modul Y în cadrul proiectului Z.", "Testare modul Y", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 3, new DateTime(2024, 1, 21, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5376), "Documentare proiect pentru prezentare finală.", "Documentare proiect", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 4, new DateTime(2024, 1, 19, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5380), "Soluționare bug-uri identificate în ultima versiune a proiectului.", "Soluționare bug-uri", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 5, new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5383), "Optimizare performanță în cadrul aplicației.", "Optimizare performanță", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 6, new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5391), "Implementare interfață utilizator pentru secțiunea X a proiectului.", "Implementare interfață utilizator", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 7, new DateTime(2024, 1, 25, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5405), "Testare integrare a modulelor proiectului principal.", "Testare integrare", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 8, new DateTime(2024, 1, 20, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5409), "Analiză cerințe pentru viitoarele iterații ale proiectului.", "Analiză cerințe", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 9, new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5417), "Optimizare performanță și structură în baza de date a proiectului.", "Optimizare bază de date", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 10, new DateTime(2024, 1, 21, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5420), "Generare raport de progres pentru săptămâna curentă.", "Raport progres săptămânal", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 11, new DateTime(2024, 1, 28, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5427), "Integrare servicii terțe în cadrul proiectului.", "Integrare servicii terțe", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 12, new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5431), "Documentare API pentru a fi folosit de dezvoltatori terți.", "Documentare API", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 13, new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5435), "Optimizare algoritmi utilizați în cadrul proiectului principal.", "Optimizare algoritmi", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 14, new DateTime(2024, 1, 27, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5439), "Implementare testare automată pentru modulele cheie ale proiectului.", "Implementare testare automată", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 15, new DateTime(2024, 1, 25, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5443), "Configurare servere pentru lansarea în producție a proiectului.", "Configurare servere de producție", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 16, new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5466), "Soluționare probleme identificate de auditul de securitate.", "Soluționare probleme de securitate", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 17, new DateTime(2024, 1, 30, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5470), "Creare instrumente de analiză pentru datele generate de proiect.", "Creare instrumente de analiză", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
-                    { 18, new DateTime(2024, 1, 22, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5473), "Integrare cu o platformă externă pentru funcționalitate adițională.", "Integrare cu platformă externă", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
-                    { 19, new DateTime(2024, 1, 24, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5481), "Testare de securitate pentru identificarea vulnerabilităților.", "Testare securitate", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
-                    { 20, new DateTime(2024, 1, 23, 4, 49, 43, 815, DateTimeKind.Local).AddTicks(5493), "Refactorizare cod pentru îmbunătățirea structurii și performanței.", "Refactorizare cod", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" }
+                    { 1, new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5542), "Implementare funcționalitate X în cadrul proiectului Y.", "Implementare funcționalitate X", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 2, new DateTime(2024, 1, 26, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5639), "Testare modul Y în cadrul proiectului Z.", "Testare modul Y", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 3, new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5643), "Documentare proiect pentru prezentare finală.", "Documentare proiect", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 4, new DateTime(2024, 1, 19, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5650), "Soluționare bug-uri identificate în ultima versiune a proiectului.", "Soluționare bug-uri", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 5, new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5654), "Optimizare performanță în cadrul aplicației.", "Optimizare performanță", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 6, new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5658), "Implementare interfață utilizator pentru secțiunea X a proiectului.", "Implementare interfață utilizator", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 7, new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5673), "Testare integrare a modulelor proiectului principal.", "Testare integrare", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 8, new DateTime(2024, 1, 20, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5677), "Analiză cerințe pentru viitoarele iterații ale proiectului.", "Analiză cerințe", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 9, new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5683), "Optimizare performanță și structură în baza de date a proiectului.", "Optimizare bază de date", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 10, new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5687), "Generare raport de progres pentru săptămâna curentă.", "Raport progres săptămânal", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 11, new DateTime(2024, 1, 28, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5695), "Integrare servicii terțe în cadrul proiectului.", "Integrare servicii terțe", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 12, new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5698), "Documentare API pentru a fi folosit de dezvoltatori terți.", "Documentare API", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 13, new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5702), "Optimizare algoritmi utilizați în cadrul proiectului principal.", "Optimizare algoritmi", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 14, new DateTime(2024, 1, 27, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5706), "Implementare testare automată pentru modulele cheie ale proiectului.", "Implementare testare automată", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 15, new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5709), "Configurare servere pentru lansarea în producție a proiectului.", "Configurare servere de producție", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 16, new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5865), "Soluționare probleme identificate de auditul de securitate.", "Soluționare probleme de securitate", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 17, new DateTime(2024, 1, 30, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5868), "Creare instrumente de analiză pentru datele generate de proiect.", "Creare instrumente de analiză", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" },
+                    { 18, new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5872), "Integrare cu o platformă externă pentru funcționalitate adițională.", "Integrare cu platformă externă", new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"), 1, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
+                    { 19, new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5879), "Testare de securitate pentru identificarea vulnerabilităților.", "Testare securitate", new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"), 1, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" },
+                    { 20, new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5897), "Refactorizare cod pentru îmbunătățirea structurii și performanței.", "Refactorizare cod", new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"), 1, "590201ab-1c71-4d80-8da8-78be2bd3df9a" }
                 });
 
             migrationBuilder.InsertData(
@@ -501,7 +488,6 @@ namespace taskarescu.Server.Migrations
                     { 9, "Feedback pentru optimizarea bazei de date.", 3, 9, 9, "3b11ba9f-2b09-4b1a-b784-87e0040a2f56" },
                     { 10, "Feedback pentru raportul de progres săptămânal.", 1, 7, 10, "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3" }
                 });
->>>>>>>> endpoints-project:taskarescu/taskarescu.Server/Migrations/20240116024944_seedPanaNuMaiPot.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

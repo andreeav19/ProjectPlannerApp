@@ -55,6 +55,8 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
   backgroundcolor,
   icon: Icon,
   style,
+  name,
+  description,
 }) => {
   backgroundcolor = backgroundcolor || "ffffff";
   bordercolor = bordercolor || "#000000";
@@ -82,7 +84,7 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>Test frate</Text>
+        <Text fw={500}>{name}</Text>
         <Badge
           autoContrast
           variant="gradient"
@@ -97,7 +99,7 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
       </Group>
 
       <Text size="sm" c="dimmed">
-        Buna mama
+        {description}
       </Text>
     </Card>
   );

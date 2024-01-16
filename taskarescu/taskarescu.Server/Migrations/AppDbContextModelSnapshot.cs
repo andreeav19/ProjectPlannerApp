@@ -107,6 +107,38 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "bbfcea33-5568-4558-b6c0-9353518b9261",
+                            RoleId = "acbda893-a8e4-45f2-b3f9-2a0068b29f57"
+                        },
+                        new
+                        {
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb"
+                        },
+                        new
+                        {
+                            UserId = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f",
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c"
+                        },
+                        new
+                        {
+                            UserId = "f2517e43-07ae-4c0f-8f63-e2481b47a5c7",
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -157,19 +189,19 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e9ba6b41-0999-4ab8-8050-545ed5005348",
+                            Id = "acbda893-a8e4-45f2-b3f9-2a0068b29f57",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0b73b4c1-2086-48ee-8f38-288ab2e53889",
+                            Id = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c",
                             Name = "Prof",
                             NormalizedName = "PROF"
                         },
                         new
                         {
-                            Id = "938cdacb-c0af-4b3c-a925-e8e8558d499f",
+                            Id = "6d0fea85-946f-453a-9897-863f79b652cb",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -251,9 +283,9 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5a63c778-0282-4ac7-86f3-2bdafa354ab2",
+                            Id = "bbfcea33-5568-4558-b6c0-9353518b9261",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb68062e-3419-46c4-a848-87c8cc36d189",
+                            ConcurrencyStamp = "19f1391b-f555-482d-b8e9-7ad687a564a6",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -261,12 +293,107 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIGyV226Qkrbu2eJ4fYhltlEinctXbFXyW9C8OC4Svh+493WLAKri83DZy3vSYIlig==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELr7SWIoJHGiq1ELtlj3Hu+e2lgylymoyIvIqvRiDmLDx7F1kMjTfErMznF5TLc6kw==",
                             PhoneNumberConfirmed = false,
-                            RoleId = "e9ba6b41-0999-4ab8-8050-545ed5005348",
-                            SecurityStamp = "bee7dbae-7674-411b-9351-915f36dabf3d",
+                            RoleId = "acbda893-a8e4-45f2-b3f9-2a0068b29f57",
+                            SecurityStamp = "4f7c5eca-46ab-4803-8a85-b79fb08ed336",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "007e4077-484b-45ee-9069-2f1122080aef",
+                            Email = "lisa.miller@student.com",
+                            EmailConfirmed = true,
+                            FirstName = "Lisa",
+                            LastName = "Miller",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "LISA.MILLER@STUDENT.COM",
+                            NormalizedUserName = "LISAMILLER",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHWNo1+k9gFjH1Xvz5kmetg1kxboUCDM58hXLLpDTpNwCgCVekdlk1IIiPGsvYVStg==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
+                            SecurityStamp = "84549c6b-84bd-477e-9dd4-91b3ac66b8b8",
+                            TwoFactorEnabled = false,
+                            UserName = "lisamiller"
+                        },
+                        new
+                        {
+                            Id = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2130d617-7a99-45da-ac08-479f73987bcd",
+                            Email = "alex.wong@student.com",
+                            EmailConfirmed = true,
+                            FirstName = "Alex",
+                            LastName = "Wong",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ALEX.WONG@STUDENT.COM",
+                            NormalizedUserName = "ALEXWONG",
+                            PasswordHash = "AQAAAAIAAYagAAAAENZq5QJM8VeQSCeCA5ieCO3iWrx11izWfgQGUM0XJT8VClt2cZ/FMRXsW5qPy/LOyQ==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
+                            SecurityStamp = "c96335a0-dd3a-4df6-a6e9-0395249668cb",
+                            TwoFactorEnabled = false,
+                            UserName = "alexwong"
+                        },
+                        new
+                        {
+                            Id = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d666662f-fccd-4485-ac21-113645db5364",
+                            Email = "sam.jones@student.com",
+                            EmailConfirmed = true,
+                            FirstName = "Sam",
+                            LastName = "Jones",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SAM.JONES@STUDENT.COM",
+                            NormalizedUserName = "SAMJONES",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAey5RnhuHzNYNv+tJSSPslsl/7d5cAe/+DuKi3NVIYtO6xSY95EYSnl21YCPcxELQ==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = "6d0fea85-946f-453a-9897-863f79b652cb",
+                            SecurityStamp = "1c3d6f2b-58af-4f0c-aba7-00795a6a3e74",
+                            TwoFactorEnabled = false,
+                            UserName = "samjones"
+                        },
+                        new
+                        {
+                            Id = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dcbbd25e-0c3c-4a8f-8bdf-15f5e0a5e626",
+                            Email = "emily.jones@professor.com",
+                            EmailConfirmed = true,
+                            FirstName = "Emily",
+                            LastName = "Jones",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "EMILY.JONES@PROFESSOR.COM",
+                            NormalizedUserName = "EMILYJONES",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGM3fHMNVayozbnvRgkOwpxVgfl3va/ekEhpSK9RyL1vIdHtSWXYhnkMJu/Uf56vMw==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c",
+                            SecurityStamp = "812a2dc8-a54d-4d5a-bf5b-b17046cabb32",
+                            TwoFactorEnabled = false,
+                            UserName = "emilyjones"
+                        },
+                        new
+                        {
+                            Id = "f2517e43-07ae-4c0f-8f63-e2481b47a5c7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "565a1270-774e-47d8-b20b-2235cbf0f50b",
+                            Email = "daniel.white@professor.com",
+                            EmailConfirmed = true,
+                            FirstName = "Daniel",
+                            LastName = "White",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "DANIEL.WHITE@PROFESSOR.COM",
+                            NormalizedUserName = "DANIELWHITE",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH3PNiyF1bNzsf0FUHWMwJ5nS20enRHXOjkck2rtgTJaLKGpE1N/7yFu1GAXJhKRKw==",
+                            PhoneNumberConfirmed = false,
+                            RoleId = "311c9a88-fe29-4b7c-a8bb-43aef2f3013c",
+                            SecurityStamp = "b42a8824-202a-4d6d-92c3-502c17c39469",
+                            TwoFactorEnabled = false,
+                            UserName = "danielwhite"
                         });
                 });
 
@@ -291,6 +418,44 @@ namespace taskarescu.Server.Migrations
                         .IsUnique();
 
                     b.ToTable("Badges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Awarded to users who excel in project planning.",
+                            Name = "Project Planner"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Awarded to users who consistently complete tasks on time.",
+                            Name = "Task Master"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Awarded to users who demonstrate excellent teamwork skills.",
+                            Name = "Team Player"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Awarded to users who propose innovative solutions to project challenges.",
+                            Name = "Innovator"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Awarded to users who effectively solve complex problems within a project.",
+                            Name = "Problem Solver"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Awarded to users who excel in project communication and collaboration.",
+                            Name = "Communication Pro"
+                        });
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Difficulty", b =>
@@ -375,6 +540,98 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Feedback pentru implementarea funcționalității X.",
+                            DifficultyId = 2,
+                            Points = 8,
+                            TaskItemId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Feedback pentru testarea modulului Y.",
+                            DifficultyId = 3,
+                            Points = 9,
+                            TaskItemId = 2,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Feedback pentru documentarea proiectului.",
+                            DifficultyId = 1,
+                            Points = 7,
+                            TaskItemId = 3,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Feedback pentru soluționarea bug-urilor.",
+                            DifficultyId = 2,
+                            Points = 6,
+                            TaskItemId = 4,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Feedback pentru optimizarea performanței.",
+                            DifficultyId = 3,
+                            Points = 9,
+                            TaskItemId = 5,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Feedback pentru implementarea interfeței utilizator.",
+                            DifficultyId = 2,
+                            Points = 8,
+                            TaskItemId = 6,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Feedback pentru testarea integrării modulelor.",
+                            DifficultyId = 1,
+                            Points = 7,
+                            TaskItemId = 7,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Feedback pentru analiza cerințelor.",
+                            DifficultyId = 2,
+                            Points = 8,
+                            TaskItemId = 8,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Feedback pentru optimizarea bazei de date.",
+                            DifficultyId = 3,
+                            Points = 9,
+                            TaskItemId = 9,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Feedback pentru raportul de progres săptămânal.",
+                            DifficultyId = 1,
+                            Points = 7,
+                            TaskItemId = 10,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        });
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Project", b =>
@@ -398,6 +655,29 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            Description = "Proiect legat de optimizarea și gestionarea bazelor de date avansate.",
+                            Name = "Baze de Date Avansate",
+                            UserId = "bbfcea33-5568-4558-b6c0-9353518b9261"
+                        },
+                        new
+                        {
+                            Id = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            Description = "Implementarea unei rețele de calculatoare eficiente.",
+                            Name = "Rețele de Calculatoare",
+                            UserId = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f"
+                        },
+                        new
+                        {
+                            Id = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            Description = "Proiect în domeniul inteligenței artificiale și învățare automată.",
+                            Name = "Inteligenta Artificiala",
+                            UserId = "b3a5b520-36c2-40dd-9c3a-6223a71f7f7f"
+                        });
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.Status", b =>
@@ -450,6 +730,43 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("StudentProjects");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770")
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770")
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770")
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e")
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e")
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe")
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe")
+                        });
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.TaskItem", b =>
@@ -487,6 +804,208 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TaskItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5542),
+                            Description = "Implementare funcționalitate X în cadrul proiectului Y.",
+                            Name = "Implementare funcționalitate X",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Deadline = new DateTime(2024, 1, 26, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5639),
+                            Description = "Testare modul Y în cadrul proiectului Z.",
+                            Name = "Testare modul Y",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Deadline = new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5643),
+                            Description = "Documentare proiect pentru prezentare finală.",
+                            Name = "Documentare proiect",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Deadline = new DateTime(2024, 1, 19, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5650),
+                            Description = "Soluționare bug-uri identificate în ultima versiune a proiectului.",
+                            Name = "Soluționare bug-uri",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5654),
+                            Description = "Optimizare performanță în cadrul aplicației.",
+                            Name = "Optimizare performanță",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5658),
+                            Description = "Implementare interfață utilizator pentru secțiunea X a proiectului.",
+                            Name = "Implementare interfață utilizator",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Deadline = new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5673),
+                            Description = "Testare integrare a modulelor proiectului principal.",
+                            Name = "Testare integrare",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Deadline = new DateTime(2024, 1, 20, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5677),
+                            Description = "Analiză cerințe pentru viitoarele iterații ale proiectului.",
+                            Name = "Analiză cerințe",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5683),
+                            Description = "Optimizare performanță și structură în baza de date a proiectului.",
+                            Name = "Optimizare bază de date",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Deadline = new DateTime(2024, 1, 21, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5687),
+                            Description = "Generare raport de progres pentru săptămâna curentă.",
+                            Name = "Raport progres săptămânal",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Deadline = new DateTime(2024, 1, 28, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5695),
+                            Description = "Integrare servicii terțe în cadrul proiectului.",
+                            Name = "Integrare servicii terțe",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5698),
+                            Description = "Documentare API pentru a fi folosit de dezvoltatori terți.",
+                            Name = "Documentare API",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5702),
+                            Description = "Optimizare algoritmi utilizați în cadrul proiectului principal.",
+                            Name = "Optimizare algoritmi",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Deadline = new DateTime(2024, 1, 27, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5706),
+                            Description = "Implementare testare automată pentru modulele cheie ale proiectului.",
+                            Name = "Implementare testare automată",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Deadline = new DateTime(2024, 1, 25, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5709),
+                            Description = "Configurare servere pentru lansarea în producție a proiectului.",
+                            Name = "Configurare servere de producție",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5865),
+                            Description = "Soluționare probleme identificate de auditul de securitate.",
+                            Name = "Soluționare probleme de securitate",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Deadline = new DateTime(2024, 1, 30, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5868),
+                            Description = "Creare instrumente de analiză pentru datele generate de proiect.",
+                            Name = "Creare instrumente de analiză",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Deadline = new DateTime(2024, 1, 22, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5872),
+                            Description = "Integrare cu o platformă externă pentru funcționalitate adițională.",
+                            Name = "Integrare cu platformă externă",
+                            ProjectId = new Guid("7f297b67-4d4d-4e70-89a8-7e49b0b6b51e"),
+                            StatusId = 1,
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Deadline = new DateTime(2024, 1, 24, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5879),
+                            Description = "Testare de securitate pentru identificarea vulnerabilităților.",
+                            Name = "Testare securitate",
+                            ProjectId = new Guid("a6b66ec7-ae2a-4c7a-a1e7-4a0c1b4f4770"),
+                            StatusId = 1,
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Deadline = new DateTime(2024, 1, 23, 5, 58, 17, 227, DateTimeKind.Local).AddTicks(5897),
+                            Description = "Refactorizare cod pentru îmbunătățirea structurii și performanței.",
+                            Name = "Refactorizare cod",
+                            ProjectId = new Guid("c6511c7b-2970-46e1-b9f5-538a7c091cfe"),
+                            StatusId = 1,
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a"
+                        });
                 });
 
             modelBuilder.Entity("taskarescu.Server.Models.UserBadge", b =>
@@ -502,6 +1021,43 @@ namespace taskarescu.Server.Migrations
                     b.HasIndex("BadgeId");
 
                     b.ToTable("UserBadges");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            BadgeId = 1
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            BadgeId = 2
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            BadgeId = 3
+                        },
+                        new
+                        {
+                            UserId = "4b8914a7-6a92-4dce-ae6c-ee2fdac743d3",
+                            BadgeId = 4
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            BadgeId = 5
+                        },
+                        new
+                        {
+                            UserId = "3b11ba9f-2b09-4b1a-b784-87e0040a2f56",
+                            BadgeId = 6
+                        },
+                        new
+                        {
+                            UserId = "590201ab-1c71-4d80-8da8-78be2bd3df9a",
+                            BadgeId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

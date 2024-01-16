@@ -30,13 +30,6 @@ namespace taskarescu.Server.Controllers
         public async Task<IActionResult> GetProjectsByUserId(string userId)
         {
             var resultDto = await _projectService.GetProjectsByUserId(userId);
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine(resultDto);
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
 
             if (!resultDto.IsSuccess)
             {

@@ -104,7 +104,9 @@ export function Auth(props: PaperProps) {
           handleSuccess(response);
         } catch (error) {
           console.error("Login failed:", error);
-          alert("Eroare la logare :(");
+          alert(
+            "Eroare la logare :( Username sau parola gresita, incearca din nou"
+          );
         }
         break;
 
@@ -185,7 +187,7 @@ export function Auth(props: PaperProps) {
                 placeholder="psoviany@daw.unibuc"
                 value={form.values.email}
                 onChange={(event) =>
-                  form.setFieldValue("email", event.currentTarget.value)
+                  form.setFieldValue("email", event.currentTarget.value.trim())
                 }
                 error={form.errors.email && "Invalid email"}
                 radius="md"
@@ -197,7 +199,10 @@ export function Auth(props: PaperProps) {
                 placeholder="Petru"
                 value={form.values.firstName}
                 onChange={(event) =>
-                  form.setFieldValue("firstName", event.currentTarget.value)
+                  form.setFieldValue(
+                    "firstName",
+                    event.currentTarget.value.trim()
+                  )
                 }
                 error={form.errors.firstName}
                 radius="md"
@@ -209,7 +214,10 @@ export function Auth(props: PaperProps) {
                 placeholder="Soviany"
                 value={form.values.lastName}
                 onChange={(event) =>
-                  form.setFieldValue("lastName", event.currentTarget.value)
+                  form.setFieldValue(
+                    "lastName",
+                    event.currentTarget.value.trim()
+                  )
                 }
                 error={form.errors.lastName}
                 radius="md"
@@ -223,7 +231,7 @@ export function Auth(props: PaperProps) {
             placeholder="petruS"
             value={form.values.username}
             onChange={(event) =>
-              form.setFieldValue("username", event.currentTarget.value)
+              form.setFieldValue("username", event.currentTarget.value.trim())
             }
             error={form.errors.username}
             radius="md"
@@ -234,7 +242,7 @@ export function Auth(props: PaperProps) {
             placeholder="Your password"
             value={form.values.password}
             onChange={(event) =>
-              form.setFieldValue("password", event.currentTarget.value)
+              form.setFieldValue("password", event.currentTarget.value.trim())
             }
             error={form.errors.password}
             radius="md"

@@ -17,20 +17,23 @@ export function Projects() {
         },
       })
       .then((response) => {
-        // setProjects(response.data);
-        console.log(response);
+        setProjects(response.data.response);
+        console.log(projects);
       })
       .catch((error) => {
         console.error("Error fetching projects:", error);
       });
-  });
+  }, []);
 
   return (
     <SimpleGrid cols={3} spacing="lg" verticalSpacing="sm" mx="xl">
       {projects.map((item) => (
         <ProjectCard
-          title="Project title"
-          description="This is a short description of your project's information."
+          key={item.id}
+          title={item.name}
+          description={item.description}
+          id={item.id}
+          createdBy={item.userId}
         />
       ))}
     </SimpleGrid>
