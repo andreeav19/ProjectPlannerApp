@@ -40,6 +40,13 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<int>(false, -1, new[] { "Task-ul nu a fost gasit!" });
             }
 
+            var difficulty = await _context.TaskItems.FirstOrDefaultAsync(d => d.Id == feedbackDto.DifficultyId);
+
+            if (difficulty == null)
+            {
+                return new ResultDto<int>(false, -1, new[] { "Dificultatea nu a fost gasita!" });
+            }
+
             var feedback = new Feedback
             {
                 Description = feedbackDto.Description,
@@ -79,6 +86,13 @@ namespace taskarescu.Server.Services.FeedbackService
             if (userId != feedback.UserId)
             {
                 return new ResultDto<bool>(false, false, new[] { "Un utilizator poate modifica doar feedback-ul creat de el!" });
+            }
+
+            var difficulty = await _context.TaskItems.FirstOrDefaultAsync(d => d.Id == feedbackDto.DifficultyId);
+
+            if (difficulty == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Dificultatea nu a fost gasita!" });
             }
 
             feedback.Description = feedbackDto.Description;

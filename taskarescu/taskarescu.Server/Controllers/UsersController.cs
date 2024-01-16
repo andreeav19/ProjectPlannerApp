@@ -5,6 +5,7 @@ using taskarescu.Server.Services.UserServices;
 using Azure;
 using taskarescu.Server.Extensions;
 using taskarescu.Server.Services.BadgeServices;
+using taskarescu.Server.Services.FeedbackService;
 
 namespace taskarescu.Server.Controllers;
 
@@ -14,10 +15,13 @@ public class UsersController : ControllerBase
 {
     private readonly IUserService _usersService;
     private readonly IBadgeService _badgeService;
+    private readonly IFeedbackService _feedbackService;
 
-    public UsersController(IUserService usersService)
+    public UsersController(IUserService usersService, IBadgeService badgeService, IFeedbackService feedbackService)
     {
         _usersService = usersService;
+        _badgeService = badgeService;
+        _feedbackService = feedbackService;
     }
 
     [Authorize(Policy = "UsersOnly")]
@@ -52,7 +56,7 @@ public class UsersController : ControllerBase
     }
 
     [Authorize(Policy = "AdminsOnly")]
-    [HttpPost("{userId}/role")]
+    [HttpPut("{userId}/role")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -93,6 +97,40 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> AddBadgeToUser(int badgeId, string userId)
     {
         var resultDto = await _badgeService.AddBadgeToUser(badgeId, userId);
+
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+
+        return Ok(resultDto);
+    }
+
+    [Authorize(Policy = "ProfsOnly")]
+    [HttpPost("{userId}/tasks/{taskItemId}/feedback")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<int>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddFeedbackToTaskItem(int taskItemId, string userId, FeedbackDto feedbackDto)
+    {
+        var resultDto = await _feedbackService.AddFeedbackToTaskItem(userId, taskItemId, feedbackDto);
+
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+
+        return Ok(resultDto);
+    }
+
+    [Authorize(Policy = "ProfsOnly")]
+    [HttpPut("{userId}/tasks/{taskItemId}/feedback")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> EditFeedbackById(string userId, int taskItemId, FeedbackDto feedbackDto)
+    {
+        var resultDto = await _feedbackService.EditFeedbackById(userId, taskItemId, feedbackDto);
 
         if (!resultDto.IsSuccess)
         {
