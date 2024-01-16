@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taskarescu.Server.Services.UserServices;
-using Azure;
 using taskarescu.Server.Extensions;
 using taskarescu.Server.Services.BadgeServices;
 using taskarescu.Server.Services.FeedbackService;
@@ -140,17 +139,20 @@ public class UsersController : ControllerBase
         return Ok(resultDto);
     }
 
-    //[HttpGet("leaderboard")]
-    //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<UserScoreDto>>))]
-    //public async Task<IActionResult> GetLeaderboardUsers()
-    //{
-    //    var resultDto = await _usersService.GetLeaderBoardUsers();
+    [Authorize(Policy = "UsersOnly")]
+    [HttpGet("leaderboard")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<UserScoreDto>>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetLeaderboardUsers()
+    {
+        var resultDto = await _usersService.GetLeaderBoardUsers();
 
-    //    if (!resultDto.IsSuccess)
-    //    {
-    //        return BadRequest(resultDto);
-    //    }
-    //    return Ok(resultDto);
-    //}
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+        return Ok(resultDto);
+    }
 
 }
