@@ -2,9 +2,9 @@
 {
     public class UserScoreDto
     {
-        public string? FirstName;
-        public string? LastName;
-        public string? UserName;
-        public int? Points;
+        public string? FirstName { set; get; }
+        public string? LastName { set; get; }
+        public string? UserName { set; get; }
+        public int? Points { set; get; }
     }
 }

@@ -9,6 +9,6 @@ namespace taskarescu.Server.Services.UserServices
         Task<ResultDto<UserDto>> GetUserById(string userId);
         Task<Result<string>> EditUserRole(string userId, string newRole);
         Task<ResultDto<ICollection<BadgeDto>>> GetBadgesByUserId(string userId);
-        //Task<ResultDto<ICollection<UserScoreDto>>> GetLeaderBoardUsers();
+        Task<ResultDto<ICollection<UserScoreDto>>> GetLeaderBoardUsers();
     }
 }
