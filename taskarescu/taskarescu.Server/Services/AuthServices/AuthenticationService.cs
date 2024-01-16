@@ -50,6 +50,13 @@ public class AuthenticationService : IAuthenticationService
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
+        Console.WriteLine("\n");
+        Console.WriteLine("\n");
+        Console.WriteLine("\n");
+        Console.WriteLine(result);
+        Console.WriteLine("\n");
+        Console.WriteLine("\n");
+        Console.WriteLine("\n");
 
         await _userManager.AddToRoleAsync(user, "Student");
 
@@ -79,6 +86,7 @@ public class AuthenticationService : IAuthenticationService
         {
             new(ClaimTypes.Name, user.UserName),
             new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.NameIdentifier, user.Id),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 

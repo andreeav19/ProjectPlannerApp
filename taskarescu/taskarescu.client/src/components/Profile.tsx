@@ -12,10 +12,10 @@ import {
 import { RewardBadge } from "./RewardBadge";
 import { FaMoon, FaSun } from "react-icons/fa";
 import classes from "./Profile.module.css";
-const RewardCol = ({ icon, backgroundColor, size }) => {
+const RewardCol = ({ icon, backgroundcolor, size }) => {
   return (
     // <Grid.Col span={2}>
-    <RewardBadge icon={icon} backgroundColor={backgroundColor} size={size} />
+    <RewardBadge icon={icon} backgroundcolor={backgroundcolor} size={size} />
     // </Grid.Col>
   );
 };
@@ -41,19 +41,19 @@ export function Profile() {
       <Space h="xl" />
 
       <SimpleGrid cols={{ base: 2, sm: 4, lg: 6 }} spacing="lg">
-        <RewardCol icon={FaMoon} backgroundColor="begginer" size={100} />
+        <RewardCol icon={FaMoon} backgroundcolor="begginer" size={100} />
 
-        <RewardCol icon={FaMoon} backgroundColor="intermediate" size={100} />
+        <RewardCol icon={FaMoon} backgroundcolor="intermediate" size={100} />
 
-        <RewardCol icon={FaSun} backgroundColor="master" size={100} />
+        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
 
-        <RewardCol icon={FaMoon} backgroundColor="master" size={100} />
+        <RewardCol icon={FaMoon} backgroundcolor="master" size={100} />
 
-        <RewardCol icon={FaSun} backgroundColor="master" size={100} />
+        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
 
-        <RewardCol icon={FaSun} backgroundColor="master" size={100} />
+        <RewardCol icon={FaSun} backgroundcolor="master" size={100} />
 
-        <RewardCol icon={FaMoon} backgroundColor="master" size={100} />
+        <RewardCol icon={FaMoon} backgroundcolor="master" size={100} />
       </SimpleGrid>
     </Container>
   );

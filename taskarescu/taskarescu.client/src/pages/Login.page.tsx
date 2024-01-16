@@ -160,7 +160,6 @@ export function Auth(props: PaperProps) {
     const jwtToken = response.value;
 
     Cookies.set("jwtToken", jwtToken, { path: "/" });
-
     console.log("Login successful!");
     setAuthicated(true);
     navigate("/projects");

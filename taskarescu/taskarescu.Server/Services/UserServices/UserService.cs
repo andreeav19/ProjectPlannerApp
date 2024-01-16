@@ -130,6 +130,7 @@ namespace taskarescu.Server.Services.UserServices
                 .Join(_context.UserRoles, user => user.Id, userRole => userRole.UserId, (user, userRole) => new { user, userRole })
                 .Join(_context.Roles, role => role.userRole.RoleId, role => role.Id, (userUserRole, role) => new UserDto
                 {
+                    UserId = userUserRole.user.Id,
                     UserName = userUserRole.user.UserName,
                     Email = userUserRole.user.Email,
                     FirstName = userUserRole.user.FirstName,

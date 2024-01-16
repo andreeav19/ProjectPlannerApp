@@ -21,13 +21,33 @@ const AuthContext = createContext<IAuthContext>(initialValues);
 const AuthProvider = ({ children }: AuthContextProps) => {
   const [authenticated, setAuthicated] = useState(false);
 
-  
-
   return (
     <AuthContext.Provider value={{ authenticated, setAuthicated }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export function getDecodedJWT() {
+  const jwt = Cookies.get("jwtToken");
+  const data = JSON.parse(atob(jwt?.split(".")[1] ?? ""));
+  const decodedToken = {
+    jwt: jwt,
+    audience: data.aud,
+    expiration: data.exp,
+    emailAddress:
+      data[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+      ],
+    name: data["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+    nameIdentifier:
+      data[
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+      ],
+    issuer: data.iss,
+    jwtId: data.jti,
+  };
+  return decodedToken;
+}
 
 export { AuthProvider, AuthContext };

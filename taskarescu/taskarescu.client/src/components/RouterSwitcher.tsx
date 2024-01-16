@@ -6,7 +6,7 @@ import { Projects } from "./Projects/Projects";
 import { LoginPage } from "../pages/Login.page";
 import { useContext } from "react";
 import { AuthProvider, AuthContext } from "./AuthContext";
-
+import { AdminTools } from "./AdminTools";
 export function RouterSwitcher() {
   return (
     <Routes>
@@ -14,6 +14,7 @@ export function RouterSwitcher() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
+      <Route path="/admin" element={<AdminTools />} />
     </Routes>
   );
 }

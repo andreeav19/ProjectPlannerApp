@@ -6,20 +6,20 @@ import classes from "./RewardBadge.module.css";
 interface RewardBadgeProps {
   size: number;
   icon: IconType;
-  backgroundColor: string;
-  borderColor?: string;
+  backgroundcolor: string;
+  bordercolor?: string;
   style?: React.CSSProperties;
 }
 
 const HexagonContainer = styled.div<{
   size: number;
-  borderColor: string;
-  backgroundColor: string;
+  bordercolor: string;
+  backgroundcolor: string;
 }>`
   position: relative;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
-  background: ${({ borderColor }) => borderColor};
+  background: ${({ bordercolor }) => bordercolor};
   display: inline-block;
   position: relative;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -32,8 +32,8 @@ const HexagonContainer = styled.div<{
     left: 4px;
     height: calc(100% - 8px);
     width: calc(100% - 8px);
-    background: ${({ backgroundColor }) =>
-      `var(--mantine-color-${backgroundColor}-7)`};
+    background: ${({ backgroundcolor }) =>
+      `var(--mantine-color-${backgroundcolor}-7)`};
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     box-sizing: border-box;
   }
@@ -51,13 +51,13 @@ const HexagonIcon = styled.div<{ size: number }>`
 
 export const RewardBadge: React.FC<RewardBadgeProps> = ({
   size,
-  borderColor,
-  backgroundColor,
+  bordercolor,
+  backgroundcolor,
   icon: Icon,
   style,
 }) => {
-  backgroundColor = backgroundColor || "ffffff";
-  borderColor = borderColor || "#000000";
+  backgroundcolor = backgroundcolor || "ffffff";
+  bordercolor = bordercolor || "#000000";
   return (
     <Card
       shadow="sm"
@@ -70,8 +70,8 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
         <Center>
           <HexagonContainer
             size={size}
-            borderColor={borderColor}
-            backgroundColor={backgroundColor}
+            bordercolor={bordercolor}
+            backgroundcolor={backgroundcolor}
             style={style}
           >
             <HexagonIcon size={size}>
@@ -87,12 +87,12 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
           autoContrast
           variant="gradient"
           gradient={{
-            from: backgroundColor + ".5",
-            to: backgroundColor + ".9",
+            from: backgroundcolor + ".5",
+            to: backgroundcolor + ".9",
             deg: 125,
           }}
         >
-          {backgroundColor}
+          {backgroundcolor}
         </Badge>
       </Group>
 
@@ -105,18 +105,18 @@ export const RewardBadge: React.FC<RewardBadgeProps> = ({
 
 export const RewardBadgeImage: React.FC<RewardBadgeProps> = ({
   size,
-  borderColor,
-  backgroundColor,
+  bordercolor,
+  backgroundcolor,
   icon: Icon,
   style,
 }) => {
-  backgroundColor = backgroundColor || "ffffff";
-  borderColor = borderColor || "#000000";
+  backgroundcolor = backgroundcolor || "ffffff";
+  bordercolor = bordercolor || "#000000";
   return (
     <HexagonContainer
       size={size}
-      borderColor={borderColor}
-      backgroundColor={backgroundColor}
+      bordercolor={bordercolor}
+      backgroundcolor={backgroundcolor}
       style={style}
     >
       <HexagonIcon size={size}>

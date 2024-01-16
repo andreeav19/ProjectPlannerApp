@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Group, Code, NavLink } from "@mantine/core";
+import { Group, Code, NavLink, Space } from "@mantine/core";
 import { FaProjectDiagram } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -8,6 +8,7 @@ import classes from "./Navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "../AuthContext";
 import { useContext } from "react";
+import { FaTools } from "react-icons/fa";
 
 const data = [
   { link: "/profile", label: "Profile", icon: CgProfile },
@@ -57,6 +58,16 @@ export function Navbar() {
           <FiLogOut className={classes.linkIcon} />
           <span>Logout</span>
         </a>
+        <Space h="xl" />
+        <NavLink
+          label="Admin Tools"
+          description="Danger Zone"
+          leftSection={<FaTools size="1rem" />}
+          onClick={() => {
+            navigate("/admin");
+          }}
+          color="theme"
+        />
       </div>
     </div>
   );
