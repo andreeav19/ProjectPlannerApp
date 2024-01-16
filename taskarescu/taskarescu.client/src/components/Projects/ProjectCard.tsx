@@ -13,6 +13,7 @@ import {
   Tooltip,
   Modal,
   Button,
+  Rating,
 } from "@mantine/core";
 import classes from "./ProjectCard.module.css";
 import { Avatars } from "./Avatars";
@@ -22,6 +23,26 @@ import axios from "axios";
 import { DataTable } from "mantine-datatable";
 
 const CustomModal = ({ onClose, tasks }) => {
+  const jwtToken = getDecodedJWT();
+  useEffect(() => {
+    tasks.map((task) => {
+      axios
+        .get("/api/tasks/" + task.id + "/feedback", {
+          headers: {
+            Authorization: `Bearer ${jwtToken.jwt}`,
+          },
+        })
+        .then((response) => {
+          let t = response.data.response;
+          task["feedback"] = t;
+        })
+        .catch((error) => {
+          task["feedback"] = "";
+          console.error("Error fetching :", error);
+        });
+    });
+  }, []);
+
   return (
     <Modal
       opened
@@ -31,16 +52,80 @@ const CustomModal = ({ onClose, tasks }) => {
         backgroundOpacity: 0.55,
         blur: 3,
       }}
+      size="70%"
     >
       <DataTable
         striped
         highlightOnHover
-        columns={[
-          { accessor: "name" },
-          { accessor: "description", width: 150 },
-          { accessor: "deadline" },
-          { accessor: "statusId" },
-          { accessor: "userId" },
+        groups={[
+          {
+            id: "task",
+            columns: [
+              {
+                accessor: "name",
+                align: "left",
+                headerAlign: "left",
+                sortable: true,
+                title: "Task Name",
+              },
+              {
+                accessor: "description",
+                align: "left",
+                headerAlign: "left",
+                width: 150,
+                sortable: true,
+                title: "Task Description",
+              },
+              {
+                accessor: "deadline",
+                align: "center",
+                headerAlign: "center",
+                sortable: true,
+                title: "Deadline",
+              },
+              {
+                accessor: "statusId",
+                align: "center",
+                headerAlign: "center",
+                sortable: true,
+                title: "Status ID",
+              },
+              {
+                accessor: "userId",
+                align: "center",
+                headerAlign: "center",
+                sortable: true,
+                title: "User ID",
+              },
+            ],
+          },
+          {
+            id: "feedback",
+            columns: [
+              {
+                accessor: "feedback.description",
+                align: "left",
+                headerAlign: "left",
+                width: 150,
+                sortable: true,
+                title: "Description",
+              },
+              {
+                accessor: "feedback.points",
+                align: "center",
+                headerAlign: "center",
+                sortable: true,
+                title: "Points",
+              },
+              {
+                accessor: "feedback.difficultyId",
+                align: "center",
+                headerAlign: "center",
+                sortable: true,
+                title: "Difficulty",
+              },
+            ],
+          },
         ]}
         records={tasks}
       />
@@ -83,6 +168,7 @@ export function ProjectCard({ title, description, id, createdBy }) {
             },
           })
           .then((response) => {
+            // console.log(response.data.response);
             setTasks(response.data.response);
           })
           .catch((error) => {

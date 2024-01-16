@@ -100,7 +100,7 @@ export function Profile() {
       .catch((error) => {
         console.error("Error fetching projects:", error);
       });
-  });
+  }, []);
 
   return (
     <Container size="lg" py="xl">
