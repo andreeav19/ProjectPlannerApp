@@ -341,15 +341,15 @@ namespace taskarescu.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1181a8dd-e25e-4670-91f8-2aabcad89500", null, "Admin", "ADMIN" },
-                    { "ad058a4a-e130-4b14-b920-f18664a19ac9", null, "Prof", "PROF" },
-                    { "b0d93fdf-7e26-4440-8ada-f29850faae3e", null, "Student", "STUDENT" }
+                    { "0b73b4c1-2086-48ee-8f38-288ab2e53889", null, "Prof", "PROF" },
+                    { "938cdacb-c0af-4b3c-a925-e8e8558d499f", null, "Student", "STUDENT" },
+                    { "e9ba6b41-0999-4ab8-8050-545ed5005348", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "f1a80a25-7672-46f4-b54f-e2a1afe9ead1", 0, "d1cc6a8e-ef1d-4349-ae99-adbe15724abc", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEGRnHOkCFJ2nPfiEF2aHPbHDqFgPTk94bwj/h3eOKr9hJbLZpTsaaE3jbHuRHAj00w==", null, false, "1181a8dd-e25e-4670-91f8-2aabcad89500", "888df048-c599-4177-946a-a879b0ce62d3", false, "admin" });
+                values: new object[] { "5a63c778-0282-4ac7-86f3-2bdafa354ab2", 0, "cb68062e-3419-46c4-a848-87c8cc36d189", "admin@admin.com", true, "Admin", "Admin", false, null, "ADMIN@ADMIN.COM", "ADMIN", "AQAAAAIAAYagAAAAEIGyV226Qkrbu2eJ4fYhltlEinctXbFXyW9C8OC4Svh+493WLAKri83DZy3vSYIlig==", null, false, "e9ba6b41-0999-4ab8-8050-545ed5005348", "bee7dbae-7674-411b-9351-915f36dabf3d", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Difficulties",

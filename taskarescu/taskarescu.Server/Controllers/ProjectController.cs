@@ -23,13 +23,20 @@ namespace taskarescu.Server.Controllers
         }
 
         [Authorize(Policy = "UsersOnly")]
-        [HttpGet]
+        [HttpGet("/Project/users/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<ProjectDto>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetProjectsByUserId(string userId)
         {
             var resultDto = await _projectService.GetProjectsByUserId(userId);
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine(resultDto);
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
+            Console.WriteLine("\n");
 
             if (!resultDto.IsSuccess)
             {

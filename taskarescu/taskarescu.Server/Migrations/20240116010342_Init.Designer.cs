@@ -12,7 +12,7 @@ using taskarescu.Server.Db;
 namespace taskarescu.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240115214333_Init")]
+    [Migration("20240116010342_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -160,19 +160,19 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1181a8dd-e25e-4670-91f8-2aabcad89500",
+                            Id = "e9ba6b41-0999-4ab8-8050-545ed5005348",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ad058a4a-e130-4b14-b920-f18664a19ac9",
+                            Id = "0b73b4c1-2086-48ee-8f38-288ab2e53889",
                             Name = "Prof",
                             NormalizedName = "PROF"
                         },
                         new
                         {
-                            Id = "b0d93fdf-7e26-4440-8ada-f29850faae3e",
+                            Id = "938cdacb-c0af-4b3c-a925-e8e8558d499f",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -254,9 +254,9 @@ namespace taskarescu.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f1a80a25-7672-46f4-b54f-e2a1afe9ead1",
+                            Id = "5a63c778-0282-4ac7-86f3-2bdafa354ab2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d1cc6a8e-ef1d-4349-ae99-adbe15724abc",
+                            ConcurrencyStamp = "cb68062e-3419-46c4-a848-87c8cc36d189",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -264,10 +264,10 @@ namespace taskarescu.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGRnHOkCFJ2nPfiEF2aHPbHDqFgPTk94bwj/h3eOKr9hJbLZpTsaaE3jbHuRHAj00w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIGyV226Qkrbu2eJ4fYhltlEinctXbFXyW9C8OC4Svh+493WLAKri83DZy3vSYIlig==",
                             PhoneNumberConfirmed = false,
-                            RoleId = "1181a8dd-e25e-4670-91f8-2aabcad89500",
-                            SecurityStamp = "888df048-c599-4177-946a-a879b0ce62d3",
+                            RoleId = "e9ba6b41-0999-4ab8-8050-545ed5005348",
+                            SecurityStamp = "bee7dbae-7674-411b-9351-915f36dabf3d",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
