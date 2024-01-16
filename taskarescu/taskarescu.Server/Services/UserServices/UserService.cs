@@ -95,6 +95,14 @@ namespace taskarescu.Server.Services.UserServices
             return new ResultDto<ICollection<BadgeDto>>(true, badgesDto, null);
         }
 
+        public async Task<ResultDto<ICollection<UserScoreDto>>> GetLeaderBoardUsers()
+        {
+            var students = await _userManager.GetUsersInRoleAsync("Student");
+            var studentDtos = _mapper.Map<ICollection<UserScoreDto>>(students);
+
+            return new ResultDto<ICollection<UserScoreDto>>(true, studentDtos, null);
+        }
+
         public async Task<ResultDto<UserDto>> GetUserById(string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
