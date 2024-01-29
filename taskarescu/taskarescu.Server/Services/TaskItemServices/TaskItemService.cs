@@ -135,35 +135,71 @@ namespace taskarescu.Server.Services.TaskItemServices
             return new ResultDto<bool>(true, true, null);          
         }
 
-        public async Task<ResultDto<TaskItemDto>> GetTaskItemById(int taskId)
+        public async Task<ResultDto<GetTaskItemDto>> GetTaskItemById(int taskId)
         {
-            var tastItem = await _context.TaskItems.FirstOrDefaultAsync(t => t.Id == taskId);
+            var taskItem = await _context.TaskItems.FirstOrDefaultAsync(t => t.Id == taskId);
 
-            if (tastItem == null) {
-                return new ResultDto<TaskItemDto>(false, null, new[] { "Task-ul nu a fost gasit!" });
+            if (taskItem == null) {
+                return new ResultDto<GetTaskItemDto>(false, null, new[] { "Task-ul nu a fost gasit!" });
             }
 
-            var taskItemDto = _mapper.Map<TaskItemDto>(tastItem);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == taskItem.UserId);
+            var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Id == taskItem.StatusId);
 
-            return new ResultDto<TaskItemDto>(true, taskItemDto, null);
+            var taskItemDto = _mapper.Map<GetTaskItemDto>(taskItem);
+
+            if (user != null)
+            {
+                taskItemDto.Username = user.UserName;
+            }
+
+            if (status != null)
+            {
+                taskItemDto.StatusName = status.Name;
+            }
+
+            return new ResultDto<GetTaskItemDto>(true, taskItemDto, null);
         }
 
-        public async Task<ResultDto<ICollection<TaskItemDto>>> GetTaskItemsByProjectId(Guid projectId)
+        public async Task<ResultDto<ICollection<GetTaskItemDto>>> GetTaskItemsByProjectId(Guid projectId)
         {
             var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
             if (project == null)
             {
-                return new ResultDto<ICollection<TaskItemDto>> (false, null, new[] { "Proiectul nu a fost gasit!" });
+                return new ResultDto<ICollection<GetTaskItemDto>> (false, null, new[] { "Proiectul nu a fost gasit!" });
             }
 
-            var taskItems = await _context.TaskItems
+            var taskItemDtos = await _context.TaskItems
                 .Where(t => t.ProjectId == projectId)
+                .Join(
+                    _context.Users,
+                    task => task.UserId,
+                    user => user.Id,
+                    (task, user) => new
+                    {
+                        Task = task,
+                        User = user
+                    })
+                .Join(
+                    _context.Statuses,
+                    combined => combined.Task.StatusId,
+                    status => status.Id,
+                    (combined, status) => new GetTaskItemDto
+                    {
+                        Id = combined.Task.Id,
+                        Name = combined.Task.Name,
+                        Description = combined.Task.Description,
+                        Deadline = combined.Task.Deadline,
+                        UserId = combined.User.Id,
+                        Username = combined.User.UserName,
+                        StatusId = combined.Task.StatusId,
+                        StatusName = status.Name
+                    })
                 .ToListAsync();
 
-            var taskItemDtos = _mapper.Map<ICollection<TaskItemDto>>(taskItems);
 
-            return new ResultDto<ICollection<TaskItemDto>>(true, taskItemDtos, null);
+            return new ResultDto<ICollection<GetTaskItemDto>>(true, taskItemDtos, null);
         }
     }
 }

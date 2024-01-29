@@ -115,6 +115,12 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<FeedbackGetDto>(false, null, new[] { "Feedback-ul nu a fost gasit!" });
             }
 
+            var difficulty = await _context.Difficulties.FirstOrDefaultAsync(d => d.Id == feedback.DifficultyId);
+
+            if (difficulty != null) { 
+                feedbackDto.DifficultyName = difficulty.Name;
+            }
+
             return new ResultDto<FeedbackGetDto>(true, feedbackDto, null);
         }
 
@@ -126,6 +132,13 @@ namespace taskarescu.Server.Services.FeedbackService
             if (feedback == null)
             {
                 return new ResultDto<FeedbackGetDto>(false, null, new[] { "Feedback-ul nu a fost gasit!" });
+            }
+
+            var difficulty = await _context.Difficulties.FirstOrDefaultAsync(d => d.Id == feedback.DifficultyId);
+
+            if (difficulty != null)
+            {
+                feedbackDto.DifficultyName = difficulty.Name;
             }
 
             return new ResultDto<FeedbackGetDto>(true, feedbackDto, null);

@@ -21,6 +21,9 @@ import { getDecodedJWT } from "../AuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { DataTable } from "mantine-datatable";
+import { useSpring, animated} from "react-spring";
+import { useNavigate } from "react-router-dom";
+
 
 const CustomModal = ({ onClose, tasks }) => {
   const jwtToken = getDecodedJWT();
@@ -143,9 +146,16 @@ export function ProjectCard({ title, description, id, createdBy }) {
   };
   const theme = useMantineTheme();
   const jwtToken = getDecodedJWT();
+  const navigate = useNavigate();
 
   const [teacher, setTeacher] = useState("Test");
   const [tasks, setTasks] = useState([]);
+  const [hovered, setHovered] = useState(false);
+
+  const springProps = useSpring({
+    transform: hovered ? 'scale(1.05)' : 'scale(1)'
+  });
+
   useEffect(() => {
     axios
       .get("/api/Users/" + createdBy, {
@@ -190,11 +200,16 @@ export function ProjectCard({ title, description, id, createdBy }) {
   };
 
   return (
+    <animated.div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={springProps}
+    >
     <Card withBorder radius="md" className={classes.card}>
       {modalOpen && <CustomModal onClose={closeModal} tasks={tasks} />}
 
       <Card.Section>
-        <a {...linkProps} onClick={() => showModal(id)}>
+        <a {...linkProps} onClick={() => navigate(`/project/${id}`)}>
           <Image src="https://picsum.photos/800/800" height={180} />
         </a>
       </Card.Section>
@@ -240,5 +255,6 @@ export function ProjectCard({ title, description, id, createdBy }) {
         </Group>
       </Group>
     </Card>
+    </animated.div>
   );
 }

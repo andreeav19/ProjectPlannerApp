@@ -48,7 +48,7 @@ const CustomModal = ({
     <Modal
       opened
       onClose={() => {
-        setError(null); // Resetarea mesajului de eroare la închiderea modalei
+        setError(null);
         onClose();
       }}
       title={`View user: ${user.firstName + " " + user.lastName}`}
