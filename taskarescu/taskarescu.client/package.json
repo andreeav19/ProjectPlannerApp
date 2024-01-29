@@ -34,7 +34,8 @@
     "react-router-dom": "^6.21.2",
     "react-select": "^5.8.0",
     "styled-components": "^6.1.8",
-    "tabler": "^1.0.0-alpha.8"
+    "tabler": "^1.0.0-alpha.8",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

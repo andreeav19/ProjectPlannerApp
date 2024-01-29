@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group } from "@mantine/core";
+import { ActionIcon, Box, Group, Select } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { useDisclosure } from "@mantine/hooks";
@@ -9,29 +9,64 @@ import { getDecodedJWT } from "./AuthContext";
 
 const CustomModal = ({
   onClose,
-  company,
-  action,
-  customParam1,
-  customParam2,
+  user
 }) => {
+  const [selectedRole, setSelectedRole] = useState(user.roleName);
+
+  const handleRoleChange = (value) => {
+    setSelectedRole(value);
+  }
+
+  const handleSaveChanges = () => {
+    axios
+      .put(`/api/Users/${user.userId}/role`, selectedRole, {
+        headers: {
+          Authorization: `Bearer ${getDecodedJWT().jwt}`,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((response) =>{
+        // console.log(response);
+        onClose();
+      })
+      .catch((err) => console.log(err))
+    
+  }
+
   return (
     <Modal
       opened
       onClose={onClose}
-      title={`View ${company}`}
+      title={`View user: ${user.firstName + " " + user.lastName}`}
       overlayProps={{
         backgroundOpacity: 0.55,
         blur: 3,
       }}
     >
       {/* Add your custom modal content here */}
-      <p>Action: {action}</p>
-      <p>Custom Parameter 1: {customParam1}</p>
-      <p>Custom Parameter 2: {customParam2}</p>
+      <p>User Id: {user.userId}</p>
+      <p>Username: {user.userName}</p>
+      <p>Email: {user.email}</p>
+      <p>
+        <Group wrap="nowrap">
+          Role: <Select
+          data={["Student", "Prof", "Admin"]}
+          value={selectedRole}
+          allowDeselect={false}
+          onChange={handleRoleChange}
+          />
+        </Group>
+      </p>
+      
 
-      <Button fullWidth onClick={onClose}>
-        Close
-      </Button>
+      <Group justify="center" wrap="nowrap">
+        <Button fullWidth color="blue" onClick={handleSaveChanges}>
+          Save
+        </Button>
+        <Button fullWidth onClick={onClose}>
+          Close
+        </Button>
+      </Group> 
     </Modal>
   );
 };
@@ -58,6 +93,7 @@ export function AdminTools() {
         },
       })
       .then((response) => {
+        console.log(response.data.response);
         setRecords(response.data.response);
       })
       .catch((error) => {
@@ -82,25 +118,17 @@ export function AdminTools() {
 
           {
             accessor: "actions",
-            title: <Box mr={6}>Row actions</Box>,
-            textAlign: "right",
-            render: (company) => (
-              <Group gap={2} justify="right" wrap="nowrap">
+            title: <Box mr={6}>Edit role</Box>,
+            textAlign: "center",
+            render: (user) => (
+              <Group gap={2} justify="center" wrap="nowrap">
                 <ActionIcon
                   size="sm"
                   variant="subtle"
                   color="blue"
-                  onClick={() => showModal({ company, action: "edit" })}
+                  onClick={() => showModal({ user })}
                 >
                   <IconEdit size={16} />
-                </ActionIcon>
-                <ActionIcon
-                  size="sm"
-                  variant="subtle"
-                  color="red"
-                  onClick={() => showModal({ company, action: "delete" })}
-                >
-                  <IconTrash size={16} />
                 </ActionIcon>
               </Group>
             ),
