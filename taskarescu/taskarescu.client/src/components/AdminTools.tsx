@@ -12,6 +12,7 @@ const CustomModal = ({
   user
 }) => {
   const [selectedRole, setSelectedRole] = useState(user.roleName);
+  const [error, setError] = useState(null);
 
   const handleRoleChange = (value) => {
     setSelectedRole(value);
@@ -29,14 +30,27 @@ const CustomModal = ({
         // console.log(response);
         onClose();
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        if (err.response) {
+          const errorMessage =
+          err.response.data.errors && err.response.data.errors.length
+            ? err.response.data.errors[0]
+            : "Eroare necunoscuta";
+
+          setError(`Eroare: ${errorMessage}`);
+        }
+        console.log(err)
+      })
     
   }
 
   return (
     <Modal
       opened
-      onClose={onClose}
+      onClose={() => {
+        setError(null); // Resetarea mesajului de eroare la închiderea modalei
+        onClose();
+      }}
       title={`View user: ${user.firstName + " " + user.lastName}`}
       overlayProps={{
         backgroundOpacity: 0.55,
@@ -58,6 +72,7 @@ const CustomModal = ({
         </Group>
       </p>
       
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <Group justify="center" wrap="nowrap">
         <Button fullWidth color="blue" onClick={handleSaveChanges}>
@@ -121,15 +136,21 @@ export function AdminTools() {
             title: <Box mr={6}>Edit role</Box>,
             textAlign: "center",
             render: (user) => (
+
               <Group gap={2} justify="center" wrap="nowrap">
-                <ActionIcon
-                  size="sm"
-                  variant="subtle"
-                  color="blue"
-                  onClick={() => showModal({ user })}
-                >
-                  <IconEdit size={16} />
-                </ActionIcon>
+                {
+                  user.userId == getDecodedJWT().nameIdentifier ? (<Box mr={6}/>) : 
+                  (
+                    <ActionIcon
+                      size="sm"
+                      variant="subtle"
+                      color="blue"
+                      onClick={() => showModal({ user })}
+                    >
+                      <IconEdit size={16} />
+                    </ActionIcon>
+                  )
+                }
               </Group>
             ),
           },
