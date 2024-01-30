@@ -3,11 +3,78 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDecodedJWT } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-import { ActionIcon, Button, Group, Modal, Box, TextInput, Select } from "@mantine/core";
+import { ActionIcon, Button, Group, Modal, Box, TextInput, Select, NumberInput } from "@mantine/core";
 import { DatePickerInput } from '@mantine/dates';
 
 import axios from "axios"
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+
+const FeedbackModal = ({
+    onClose,
+    task,
+}) => {
+    const feedback = task.feedback;
+
+    const [feedbackDescription, setFeedbackDescription] = useState(feedback.description);
+    const [feedbackPoints, setFeedbackPoints] = useState(feedback.points);
+    const [feedbackDifficulty, setFeedbackDifficulty] = useState(feedback.difficultyName);
+
+    const handleDescriptionChange = (value) => {
+        setFeedbackDescription(value);
+    }
+
+    const handlePointsChange = (value) => {
+        setFeedbackPoints(value);
+    }
+
+    const handleDifficultyChange = (value) => {
+        setFeedbackDifficulty(value);
+    }
+
+    return (
+
+
+        <Modal
+            opened
+            onClose={onClose}
+            title={`View feedback for ${task.name}`}
+            overlayProps={{
+                backgroundOpacity: 0.55,
+                blur: 3,
+            }}
+            size="md"
+            centered
+        >
+            <TextInput 
+                label="Description"
+                defaultValue={feedbackDescription}
+                onChange={handleDescriptionChange}
+            />
+            <br/>
+            <NumberInput
+                label="Points (0 - 10)"
+                defaultValue={feedbackPoints}
+                allowDecimal={false}
+                min={0}
+                max={10}
+                onChange={handlePointsChange}
+            />
+            <br />
+            <Select
+                label="Difficulty"
+                value={feedbackDifficulty}
+                data={["Easy", "Moderate", "Intermidiate", "Challenging", "Advanced"]}
+                onChange={handleDifficultyChange}
+            />
+            <br />
+            <Group justify="center" wrap="nowrap">
+                <Button fullWidth color="blue" onClick={onClose}>
+                    Close
+                </Button>
+            </Group>
+        </Modal>
+    )
+}
 
 const TaskModal = ({
     onClose,
@@ -92,7 +159,7 @@ const TaskModal = ({
             <br/>
 
             <Group justify="center" wrap="nowrap">
-                <Button fullwidth color="blue" onClick={onClose}>
+                <Button fullWidth color="blue" onClick={onClose}>
                     Close
                 </Button>
             </Group>
@@ -109,8 +176,10 @@ export function Project() {
     const [taskModalOpen, setTaskModalOpen] = useState(false);
     const [taskModalParams, setTaskModalParams] = useState({});
     const [usersAssign, setUsersAssign] = useState([]);
-    const [showTaskCol, setShowTaskCol] = useState(false);
-
+    // const [showTaskCol, setShowTaskCol] = useState(false);
+    const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+    const [feedbackModalParams, setFeedbackModalParams] = useState([]);
+    
     const deleteTask = (taskId) => {
 
         axios
@@ -133,6 +202,15 @@ export function Project() {
 
     const closeTaskModal = () => {
         setTaskModalOpen(false);
+    }
+
+    const showFeedbackModal = (params) => {
+        setFeedbackModalParams(params);
+        setFeedbackModalOpen(true);
+    }
+
+    const closeFeedbackModal = () => {
+        setFeedbackModalOpen(false);
     }
 
     useEffect(() => {
@@ -193,10 +271,10 @@ export function Project() {
     useEffect(() => {
         if (jwtToken.role === "student") {
             console.log("STUDENT")
-            setShowTaskCol(false);
+            // setShowTaskCol(false);
         } else {
             console.log("ADMIN PROF")
-            setShowTaskCol(true);
+            // setShowTaskCol(true);
         }
     }, [jwtToken.role])
 
@@ -266,7 +344,6 @@ export function Project() {
                     accessor: "taskActions",
                     title: <Box mr={6}>Task Actions</Box>,
                     textAlign: "center",
-                    show: showTaskCol,
                     render: (task) => task.feedback === null &&
                          (
                             <Group gap={2} justify="center" wrap="nowrap">
@@ -317,6 +394,33 @@ export function Project() {
                     sortable: true,
                     title: "Difficulty",
                 },
+                {
+                    accessor: "feedbackActions",
+                    title: <Box mr={6}>Feedback Actions</Box>,
+                    textAlign: "center",
+                    render: (task) => (
+                        task.feedback !== null ? (
+                            <ActionIcon
+                                size="sm"
+                                variant="subtle"
+                                color="blue"
+                                onClick={() => showFeedbackModal(task)}
+                            >
+                                <IconEdit size={16}/>
+                            </ActionIcon>
+                        ) : (
+                            <ActionIcon 
+                                size="sm"
+                                variant="subtle"
+                                color="green"
+                                onClick={() => console.log("ADD")}
+                            >
+                                <IconPlus size={16} />
+                            </ActionIcon>
+                        )
+                        
+                    )
+                }
                 ],
             },
             ]}
@@ -329,6 +433,9 @@ export function Project() {
 
         {taskModalOpen && (
             <TaskModal onClose={closeTaskModal} task={taskModalParams} usersAssign={usersAssign}/>
+        )}
+        {feedbackModalOpen && (
+            <FeedbackModal onClose={closeFeedbackModal} task={feedbackModalParams} />
         )}
     </div>
     );
