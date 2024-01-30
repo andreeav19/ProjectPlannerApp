@@ -18,8 +18,18 @@ const FeedbackModal = ({
     const [feedbackDescription, setFeedbackDescription] = useState(feedback.description);
     const [feedbackPoints, setFeedbackPoints] = useState(feedback.points);
     const [feedbackDifficulty, setFeedbackDifficulty] = useState(feedback.difficultyName);
+    const [feedbackDifficultyId, setFeedbackDifficultyId] = useState(feedback.difficultyId);
+    const [error, setError] = useState(null);
 
-    const handleDescriptionChange = (value) => {
+    useEffect(() => {
+        setFeedbackDescription(feedback.description);
+        setFeedbackPoints(feedback.points);
+        setFeedbackDifficulty(feedback.difficultyName);
+        setFeedbackDifficultyId(feedback.difficultyId);
+      }, [feedback]);
+
+    const handleDescriptionChange = (event) => {
+        const value = event.currentTarget.value;
         setFeedbackDescription(value);
     }
 
@@ -29,11 +39,56 @@ const FeedbackModal = ({
 
     const handleDifficultyChange = (value) => {
         setFeedbackDifficulty(value);
+        
+        switch(value) {
+            case 'Easy':
+                setFeedbackDifficultyId(1);
+                break;
+            case 'Moderate':
+                setFeedbackDifficultyId(2);
+                break;
+            case 'Intermediate':
+                setFeedbackDifficultyId(3);
+                break;
+            case 'Challenging':
+                setFeedbackDifficultyId(4);
+                break;
+            case 'Advanced':
+                setFeedbackDifficultyId(5);
+                break;
+            default:
+                console.log("cumva ai ratat dificultatea")
+        }
+    }
+
+    const handleSaveChanges = async (taskId) => {
+        const feedbackDto = {
+            description: feedbackDescription,
+            points: feedbackPoints,
+            difficultyId: feedbackDifficultyId,
+        };
+
+        try {
+        await axios.put(`/api/Users/${getDecodedJWT().nameIdentifier}/tasks/${task.id}/feedback`, feedbackDto, {
+            headers: {
+            Authorization: `Bearer ${getDecodedJWT().jwt}`,
+            },
+        });
+
+        onClose(taskId);
+        } catch (err) {
+        if (err.response) {
+            const errorMessage = err.response.data.errors && err.response.data.errors.length
+            ? err.response.data.errors[0]
+            : 'Eroare necunoscuta';
+
+            setError(`Eroare: ${errorMessage}`);
+        }
+        console.log(err);
+        }
     }
 
     return (
-
-
         <Modal
             opened
             onClose={onClose}
@@ -48,7 +103,7 @@ const FeedbackModal = ({
             <TextInput 
                 label="Description"
                 defaultValue={feedbackDescription}
-                onChange={handleDescriptionChange}
+                onChange={(v) => {handleDescriptionChange(v)}}
             />
             <br/>
             <NumberInput
@@ -63,12 +118,17 @@ const FeedbackModal = ({
             <Select
                 label="Difficulty"
                 value={feedbackDifficulty}
-                data={["Easy", "Moderate", "Intermidiate", "Challenging", "Advanced"]}
+                data={["Easy", "Moderate", "Intermediate", "Challenging", "Advanced"]}
                 onChange={handleDifficultyChange}
             />
             <br />
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
             <Group justify="center" wrap="nowrap">
-                <Button fullWidth color="blue" onClick={onClose}>
+                <Button fullWidth color="blue" onClick={() => handleSaveChanges(task.id)}>
+                    Save
+                </Button>
+                <Button fullWidth onClick={() => onClose(task.id)}>
                     Close
                 </Button>
             </Group>
@@ -209,8 +269,26 @@ export function Project() {
         setFeedbackModalOpen(true);
     }
 
-    const closeFeedbackModal = () => {
-        setFeedbackModalOpen(false);
+    const closeFeedbackModal = async (taskId) => {
+        try {
+            const feedbackResponse = await axios.get(`/api/tasks/${taskId}/feedback`, {
+                headers: {
+                    Authorization: `Bearer ${getDecodedJWT().jwt}`
+                }
+            });
+    
+            const updatedTasks = tasks.map(task => {
+                if (task.id === taskId) {
+                    return { ...task, feedback: feedbackResponse.data.response };
+                }
+                return task;
+            });
+    
+            setTasks(updatedTasks);
+            setFeedbackModalOpen(false);
+        } catch (error) {
+            console.error("Error fetching feedback for task:", error);
+        }
     }
 
     useEffect(() => {
@@ -435,8 +513,9 @@ export function Project() {
             <TaskModal onClose={closeTaskModal} task={taskModalParams} usersAssign={usersAssign}/>
         )}
         {feedbackModalOpen && (
-            <FeedbackModal onClose={closeFeedbackModal} task={feedbackModalParams} />
+            <FeedbackModal onClose={() => closeFeedbackModal(feedbackModalParams.id)} task={feedbackModalParams} />
         )}
+
     </div>
     );
 }
