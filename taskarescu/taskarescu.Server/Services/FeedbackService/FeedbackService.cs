@@ -47,6 +47,11 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<int>(false, -1, new[] { "Dificultatea nu a fost gasita!" });
             }
 
+            if (task.StatusId != 3)
+            {
+                return new ResultDto<int>(false, -1, new[] { "Nu se poate adauga feedback unui task neterminat!" });
+            }
+
             var feedback = new Feedback
             {
                 Description = feedbackDto.Description,
