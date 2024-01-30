@@ -19,6 +19,28 @@ namespace taskarescu.Server.Services.ProjectServices
             _mapper = mapper;
         }
 
+        public async Task<ResultDto<ICollection<string>>> GetStudentsByProjectId(Guid projectId)
+        {
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+            {
+                return new ResultDto<ICollection<string>>(false, null, new[] { "Proiectul nu a fost gasit! " });
+            }
+
+            var usernames = await _context.StudentProjects
+                .Where(sp => sp.ProjectId == projectId)
+                .Join(
+                    _context.Users,
+                    studentProject => studentProject.UserId,
+                    user => user.Id,
+                    (studentProject, user) => user.UserName
+                )
+                .ToListAsync();
+
+            return new ResultDto<ICollection<string>>(true, usernames, null);
+        }
+
         async Task<ResultDto<Guid>> IProjectService.AddProject(ProjectDto projectDto)
         {
             var projectId = Guid.NewGuid();

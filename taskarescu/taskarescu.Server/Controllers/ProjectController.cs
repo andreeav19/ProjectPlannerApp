@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taskarescu.Server.DTOs;
+using taskarescu.Server.Models;
 using taskarescu.Server.Services.FeedbackService;
 using taskarescu.Server.Services.ProjectServices;
 using taskarescu.Server.Services.TaskItemServices;
@@ -143,7 +144,7 @@ namespace taskarescu.Server.Controllers
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet("{projectId}/tasks")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<GetTaskItemDto>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetTaskItemsByProjectId(Guid projectId)
@@ -160,7 +161,7 @@ namespace taskarescu.Server.Controllers
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet("/tasks/{taskId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<GetTaskItemDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetTaskItemById(int taskId)
@@ -251,6 +252,23 @@ namespace taskarescu.Server.Controllers
         public async Task<IActionResult> GetFeedbackByTaskItemId(int taskItemId)
         {
             var resultDto = await _feedbackService.GetFeedbackByTaskItemId(taskItemId);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "UsersOnly")]
+        [HttpGet("{projectId}/students")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStudentsByProjectId(Guid projectId)
+        {
+            var resultDto = await _projectService.GetStudentsByProjectId(projectId);
 
             if (!resultDto.IsSuccess)
             {

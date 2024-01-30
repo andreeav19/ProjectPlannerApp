@@ -11,6 +11,7 @@ namespace taskarescu.Server.Services.ProjectServices
         Task<ResultDto<bool>> DeleteProjectById(Guid projectId);
         Task<ResultDto<bool>> AddStudentToProject(string userId, Guid projectId);
         Task<ResultDto<bool>> RemoveStudentFromProject(string userId, Guid projectId);
+        Task<ResultDto<ICollection<string>>> GetStudentsByProjectId(Guid projectId);
 
     }
 }
