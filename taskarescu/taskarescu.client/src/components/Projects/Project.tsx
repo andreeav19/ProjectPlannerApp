@@ -1,4 +1,4 @@
-import { DataTable } from "mantine-datatable";
+import { DataTable, useDataTableColumns } from "mantine-datatable";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDecodedJWT } from "../AuthContext";
@@ -415,7 +415,7 @@ export function Project() {
     }, [projectId]);
 
     console.log("Tasks:", tasks);
-    
+
     return (
     <div>
         <DataTable
@@ -424,7 +424,7 @@ export function Project() {
             groups={[
             {
                 id: "task",
-                columns: [
+                columns: getDecodedJWT().role === 'Student' ? [
                 {
                     accessor: "name",
                     align: "left",
@@ -488,11 +488,41 @@ export function Project() {
                         )
                     
                 }
-                ],
+                ] : [
+                    {
+                        accessor: "name",
+                        align: "left",
+                        headerAlign: "left",
+                        sortable: true,
+                        title: "Task Name",
+                    },
+                    {
+                        accessor: "description",
+                        align: "left",
+                        headerAlign: "left",
+                        width: 150,
+                        sortable: true,
+                        title: "Task Description",
+                    },
+                    {
+                        accessor: "deadline",
+                        align: "center",
+                        headerAlign: "center",
+                        sortable: true,
+                        title: "Deadline"
+                    },
+                    {
+                        accessor: "statusName",
+                        align: "center",
+                        headerAlign: "center",
+                        sortable: true,
+                        title: "Status",
+                    },
+                    ],
             },
             {
                 id: "feedback",
-                columns: [
+                columns: getDecodedJWT().role !== 'Student' ? [
                 {
                     accessor: "feedback.description",
                     align: "left",
@@ -540,9 +570,32 @@ export function Project() {
                             </ActionIcon>
                         )
                         
-                    )
+                    ),
                 }
-                ],
+                ] : [
+                    {
+                        accessor: "feedback.description",
+                        align: "left",
+                        headerAlign: "left",
+                        width: 150,
+                        sortable: true,
+                        title: "Description",
+                    },
+                    {
+                        accessor: "feedback.points",
+                        align: "center",
+                        headerAlign: "center",
+                        sortable: true,
+                        title: "Points",
+                    },
+                    {
+                        accessor: "feedback.difficultyName",
+                        align: "center",
+                        headerAlign: "center",
+                        sortable: true,
+                        title: "Difficulty",
+                    },
+                    ],
             },
             ]}
             records={tasks}

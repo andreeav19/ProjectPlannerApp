@@ -287,12 +287,14 @@ export function Projects() {
         project={projectModalParams}
         action={projectModalParams.action} />
       )}
+      {(getDecodedJWT().role != 'Student') &&
       <Button
         color="cyan"
         onClick={() => showProjectModal(null, 'add')}
       >
         Create Project
       </Button>
+      }
       <br /> <br />
       <SimpleGrid cols={3} spacing="lg" verticalSpacing="sm" mx="xl">
         {projects.map((item) => (
