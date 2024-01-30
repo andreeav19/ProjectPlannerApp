@@ -12,20 +12,38 @@ import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 const FeedbackModal = ({
     onClose,
     task,
+    action
 }) => {
     const feedback = task.feedback;
+    console.log(action);
 
-    const [feedbackDescription, setFeedbackDescription] = useState(feedback.description);
-    const [feedbackPoints, setFeedbackPoints] = useState(feedback.points);
-    const [feedbackDifficulty, setFeedbackDifficulty] = useState(feedback.difficultyName);
-    const [feedbackDifficultyId, setFeedbackDifficultyId] = useState(feedback.difficultyId);
+    let initialFeedbackDescription = '';
+    let initialFeedbackPoints = 0;
+    let initialFeedbackDifficulty = '';
+    let initialFeedbackDifficultyId = 0;
+
+    if (action === 'edit') {
+        initialFeedbackDescription = task.feedback.description;
+        initialFeedbackPoints = task.feedback.points;
+        initialFeedbackDifficulty = task.feedback.difficultyName;
+        initialFeedbackDifficultyId = task.feedback.difficultyId;
+    }
+
+    const [feedbackDescription, setFeedbackDescription] = useState(initialFeedbackDescription);
+    const [feedbackPoints, setFeedbackPoints] = useState(initialFeedbackPoints);
+    const [feedbackDifficulty, setFeedbackDifficulty] = useState(initialFeedbackDifficulty);
+    const [feedbackDifficultyId, setFeedbackDifficultyId] = useState(initialFeedbackDifficultyId);
+
+    
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        setFeedbackDescription(feedback.description);
-        setFeedbackPoints(feedback.points);
-        setFeedbackDifficulty(feedback.difficultyName);
-        setFeedbackDifficultyId(feedback.difficultyId);
+        if (feedback != null) {
+            setFeedbackDescription(feedback.description);
+            setFeedbackPoints(feedback.points);
+            setFeedbackDifficulty(feedback.difficultyName);
+            setFeedbackDifficultyId(feedback.difficultyId);
+        }
       }, [feedback]);
 
     const handleDescriptionChange = (event) => {
@@ -61,7 +79,13 @@ const FeedbackModal = ({
         }
     }
 
-    const handleSaveChanges = async (taskId) => {
+    const handleSaveChanges = async () => {
+        console.log(feedbackPoints);
+        if (!feedbackPoints) {
+            setError("Eroare: Feedback-ul trebuie sa aiba punctaj!");
+            return;
+        }
+
         const feedbackDto = {
             description: feedbackDescription,
             points: feedbackPoints,
@@ -69,13 +93,22 @@ const FeedbackModal = ({
         };
 
         try {
-        await axios.put(`/api/Users/${getDecodedJWT().nameIdentifier}/tasks/${task.id}/feedback`, feedbackDto, {
-            headers: {
-            Authorization: `Bearer ${getDecodedJWT().jwt}`,
-            },
-        });
+            if (action === 'edit') {
+                await axios.put(`/api/Users/${getDecodedJWT().nameIdentifier}/tasks/${task.id}/feedback`, feedbackDto, {
+                    headers: {
+                    Authorization: `Bearer ${getDecodedJWT().jwt}`,
+                    },
+                });
+            } else {
+                await axios.post(`/api/Users/${getDecodedJWT().nameIdentifier}/tasks/${task.id}/feedback`, feedbackDto, {
+                    headers: {
+                    Authorization: `Bearer ${getDecodedJWT().jwt}`,
+                    },
+                });
+            }
 
-        onClose(taskId);
+            onClose(task);
+
         } catch (err) {
         if (err.response) {
             const errorMessage = err.response.data.errors && err.response.data.errors.length
@@ -92,7 +125,7 @@ const FeedbackModal = ({
         <Modal
             opened
             onClose={onClose}
-            title={`View feedback for ${task.name}`}
+            title={action==='edit' ? `View feedback for ${task.name}` : `Create feedback for ${task.name}`}
             overlayProps={{
                 backgroundOpacity: 0.55,
                 blur: 3,
@@ -110,9 +143,10 @@ const FeedbackModal = ({
                 label="Points (0 - 10)"
                 defaultValue={feedbackPoints}
                 allowDecimal={false}
-                min={0}
+                min={1}
                 max={10}
                 onChange={handlePointsChange}
+                required
             />
             <br />
             <Select
@@ -125,10 +159,10 @@ const FeedbackModal = ({
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             <Group justify="center" wrap="nowrap">
-                <Button fullWidth color="blue" onClick={() => handleSaveChanges(task.id)}>
+                <Button fullWidth color="blue" onClick={() => handleSaveChanges()}>
                     Save
                 </Button>
-                <Button fullWidth onClick={() => onClose(task.id)}>
+                <Button fullWidth onClick={() => onClose(task)}>
                     Close
                 </Button>
             </Group>
@@ -239,7 +273,7 @@ export function Project() {
     // const [showTaskCol, setShowTaskCol] = useState(false);
     const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
     const [feedbackModalParams, setFeedbackModalParams] = useState([]);
-    
+
     const deleteTask = (taskId) => {
 
         axios
@@ -264,31 +298,40 @@ export function Project() {
         setTaskModalOpen(false);
     }
 
-    const showFeedbackModal = (params) => {
-        setFeedbackModalParams(params);
+    const showFeedbackModal = (params, actionType) => {
+        setFeedbackModalParams({...params, actionType});
         setFeedbackModalOpen(true);
     }
 
-    const closeFeedbackModal = async (taskId) => {
+    const closeFeedbackModal = async (task) => {
+        console.log(task.feedback);
+
         try {
-            const feedbackResponse = await axios.get(`/api/tasks/${taskId}/feedback`, {
+            const feedbackResponse = await axios.get(`/api/tasks/${task.id}/feedback`, {
                 headers: {
                     Authorization: `Bearer ${getDecodedJWT().jwt}`
                 }
             });
+            
+            console.log(feedbackResponse);
+
+            if (feedbackResponse.data.response) {
     
-            const updatedTasks = tasks.map(task => {
-                if (task.id === taskId) {
-                    return { ...task, feedback: feedbackResponse.data.response };
-                }
-                return task;
-            });
-    
-            setTasks(updatedTasks);
+                const updatedTasks = tasks.map(t => {
+                    if (t.id === task.id) {
+                        return { ...t, feedback: feedbackResponse.data.response };
+                    }
+                    return t;
+                });
+
+                setTasks(updatedTasks);
+            }
+
             setFeedbackModalOpen(false);
         } catch (error) {
             console.error("Error fetching feedback for task:", error);
         }
+
     }
 
     useEffect(() => {
@@ -372,7 +415,7 @@ export function Project() {
     }, [projectId]);
 
     console.log("Tasks:", tasks);
-
+    
     return (
     <div>
         <DataTable
@@ -482,7 +525,7 @@ export function Project() {
                                 size="sm"
                                 variant="subtle"
                                 color="blue"
-                                onClick={() => showFeedbackModal(task)}
+                                onClick={() => showFeedbackModal(task, 'edit')}
                             >
                                 <IconEdit size={16}/>
                             </ActionIcon>
@@ -491,7 +534,7 @@ export function Project() {
                                 size="sm"
                                 variant="subtle"
                                 color="green"
-                                onClick={() => console.log("ADD")}
+                                onClick={() => showFeedbackModal(task, 'add')}
                             >
                                 <IconPlus size={16} />
                             </ActionIcon>
@@ -513,7 +556,9 @@ export function Project() {
             <TaskModal onClose={closeTaskModal} task={taskModalParams} usersAssign={usersAssign}/>
         )}
         {feedbackModalOpen && (
-            <FeedbackModal onClose={() => closeFeedbackModal(feedbackModalParams.id)} task={feedbackModalParams} />
+            <FeedbackModal onClose={() => closeFeedbackModal(feedbackModalParams)} 
+            task={feedbackModalParams} 
+            action={feedbackModalParams.actionType}/>
         )}
 
     </div>
