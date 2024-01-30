@@ -129,7 +129,8 @@ const ProjectModal = ({
 export function Projects() {
   const [projects, setProjects] = useState([]);  
   const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [projectModalParams, setProjectModalParams] = useState({})
+  const [projectModalParams, setProjectModalParams] = useState({});
+  const [toggleRender, setToggleRender] = useState(false);
 
   const showProjectModal = (params, action) => {
     setProjectModalParams({...params, action});
@@ -140,6 +141,22 @@ export function Projects() {
   const closeProjectModal = () => {
     console.log(projectModalOpen);
     setProjectModalOpen(false);
+    setToggleRender(!toggleRender);
+  }
+
+  const deleteProject = (projectId) => {
+    axios
+    .delete(`/api/Project/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${getDecodedJWT().jwt}`
+      }
+    })
+    .then(response => {
+      setToggleRender(!toggleRender);
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 
   useEffect(() => {
@@ -159,7 +176,7 @@ export function Projects() {
         console.error("Error fetching projects:", error);
       });
 
-  }, [projectModalOpen]);
+  }, [toggleRender]);
 
   const ProjectCard = ({ title, description, id, createdBy, project }) => {
     const linkProps = {
@@ -240,7 +257,7 @@ export function Projects() {
         <Group justify="space-between" className={classes.footer}>
           <Avatars teacher={teacher} />
   
-          <Group gap={8} mr={0}>
+          { (getDecodedJWT().role !== 'Student') ? (<Group gap={8} mr={0}>
             <ActionIcon className={classes.action}>
               <IconEdit
                 style={{ width: rem(16), height: rem(16) }}
@@ -252,9 +269,10 @@ export function Projects() {
               <IconTrash
                 style={{ width: rem(16), height: rem(16) }}
                 color={theme.colors.red[7]}
+                onClick={() => deleteProject(project.id)}
               />
             </ActionIcon>
-          </Group>
+          </Group> ) : (null)}
         </Group>
       </Card>
       </animated.div>
