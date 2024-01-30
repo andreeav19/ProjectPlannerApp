@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { getDecodedJWT } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ActionIcon, Button, Group, Modal, Box, TextInput, Select, NumberInput } from "@mantine/core";
-import { DatePickerInput } from '@mantine/dates';
+import { DateInput } from '@mantine/dates';
 
 import axios from "axios"
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconArrowAutofitRight, IconArrowLeft, IconArrowRight, IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 
 const FeedbackModal = ({
     onClose,
@@ -173,19 +173,39 @@ const FeedbackModal = ({
 const TaskModal = ({
     onClose,
     task,
+    action,
     usersAssign
 }) => {
-    const [taskName, setTaskName ] = useState(task.name);
-    const [taskDescription, setTaskDescription] = useState(task.description);
-    // const [taskDeadline, setTaskDeadline] = useState(task.deadline);
-    const [taskUsername, setTaskUsername] = useState(task.username);
-    const [taskStatus, setTaskStatus] = useState(task.statusName);
+    const { projectId } = useParams();
 
-    const handleNameChange = (value) => {
+    let initialName = ''
+    let initialDescription = ''
+    let initialUsername = ''
+    let initialStatus = ''
+    let initialDeadline = null;
+
+    if (action === 'edit') {
+        initialName = task.name
+        initialDescription = task.description
+        initialUsername = task.username
+        initialStatus = task.statusName
+        initialDeadline = new Date(task.deadline)
+    }
+
+    const [taskName, setTaskName ] = useState(initialName);
+    const [taskDescription, setTaskDescription] = useState(initialDescription);
+    const [taskDeadline, setTaskDeadline] = useState<Date | null>(initialDeadline);
+    const [taskUsername, setTaskUsername] = useState(initialUsername);
+    const [taskStatus, setTaskStatus] = useState(initialStatus);
+    const [error, setError] = useState(null);
+
+    const handleNameChange = (event) => {
+        const value = event.currentTarget.value;
         setTaskName(value);
     }
 
-    const handleDescriptionChange = (value) => {
+    const handleDescriptionChange = (event) => {
+        const value = event.currentTarget.value;
         setTaskDescription(value);
     }
 
@@ -201,11 +221,56 @@ const TaskModal = ({
         setTaskStatus(value);
     }
 
+    const handleSaveChanges = () => {
+        if (!taskName) {
+            setError('Eroare: Campul \'Name\' nu a fost completat!')
+            return;
+        }
+
+        const taskDto = {
+            name: taskName,
+            description: taskDescription,
+            deadline: taskDeadline,
+            username: taskUsername,
+            statusName: taskStatus
+        };
+
+        let axiosCall;
+        let url;
+
+        if (action === 'add') {
+            axiosCall = axios.post;
+            url = `/api//Project/${projectId}/tasks`
+        } else {
+            axiosCall = axios.put;
+            url = `/api//Project/${projectId}/tasks/${task.id}`
+        }
+
+        axiosCall(url, taskDto, {
+            headers: {
+                Authorization: `Bearer ${getDecodedJWT().jwt}`
+            }
+        }).then(response => {
+            onClose();
+        })
+        .catch(err => {
+            if (err.response) {
+              const errorMessage =
+              err.response.data.errors && err.response.data.errors.length
+                ? err.response.data.errors[0]
+                : "Eroare necunoscuta";
+      
+              setError(`Eroare: ${errorMessage}`);
+            }
+            console.log(err)
+          });
+    }
+
     return (
         <Modal
             opened
             onClose={onClose}
-            title={`View Task ${task.name}`}
+            title={`${action === 'edit' ? "View Task " + task.name : "Create Task"}`}
             overlayProps={{
                 backgroundOpacity: 0.55,
                 blur: 3,
@@ -218,6 +283,7 @@ const TaskModal = ({
                 label="Name"
                 defaultValue={taskName}
                 onChange={handleNameChange}
+                required
             />
             <br/> 
             <TextInput
@@ -225,16 +291,17 @@ const TaskModal = ({
                 defaultValue={taskDescription}
                 onChange={handleDescriptionChange}
             />
+            <br/> 
 
-            {/* nu stiu ce se petrece dar cand pun un date picker calendarul e pocit ca drq */}
-            {/* <DatePickerInput
-                // valueFormat="YYYY MMM DD"
-                // type="multiple"
+            {/* nu stiu ce se petrece dar cand pun un date input calendarul e pocit ca drq */}
+            <DateInput
+                value={taskDeadline}
+                onChange={handleDeadlineChange}
                 label="Deadline"
-                
-                // placeholder="Pick date"
-            /> */}
-            <br />
+                nextIcon={<ActionIcon color="cyan" size="xs"><IconArrowRight/></ActionIcon>}
+                previousIcon={<ActionIcon color="cyan" size="xs"><IconArrowLeft/></ActionIcon>}
+            />
+            <br/> 
 
             <Select
                 label="User assigned"
@@ -253,6 +320,9 @@ const TaskModal = ({
             <br/>
 
             <Group justify="center" wrap="nowrap">
+                <Button fullWidth color="blue" onClick={handleSaveChanges}>
+                    Save
+                </Button>
                 <Button fullWidth color="blue" onClick={onClose}>
                     Close
                 </Button>
@@ -270,7 +340,6 @@ export function Project() {
     const [taskModalOpen, setTaskModalOpen] = useState(false);
     const [taskModalParams, setTaskModalParams] = useState({});
     const [usersAssign, setUsersAssign] = useState([]);
-    // const [showTaskCol, setShowTaskCol] = useState(false);
     const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
     const [feedbackModalParams, setFeedbackModalParams] = useState([]);
 
@@ -289,8 +358,8 @@ export function Project() {
     
     }
 
-    const showTaskModal = (params) => {
-        setTaskModalParams(params);
+    const showTaskModal = (params, actionType) => {
+        setTaskModalParams({...params, actionType});
         setTaskModalOpen(true);
     }
 
@@ -346,7 +415,7 @@ export function Project() {
                 const formattedTasks = tasksResponse.data.response.map(task => {
                     const formattedTask = {
                         ...task,
-                        deadline: task.deadline ? new Date(task.deadline).toLocaleDateString("en-GB", {
+                        deadlineFormatted: task.deadline ? new Date(task.deadline).toLocaleDateString("en-GB", {
                             day: "numeric",
                             month: "short",
                             year: "numeric",
@@ -387,17 +456,7 @@ export function Project() {
 
         fetchData();
     
-    }, [projectId, jwtToken.jwt]);
-
-    useEffect(() => {
-        if (jwtToken.role === "student") {
-            console.log("STUDENT")
-            // setShowTaskCol(false);
-        } else {
-            console.log("ADMIN PROF")
-            // setShowTaskCol(true);
-        }
-    }, [jwtToken.role])
+    }, [projectId, jwtToken.jwt, taskModalOpen]);
 
     useEffect(() => {
         axios
@@ -441,7 +500,7 @@ export function Project() {
                     title: "Task Description",
                 },
                 {
-                    accessor: "deadline",
+                    accessor: "deadlineFormatted",
                     align: "center",
                     headerAlign: "center",
                     sortable: true,
@@ -472,7 +531,7 @@ export function Project() {
                                     size="sm"
                                     variant="subtle"
                                     color="blue"
-                                    onClick={() => showTaskModal(task)}
+                                    onClick={() => showTaskModal(task, 'edit')}
                                 >
                                     <IconEdit size={16}/>
                                 </ActionIcon>
@@ -505,7 +564,7 @@ export function Project() {
                         title: "Task Description",
                     },
                     {
-                        accessor: "deadline",
+                        accessor: "deadlineFormatted",
                         align: "center",
                         headerAlign: "center",
                         sortable: true,
@@ -601,12 +660,23 @@ export function Project() {
             records={tasks}
         />
         <br></br>
-        <Button onClick={() => navigate("/projects")}>
-            Go back
-        </Button>
+        <Group>
+            <Button onClick={() => navigate("/projects")}>
+                Go back
+            </Button>
+            { getDecodedJWT().role === 'Student' && (
+                <Button onClick={() => showTaskModal(null, 'add')}>
+                    Add Task
+                </Button>
+            )}
+        </Group>
 
         {taskModalOpen && (
-            <TaskModal onClose={closeTaskModal} task={taskModalParams} usersAssign={usersAssign}/>
+            <TaskModal onClose={closeTaskModal}
+            task={taskModalParams}
+            usersAssign={usersAssign}
+            action={taskModalParams.actionType}
+            />
         )}
         {feedbackModalOpen && (
             <FeedbackModal onClose={() => closeFeedbackModal(feedbackModalParams)} 

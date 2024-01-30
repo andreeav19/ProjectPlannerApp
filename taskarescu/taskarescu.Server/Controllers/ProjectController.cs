@@ -181,7 +181,7 @@ namespace taskarescu.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<int>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddTaskItem(Guid projectId, [FromBody] TaskItemDto taskItemDto)
+        public async Task<IActionResult> AddTaskItem(Guid projectId, [FromBody] PutPostTaskItemDto taskItemDto)
         {
             var resultDto = await _taskItemService.AddTaskItem(projectId, taskItemDto);
 
@@ -198,7 +198,7 @@ namespace taskarescu.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditTaskItemById(Guid projectId, int taskId, [FromBody] TaskItemDto taskItemDto)
+        public async Task<IActionResult> EditTaskItemById(Guid projectId, int taskId, [FromBody] PutPostTaskItemDto taskItemDto)
         {
             var resultDto = await _taskItemService.EditTaskItemById(projectId, taskId, taskItemDto);
 

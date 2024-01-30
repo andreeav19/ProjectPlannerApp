@@ -6,8 +6,8 @@ namespace taskarescu.Server.Services.TaskItemServices
     {
         Task<ResultDto<ICollection<GetTaskItemDto>>> GetTaskItemsByProjectId(Guid projectId);
         Task<ResultDto<GetTaskItemDto>> GetTaskItemById(int taskId);
-        Task<ResultDto<int>> AddTaskItem(Guid projectId, TaskItemDto taskItemDto);
-        Task<ResultDto<bool>> EditTaskItemById(Guid projectId, int taskId, TaskItemDto taskItemDto);
+        Task<ResultDto<int>> AddTaskItem(Guid projectId, PutPostTaskItemDto taskItemDto);
+        Task<ResultDto<bool>> EditTaskItemById(Guid projectId, int taskId, PutPostTaskItemDto taskItemDto);
         Task<ResultDto<bool>> DeleteTaskItemById(int taskId);
     }
 }

@@ -16,7 +16,7 @@ namespace taskarescu.Server.Services.TaskItemServices
             _mapper = mapper;
         }
 
-        public async Task<ResultDto<int>> AddTaskItem(Guid projectId, TaskItemDto taskItemDto)
+        public async Task<ResultDto<int>> AddTaskItem(Guid projectId, PutPostTaskItemDto taskItemDto)
         {
             var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
@@ -25,25 +25,38 @@ namespace taskarescu.Server.Services.TaskItemServices
                 return new ResultDto<int>(false, -1, new[] { "Proiectul nu a fost gasit!" });
             }
 
-            if (taskItemDto.UserId != null)
+            string userId = null;
+            if (taskItemDto.Username != null)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == taskItemDto.Username);
+
+                if (user == null)
+                {
+                    return new ResultDto<int>(false, -1, new[] { "Utilizatorul nu a fost gasit!" });
+                }
+
                 var studentProject = await _context.StudentProjects
-                   .FirstOrDefaultAsync(sp => sp.UserId == taskItemDto.UserId && sp.ProjectId == projectId);
+                   .FirstOrDefaultAsync(sp => sp.UserId == user.Id && sp.ProjectId == projectId);
 
                 if (studentProject == null)
                 {
                     return new ResultDto<int>(false, -1, new[] { "Task-ul poate fi asignat doar unui Student care face parte din proiect!" });
                 }
+
+                userId = user.Id;
             }
 
-            if (taskItemDto.StatusId != null)
+
+            int statusId = 1;
+            if (taskItemDto.StatusName != null)
             {
-                var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Id == taskItemDto.StatusId);
+                var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == taskItemDto.StatusName);
 
                 if (status == null)
                 {
                     return new ResultDto<int>(false, -1, new[] { "Statusul nu a fost gasit!" });
                 }
+                statusId = status.Id;
             }
 
             var addedTaskItem = new TaskItem
@@ -52,8 +65,8 @@ namespace taskarescu.Server.Services.TaskItemServices
                 Description = taskItemDto.Description,
                 ProjectId = projectId,
                 Deadline = taskItemDto.Deadline,
-                UserId = taskItemDto.UserId,
-                StatusId = taskItemDto.StatusId
+                UserId = userId,
+                StatusId = statusId
             };
 
             await _context.TaskItems.AddAsync(addedTaskItem);
@@ -86,7 +99,7 @@ namespace taskarescu.Server.Services.TaskItemServices
             return new ResultDto<bool>(true, true, null);
         }
 
-        public async Task<ResultDto<bool>> EditTaskItemById(Guid projectId, int taskId, TaskItemDto taskItemDto)
+        public async Task<ResultDto<bool>> EditTaskItemById(Guid projectId, int taskId, PutPostTaskItemDto taskItemDto)
         {
             var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
 
@@ -102,35 +115,49 @@ namespace taskarescu.Server.Services.TaskItemServices
                 return new ResultDto<bool>(false, false, new[] { "Task-ul nu a fost gasit!" });
             }
 
-            if (taskItemDto.UserId != null)
+            string userId = null;
+            if (taskItemDto.Username != null)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == taskItemDto.Username);
+
+                if (user == null)
+                {
+                    return new ResultDto<bool>(false, false, new[] { "Utilizatorul nu a fost gasit!" });
+                }
+
                 var studentProject = await _context.StudentProjects
-                    .FirstOrDefaultAsync(sp => sp.UserId == taskItemDto.UserId && sp.ProjectId == projectId);
+                    .FirstOrDefaultAsync(sp => sp.UserId == user.Id && sp.ProjectId == projectId);
 
                 if (studentProject == null)
                 {
                     return new ResultDto<bool>(false, false, new[] { "Task-ul poate fi asignat doar unui Student care face parte din proiect!" });
                 }
+
+                userId = user.Id;
             }
 
-            if (taskItemDto.StatusId != null)
+            int statusId = 1;
+
+            if (taskItemDto.StatusName != null)
             {
-                var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Id ==  taskItemDto.StatusId);
+                var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name ==  taskItemDto.StatusName);
 
                 if (status == null)
                 {
                     return new ResultDto<bool>(false, false, new[] { "Statusul nu a fost gasit!" });
                 }
+
+                statusId = status.Id;
             }
 
             taskItem.Name = taskItemDto.Name;
             taskItem.Description = taskItemDto.Description;
             taskItem.Deadline = taskItemDto.Deadline;
-            taskItem.UserId = taskItemDto.UserId;
-            taskItem.StatusId = taskItemDto.StatusId;
+            taskItem.UserId = userId;
+            taskItem.StatusId = statusId;
 
             _context.TaskItems.Update(taskItem);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return new ResultDto<bool>(true, true, null);          
         }
