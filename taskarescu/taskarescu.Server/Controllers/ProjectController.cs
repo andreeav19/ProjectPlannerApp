@@ -75,13 +75,13 @@ namespace taskarescu.Server.Controllers
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpPost]
+        [HttpPost("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<Guid>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddProject([FromBody] ProjectDto projectDto)
+        public async Task<IActionResult> AddProject(string userId, [FromBody] ProjectPostDto projectDto)
         {
-            var resultDto = await _projectService.AddProject(projectDto);
+            var resultDto = await _projectService.AddProject(userId, projectDto);
 
             if (!resultDto.IsSuccess)
             {

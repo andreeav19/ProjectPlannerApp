@@ -41,11 +41,9 @@ namespace taskarescu.Server.Services.ProjectServices
             return new ResultDto<ICollection<string>>(true, usernames, null);
         }
 
-        async Task<ResultDto<Guid>> IProjectService.AddProject(ProjectDto projectDto)
+        async Task<ResultDto<Guid>> IProjectService.AddProject(string userId, ProjectPostDto projectDto)
         {
-            var projectId = Guid.NewGuid();
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == projectDto.UserId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
@@ -59,12 +57,14 @@ namespace taskarescu.Server.Services.ProjectServices
                 return new ResultDto<Guid>(false, Guid.Empty, new[] { "Utilizatorul nu are rolul de Admin sau Profesor!" });
             }
 
+            var projectId = Guid.NewGuid();
+
             var project = new Project
             {
                 Id = projectId,
                 Name = projectDto.Name,
                 Description = projectDto.Description,
-                UserId = projectDto.UserId
+                UserId = userId
             };
 
             await _context.AddAsync(project);
