@@ -184,6 +184,27 @@ namespace taskarescu.Server.Services.UserServices
             return new ResultDto<UserDto>(true, userDto, null);
         }
 
+        public async Task<ResultDto<UserDto>> GetUserByUsername(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null)
+            {
+                return new ResultDto<UserDto>(false, null, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+
+            if (role != null)
+            {
+                userDto.RoleName = role.Name;
+            }
+
+            return new ResultDto<UserDto>(true, userDto, null);
+        }
+
         public async Task<ResultDto<ICollection<UserDto>>> GetUsers()
         {
             List<UserDto> userDtos = await _context.Users

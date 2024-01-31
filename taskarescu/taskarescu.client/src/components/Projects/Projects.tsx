@@ -9,16 +9,216 @@ import { SimpleGrid,
   ActionIcon,
   useMantineTheme,
   rem,
-  Badge
+  Badge,
+  Box
 } from "@mantine/core";
 import { getDecodedJWT } from "../AuthContext";
-import { IconEdit, IconTrash, IconUsersGroup } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconUserMinus, IconUsersGroup } from "@tabler/icons-react";
 import classes from "./ProjectCard.module.css";
 import { Avatars } from "./Avatars";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSpring, animated} from "react-spring";
 import { useNavigate } from "react-router-dom";
+import { DataTable } from "mantine-datatable";
+
+const StudentsModal = ({
+  onClose,
+  project
+}) => {
+
+  const [students, setStudents] = useState([]);
+  const [toggleModified, setToggleModified] = useState(false);
+  const [error, setError] = useState(null);
+  const [username, setUsername] = useState('');
+
+  const handleUsernameChange = (event) => {
+    const value = event.currentTarget.value;
+    setUsername(value);
+  }
+
+  useEffect(() => {
+    const fetchUsersForProject = async () => {
+      try {
+        const studentsResponse = await axios.get(`/api/Project/${project.id}/students`, {
+          headers: {
+            Authorization: `Bearer ${getDecodedJWT().jwt}`,
+          },
+        });
+  
+        const studentUsernames = studentsResponse.data.response;
+        console.log(studentUsernames);
+  
+        const userRequests = studentUsernames.map(async (username) => {
+          try {
+            const userResponse = await axios.get(`/api/Users/username/${username}`, {
+              headers: {
+                Authorization: `Bearer ${getDecodedJWT().jwt}`,
+              },
+            });
+            return userResponse.data;
+          } catch (error) {
+            console.error(`Eroare la preluarea detaliilor utilizatorului ${username}:`, error);
+            return null;
+          }
+        });
+  
+        const usersListResponses = await Promise.all(userRequests);
+        const usersList = usersListResponses.map((user) => {
+          if (user && user.response) {
+            return user.response;
+          }
+          return null; 
+        });
+  
+        setStudents(usersList.filter(user => user !== null)); // Filtrăm pentru a elimina valorile nule
+
+  
+      } catch (error) {
+        console.error("Eroare la preluarea utilizatorilor pentru proiect:", error);
+      }
+    };
+
+    fetchUsersForProject();
+  }, [project.id, toggleModified]);
+
+  const modifyStudents = (username, action) => {
+    console.log(username, action);
+  
+    let axiosCall;
+  
+    if (action === 'add') {
+      axios.post(`/api/Project/${project.id}/students/${username}`, null, {
+        headers: {
+          Authorization: `Bearer ${getDecodedJWT().jwt}`
+        }
+      })
+        .then(response => {
+          setToggleModified(!toggleModified);
+        })
+        .catch((err) => {
+          if (err.response) {
+            const errorMessage =
+            err.response.data.errors && err.response.data.errors.length
+              ? err.response.data.errors[0]
+              : "Eroare necunoscuta";
+  
+            setError(`Eroare: ${errorMessage}`);
+          }
+          console.log(err)
+        })
+    } else {
+      axios.delete(`/api/Project/${project.id}/students/${username}`, {
+        headers: {
+          Authorization: `Bearer ${getDecodedJWT().jwt}`
+        }
+      })
+        .then(response => {
+          setToggleModified(!toggleModified);
+        })
+        .catch((err) => {
+          if (err.response) {
+            const errorMessage =
+            err.response.data.errors && err.response.data.errors.length
+              ? err.response.data.errors[0]
+              : "Eroare necunoscuta";
+  
+            setError(`Eroare: ${errorMessage}`);
+          }
+          console.log(err)
+        })
+    }
+  };
+
+  return (
+
+      <Modal
+        opened
+        onClose={onClose}
+        title={`Project: ${project.name}`}
+        overlayProps={{
+          backgroundOpacity: 0.55,
+          blur: 3,
+        }}
+        size="lg"
+      >
+        <DataTable
+          withTableBorder
+          records={students}
+          columns={[
+            {
+              accessor:"userName",
+              align: "left",
+              headerAlign: "left",
+              title: "Username",
+            },
+            {
+              accessor:"firstName",
+              align: "left",
+              headerAlign: "left",
+              title: "First Name",
+            },
+            {
+              accessor:"lastName",
+              align: "left",
+              headerAlign: "left",
+              title: "Last Name",
+            },
+            {
+              accessor:"email",
+              align: "left",
+              headerAlign: "left",
+              title: "Email",
+            },
+            {
+              accessor: "actions",
+              title: <Box mr={6}>Remove</Box>,
+              textAlign: "center",
+              render: (student) => (
+                <Group gap={2} justify="center" wrap="nowrap">
+                  <ActionIcon
+                    size="sm"
+                    variant="subtle"
+                    color="red"
+                    onClick={() => modifyStudents(student.userName, 'delete')}
+                  >
+                    <IconUserMinus size={16}/>
+                  </ActionIcon>
+                </Group>
+              ),
+            },
+            
+
+          ]} 
+        >
+          
+        </DataTable>
+        <br />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <br />
+        <Group wrap="nowrap" gap="lg" justify="center">
+
+        <Button onClick={() => modifyStudents(username, 'add')}>
+          Add to project
+        </Button>
+        <TextInput
+        onChange={(v) => handleUsernameChange(v)}
+        placeholder='Search student by username...'
+        style={{ width: '50%' }}
+        />
+
+        </Group>
+        
+        <br />
+        <Group justify="center" wrap="nowrap">
+            <Button fullWidth onClick={() => onClose()}>
+                Close
+            </Button>
+        </Group>
+      </Modal>
+  )
+}
+
 
 const ProjectModal = ({
   onClose,
@@ -131,6 +331,17 @@ export function Projects() {
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [projectModalParams, setProjectModalParams] = useState({});
   const [toggleRender, setToggleRender] = useState(false);
+  const [studentsModalOpen, setStudentsModalOpen] = useState(false);
+  const [studentsModalParams, setStudentsModalParams] = useState([]);
+
+  const showStudentsModal = (params) => {
+    setStudentsModalParams(params);
+    setStudentsModalOpen(true);
+  }
+
+  const closeStudentsModal = () => {
+    setStudentsModalOpen(false);
+  }
 
   const showProjectModal = (params, action) => {
     setProjectModalParams({...params, action});
@@ -177,6 +388,7 @@ export function Projects() {
       });
 
   }, [toggleRender]);
+
 
   const ProjectCard = ({ title, description, id, createdBy, project }) => {
     const linkProps = {
@@ -262,7 +474,7 @@ export function Projects() {
               <IconUsersGroup 
                 style={{ width: rem(16), height: rem(16) }}
                 color={theme.colors.yellow[7]}
-                onClick={() => console.log("studeents yay")}
+                onClick={() => showStudentsModal(project)}
               />
             </ActionIcon>
             <ActionIcon className={classes.action}>
@@ -293,6 +505,12 @@ export function Projects() {
         onClose={closeProjectModal} 
         project={projectModalParams}
         action={projectModalParams.action} />
+      )}
+      {studentsModalOpen && (
+        <StudentsModal 
+        onClose={closeStudentsModal} 
+        project={studentsModalParams}
+        />
       )}
       {(getDecodedJWT().role != 'Student') &&
       <Button
