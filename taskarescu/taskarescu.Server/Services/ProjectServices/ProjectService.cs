@@ -79,9 +79,9 @@ namespace taskarescu.Server.Services.ProjectServices
             
         }
 
-        async Task<ResultDto<bool>> IProjectService.AddStudentToProject(string userId, Guid projectId)
+        async Task<ResultDto<bool>> IProjectService.AddStudentToProject(string username, Guid projectId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
             {
@@ -100,6 +100,13 @@ namespace taskarescu.Server.Services.ProjectServices
             if (project == null)
             {
                 return new ResultDto<bool>(false, false, new[] { "Proiectul la care incercati sa adaugati studenti nu a fost gasit!" } );
+            }
+
+            var studProj = await _context.StudentProjects.FirstOrDefaultAsync(sp => sp.ProjectId == project.Id && sp.UserId == user.Id);
+
+            if (studProj != null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Exista deja asocierea dintre student si proiect!" });
             }
 
             var studentProject = new StudentProject
@@ -201,9 +208,9 @@ namespace taskarescu.Server.Services.ProjectServices
             return new ResultDto<ICollection<ProjectDto>>(true, projectDtos, null);
         }
 
-        async Task<ResultDto<bool>> IProjectService.RemoveStudentFromProject(string userId, Guid projectId)
+        async Task<ResultDto<bool>> IProjectService.RemoveStudentFromProject(string username, Guid projectId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
             {

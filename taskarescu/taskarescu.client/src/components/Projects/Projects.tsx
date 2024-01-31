@@ -12,7 +12,7 @@ import { SimpleGrid,
   Badge
 } from "@mantine/core";
 import { getDecodedJWT } from "../AuthContext";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconUsersGroup } from "@tabler/icons-react";
 import classes from "./ProjectCard.module.css";
 import { Avatars } from "./Avatars";
 import { useEffect, useState } from "react";
@@ -258,6 +258,13 @@ export function Projects() {
           <Avatars teacher={teacher} />
   
           { (getDecodedJWT().role !== 'Student') ? (<Group gap={8} mr={0}>
+            <ActionIcon className={classes.action}>
+              <IconUsersGroup 
+                style={{ width: rem(16), height: rem(16) }}
+                color={theme.colors.yellow[7]}
+                onClick={() => console.log("studeents yay")}
+              />
+            </ActionIcon>
             <ActionIcon className={classes.action}>
               <IconEdit
                 style={{ width: rem(16), height: rem(16) }}

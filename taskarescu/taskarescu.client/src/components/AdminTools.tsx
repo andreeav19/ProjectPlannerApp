@@ -1,8 +1,8 @@
-import { ActionIcon, Box, Group, Select } from "@mantine/core";
+import { ActionIcon, Box, Group, Select, TextInput } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { DataTable } from "mantine-datatable";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button } from "@mantine/core";
+import { Modal, Button, Checkbox, CheckboxGroup } from "@mantine/core";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getDecodedJWT } from "./AuthContext";
@@ -90,6 +90,8 @@ export function AdminTools() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalParams, setModalParams] = useState({});
   const [records, setRecords] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState(['Student', 'Prof', 'Admin']);
 
   const showModal = (params) => {
     setModalParams(params);
@@ -98,6 +100,31 @@ export function AdminTools() {
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const filteredRecords = records.filter((user) => {
+    const includesSearchTerm =
+      Object.values(user).some(
+        (value) =>
+          value &&
+          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  
+    const includesSelectedRoles =
+    selectedRoles.length === 0 || selectedRoles.some(role => user.roleName.toLowerCase().includes(role.toLowerCase()));
+  
+  
+    return includesSearchTerm && includesSelectedRoles;
+  });
+
+  const toggleRoleFilter = (role) => {
+    setSelectedRoles((prevRoles) => {
+      if (prevRoles.includes(role)) {
+        return prevRoles.filter((r) => r !== role);
+      } else {
+        return [...prevRoles, role];
+      }
+    });
   };
 
   useEffect(() => {
@@ -120,9 +147,31 @@ export function AdminTools() {
 
   return (
     <div>
+      <Group>
+
+      <TextInput 
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+        style={{ width: '25%' }}/>
+      <Checkbox.Group
+        defaultValue={['Student', 'Prof', 'Admin']}
+        withAsterisk
+      >
+        <Group mt="xs">
+          <Checkbox color="cyan" value="Student" label="Student" checked={selectedRoles.includes('Student')}
+              onChange={() => toggleRoleFilter('Student')} />
+          <Checkbox color="cyan" value="Prof" label="Prof" checked={selectedRoles.includes('Prof')}
+              onChange={() => toggleRoleFilter('Prof')}/>
+          <Checkbox color="cyan" value="Admin" label="Admin" checked={selectedRoles.includes('Admin')}
+              onChange={() => toggleRoleFilter('Admin')}/>
+        </Group>
+      </Checkbox.Group>
+      </Group>
+      <br />
       <DataTable
         withTableBorder
-        records={records}
+        records={filteredRecords}
         columns={[
           { accessor: "userId" },
           { accessor: "userName" },

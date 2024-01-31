@@ -7,7 +7,7 @@ import { ActionIcon, Button, Group, Modal, Box, TextInput, Select, NumberInput }
 import { DateInput } from '@mantine/dates';
 
 import axios from "axios"
-import { IconArrowAutofitRight, IconArrowLeft, IconArrowRight, IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconUsersGroup, IconArrowLeft, IconArrowRight, IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 
 const FeedbackModal = ({
     onClose,
@@ -140,7 +140,7 @@ const FeedbackModal = ({
             />
             <br/>
             <NumberInput
-                label="Points (0 - 10)"
+                label="Points (1 - 10)"
                 defaultValue={feedbackPoints}
                 allowDecimal={false}
                 min={1}
@@ -318,7 +318,8 @@ const TaskModal = ({
                 onChange={handleStatusChange}
             />
             <br/>
-
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <br/>
             <Group justify="center" wrap="nowrap">
                 <Button fullWidth color="blue" onClick={handleSaveChanges}>
                     Save
@@ -488,7 +489,6 @@ export function Project() {
                     accessor: "name",
                     align: "left",
                     headerAlign: "left",
-                    sortable: true,
                     title: "Task Name",
                 },
                 {
@@ -496,30 +496,27 @@ export function Project() {
                     align: "left",
                     headerAlign: "left",
                     width: 150,
-                    sortable: true,
                     title: "Task Description",
                 },
                 {
                     accessor: "deadlineFormatted",
                     align: "center",
                     headerAlign: "center",
-                    sortable: true,
                     title: "Deadline"
-                },
-                {
-                    accessor: "statusName",
-                    align: "center",
-                    headerAlign: "center",
-                    sortable: true,
-                    title: "Status",
                 },
                 {
                     accessor: "username",
                     align: "center",
                     headerAlign: "center",
-                    sortable: true,
                     title: "Username",
                 },
+                {
+                    accessor: "statusName",
+                    align: "center",
+                    headerAlign: "center",
+                    title: "Status",
+                },
+                
                 {
                     accessor: "taskActions",
                     title: <Box mr={6}>Task Actions</Box>,
@@ -552,7 +549,6 @@ export function Project() {
                         accessor: "name",
                         align: "left",
                         headerAlign: "left",
-                        sortable: true,
                         title: "Task Name",
                     },
                     {
@@ -560,21 +556,24 @@ export function Project() {
                         align: "left",
                         headerAlign: "left",
                         width: 150,
-                        sortable: true,
                         title: "Task Description",
                     },
                     {
                         accessor: "deadlineFormatted",
                         align: "center",
                         headerAlign: "center",
-                        sortable: true,
                         title: "Deadline"
+                    },
+                    {
+                        accessor: "username",
+                        align: "center",
+                        headerAlign: "center",
+                        title: "Username",
                     },
                     {
                         accessor: "statusName",
                         align: "center",
                         headerAlign: "center",
-                        sortable: true,
                         title: "Status",
                     },
                     ],
@@ -587,21 +586,18 @@ export function Project() {
                     align: "left",
                     headerAlign: "left",
                     width: 150,
-                    sortable: true,
                     title: "Description",
                 },
                 {
                     accessor: "feedback.points",
                     align: "center",
                     headerAlign: "center",
-                    sortable: true,
                     title: "Points",
                 },
                 {
                     accessor: "feedback.difficultyName",
                     align: "center",
                     headerAlign: "center",
-                    sortable: true,
                     title: "Difficulty",
                 },
                 {
@@ -637,21 +633,18 @@ export function Project() {
                         align: "left",
                         headerAlign: "left",
                         width: 150,
-                        sortable: true,
                         title: "Description",
                     },
                     {
                         accessor: "feedback.points",
                         align: "center",
                         headerAlign: "center",
-                        sortable: true,
                         title: "Points",
                     },
                     {
                         accessor: "feedback.difficultyName",
                         align: "center",
                         headerAlign: "center",
-                        sortable: true,
                         title: "Difficulty",
                     },
                     ],
@@ -661,11 +654,11 @@ export function Project() {
         />
         <br></br>
         <Group>
-            <Button onClick={() => navigate("/projects")}>
+            <Button color="cyan" onClick={() => navigate("/projects")}>
                 Go back
             </Button>
             { getDecodedJWT().role === 'Student' && (
-                <Button onClick={() => showTaskModal(null, 'add')}>
+                <Button color="cyan" onClick={() => showTaskModal(null, 'add')}>
                     Add Task
                 </Button>
             )}
