@@ -2,7 +2,7 @@
 
 namespace taskarescu.Server.DTOs
 {
-    public class TaskItemDto
+    public class GetTaskItemDto
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
@@ -10,7 +10,9 @@ namespace taskarescu.Server.DTOs
         public DateTime? Deadline { get; set; }
         public string? UserId { get; set; }
         public int? StatusId { get; set; }
+        public string? Username { get; set; }
+        public string? StatusName { get; set; }
 
-        /*public Feedback? Feedback { get; set; }*/
+        public Feedback? Feedback { get; set; }
     }
 }

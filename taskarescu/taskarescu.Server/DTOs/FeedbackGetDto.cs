@@ -7,5 +7,6 @@
         public string UserId { get; set; }
         public int TaskItemId { get; set; }
         public int DifficultyId { get; set; }
+        public string DifficultyName { get; set; }
     }
 }

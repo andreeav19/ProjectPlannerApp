@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using taskarescu.Server.DTOs;
+using taskarescu.Server.Models;
 using taskarescu.Server.Services.FeedbackService;
 using taskarescu.Server.Services.ProjectServices;
 using taskarescu.Server.Services.TaskItemServices;
@@ -74,13 +75,13 @@ namespace taskarescu.Server.Controllers
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpPost]
+        [HttpPost("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<Guid>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddProject([FromBody] ProjectDto projectDto)
+        public async Task<IActionResult> AddProject(string userId, [FromBody] ProjectPostDto projectDto)
         {
-            var resultDto = await _projectService.AddProject(projectDto);
+            var resultDto = await _projectService.AddProject(userId, projectDto);
 
             if (!resultDto.IsSuccess)
             {
@@ -108,13 +109,13 @@ namespace taskarescu.Server.Controllers
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpPost("{projectId}/students/{userId}")]
+        [HttpPost("{projectId}/students/{username}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddStudentToProject(string userId, Guid projectId)
+        public async Task<IActionResult> AddStudentToProject(string username, Guid projectId)
         {
-            var resultDto = await _projectService.AddStudentToProject(userId, projectId);
+            var resultDto = await _projectService.AddStudentToProject(username, projectId);
 
             if (!resultDto.IsSuccess)
             {
@@ -125,13 +126,13 @@ namespace taskarescu.Server.Controllers
         }
 
         [Authorize(Policy = "ProfsOnly")]
-        [HttpDelete("{projectId}/students/{userId}")]
+        [HttpDelete("{projectId}/students/{username}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RemoveStudentFromProject(string userId, Guid projectId)
+        public async Task<IActionResult> RemoveStudentFromProject(string username, Guid projectId)
         {
-            var resultDto = await _projectService.RemoveStudentFromProject(userId, projectId);
+            var resultDto = await _projectService.RemoveStudentFromProject(username, projectId);
 
             if (!resultDto.IsSuccess)
             {
@@ -143,7 +144,7 @@ namespace taskarescu.Server.Controllers
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet("{projectId}/tasks")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<GetTaskItemDto>>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetTaskItemsByProjectId(Guid projectId)
@@ -154,13 +155,13 @@ namespace taskarescu.Server.Controllers
             {
                 return BadRequest(resultDto);
             }
-
+            
             return Ok(resultDto);
         }
 
         [Authorize(Policy = "UsersOnly")]
         [HttpGet("/tasks/{taskId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<TaskItemDto>>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<GetTaskItemDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetTaskItemById(int taskId)
@@ -180,7 +181,7 @@ namespace taskarescu.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<int>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddTaskItem(Guid projectId, [FromBody] TaskItemDto taskItemDto)
+        public async Task<IActionResult> AddTaskItem(Guid projectId, [FromBody] PutPostTaskItemDto taskItemDto)
         {
             var resultDto = await _taskItemService.AddTaskItem(projectId, taskItemDto);
 
@@ -197,7 +198,7 @@ namespace taskarescu.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<bool>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditTaskItemById(Guid projectId, int taskId, [FromBody] TaskItemDto taskItemDto)
+        public async Task<IActionResult> EditTaskItemById(Guid projectId, int taskId, [FromBody] PutPostTaskItemDto taskItemDto)
         {
             var resultDto = await _taskItemService.EditTaskItemById(projectId, taskId, taskItemDto);
 
@@ -251,6 +252,23 @@ namespace taskarescu.Server.Controllers
         public async Task<IActionResult> GetFeedbackByTaskItemId(int taskItemId)
         {
             var resultDto = await _feedbackService.GetFeedbackByTaskItemId(taskItemId);
+
+            if (!resultDto.IsSuccess)
+            {
+                return BadRequest(resultDto);
+            }
+
+            return Ok(resultDto);
+        }
+
+        [Authorize(Policy = "UsersOnly")]
+        [HttpGet("{projectId}/students")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<ICollection<string>>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetStudentUsernamesByProjectId(Guid projectId)
+        {
+            var resultDto = await _projectService.GetStudentsByProjectId(projectId);
 
             if (!resultDto.IsSuccess)
             {

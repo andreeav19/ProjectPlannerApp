@@ -30,11 +30,31 @@ namespace taskarescu.Server.Services.UserServices
                 return Result.Fail(new Error("Utilizatorul nu a fost gasit!"));
             }
 
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == newRole);
+            var oldRole = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
 
-            if (role == null)
+            var editedRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == newRole);
+
+            if (editedRole == null)
             {
                 return Result.Fail(new Error("Rolul nu a fost gasit!"));
+            }
+
+            if (oldRole.Name == "Student" && newRole != "Student")
+            {
+                var studentProjects = await _context.StudentProjects.Where(sp => sp.UserId == userId).ToListAsync();
+
+                if (studentProjects.Count != 0)
+                {
+                    return Result.Fail(new Error("Rolul nu poate fi schimbat in " +newRole + " deoarece studentul este inscris la cel putin un proiect!"));
+                }
+            } else if ((oldRole.Name == "Prof" || oldRole.Name == "Admin") && newRole == "Student")
+            {
+                var userProjects = await _context.Projects.Where(p => p.UserId == userId).ToListAsync();
+
+                if (userProjects.Count != 0)
+                {
+                    return Result.Fail(new Error("Rolul nu poate fi schimbat in Student deoarece utilizatorul are deja proiecte create!"));
+                }
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -56,7 +76,7 @@ namespace taskarescu.Server.Services.UserServices
                 return Result.Fail(new Error("Eroare la stergerea rolului vechi."));
             }
 
-            user.RoleId = role.Id;
+            user.RoleId = editedRole.Id;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -146,6 +166,27 @@ namespace taskarescu.Server.Services.UserServices
         public async Task<ResultDto<UserDto>> GetUserById(string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return new ResultDto<UserDto>(false, null, new[] { "Utilizatorul nu a fost gasit!" });
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == user.RoleId);
+
+            if (role != null)
+            {
+                userDto.RoleName = role.Name;
+            }
+
+            return new ResultDto<UserDto>(true, userDto, null);
+        }
+
+        public async Task<ResultDto<UserDto>> GetUserByUsername(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
             {

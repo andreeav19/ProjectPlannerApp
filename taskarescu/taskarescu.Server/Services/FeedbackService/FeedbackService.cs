@@ -47,6 +47,11 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<int>(false, -1, new[] { "Dificultatea nu a fost gasita!" });
             }
 
+            if (task.StatusId != 3)
+            {
+                return new ResultDto<int>(false, -1, new[] { "Nu se poate adauga feedback unui task neterminat!" });
+            }
+
             var feedback = new Feedback
             {
                 Description = feedbackDto.Description,
@@ -67,7 +72,7 @@ namespace taskarescu.Server.Services.FeedbackService
             return new ResultDto<int>(true, feedback.Id, null);
         }
 
-        public async Task<ResultDto<bool>> EditFeedbackById(string userId, int feedbackId, FeedbackDto feedbackDto)
+        public async Task<ResultDto<bool>> EditFeedbackById(string userId, int taskItemId, FeedbackDto feedbackDto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -76,7 +81,14 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<bool>(false, false, new[] { "Utilizatorul nu a fost gasit!" });
             }
 
-            var feedback = await _context.Feedbacks.FirstOrDefaultAsync(f => f.Id == feedbackId);
+            var task = await _context.TaskItems.FirstOrDefaultAsync(t => t.Id == taskItemId);
+
+            if (task == null)
+            {
+                return new ResultDto<bool>(false, false, new[] { "Task-ul nu a fost gasit!" });
+            }
+
+            var feedback = await _context.Feedbacks.FirstOrDefaultAsync(f => f.TaskItemId == task.Id);
 
             if (feedback == null)
             {
@@ -115,6 +127,12 @@ namespace taskarescu.Server.Services.FeedbackService
                 return new ResultDto<FeedbackGetDto>(false, null, new[] { "Feedback-ul nu a fost gasit!" });
             }
 
+            var difficulty = await _context.Difficulties.FirstOrDefaultAsync(d => d.Id == feedback.DifficultyId);
+
+            if (difficulty != null) { 
+                feedbackDto.DifficultyName = difficulty.Name;
+            }
+
             return new ResultDto<FeedbackGetDto>(true, feedbackDto, null);
         }
 
@@ -125,7 +143,14 @@ namespace taskarescu.Server.Services.FeedbackService
 
             if (feedback == null)
             {
-                return new ResultDto<FeedbackGetDto>(false, null, new[] { "Feedback-ul nu a fost gasit!" });
+                return new ResultDto<FeedbackGetDto>(true, null, null);
+            }
+
+            var difficulty = await _context.Difficulties.FirstOrDefaultAsync(d => d.Id == feedback.DifficultyId);
+
+            if (difficulty != null)
+            {
+                feedbackDto.DifficultyName = difficulty.Name;
             }
 
             return new ResultDto<FeedbackGetDto>(true, feedbackDto, null);

@@ -155,4 +155,19 @@ public class UsersController : ControllerBase
         return Ok(resultDto);
     }
 
+    [Authorize(Policy = "UsersOnly")]
+    [HttpGet("username/{username}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<UserDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetUserByUsername(string username)
+    {
+        var resultDto = await _usersService.GetUserByUsername(username);
+
+        if (!resultDto.IsSuccess)
+        {
+            return BadRequest(resultDto);
+        }
+        return Ok(resultDto);
+    }
 }
